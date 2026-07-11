@@ -47,7 +47,7 @@ export async function GET() {
           pendingOrdersCount++;
           pendingOrdersList.push({
             orderId: order._id,
-            customerName: order.customer.name,
+            customerName: (order.customer as any).name,
             totalAmount: order.totalAmount,
             createdAt: order.createdAt,
             orderStatus: order.orderStatus,
@@ -61,7 +61,7 @@ export async function GET() {
 
         recentSales.push({
           orderId: order._id,
-          customerName: order.customer.name,
+          customerName: (order.customer as any).name,
           revenue: orderRevenueForSeller,
           itemsCount: orderItemsForSeller,
           createdAt: order.createdAt,
@@ -93,8 +93,8 @@ export async function GET() {
         deliveredOrdersCount,
       },
       products,
-      pendingOrders: pendingOrdersList.limit ? pendingOrdersList.slice(0, 5) : pendingOrdersList,
-      recentSales: recentSales.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime()).slice(0, 5),
+      pendingOrders: pendingOrdersList.slice(0, 5),
+      recentSales: recentSales.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 5),
       recentReviews: reviews,
     });
   } catch (error: any) {

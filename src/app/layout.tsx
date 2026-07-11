@@ -1,9 +1,11 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import { AuthProvider } from "@/context/AuthContext";
+import Navbar from "@/app/Components/Navbar";
 
 export const metadata: Metadata = {
-  title: "PalliBazaar",
-  description: "PalliBazaar Next.js App",
+  title: "PalliBazaar - Online Rural Marketplace",
+  description: "Fresh farm produce, livestock, and beautiful local handicrafts directly from our village farmers.",
 };
 
 export default function RootLayout({
@@ -13,7 +15,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <AuthProvider>
+          <Navbar />
+          {children}
+        </AuthProvider>
+      </body>
     </html>
   );
 }

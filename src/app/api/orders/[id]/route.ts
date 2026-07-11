@@ -111,11 +111,11 @@ export async function PUT(request: Request, { params }: RouteParams) {
       const sellerIds = new Set<string>();
       for (const item of order.items) {
         if (item.product) {
-          const sellerIdStr = item.product.seller.toString();
+          const sellerIdStr = (item.product as any).seller.toString();
           if (!sellerIds.has(sellerIdStr)) {
             sellerIds.add(sellerIdStr);
             await Notification.create({
-              recipient: item.product.seller,
+              recipient: (item.product as any).seller,
               message: `Order Cancelled: Order #${order._id} containing your products was cancelled by the customer.`,
               type: "order",
             });

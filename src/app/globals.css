@@ -1,5 +1,59 @@
-* {
-  margin: 0;
-  padding: 1;
-  box-sizing: border-box;
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap");
+
+@import "tailwindcss";
+
+@theme {
+  /* Color System */
+  --color-primary: #2e5a44;
+  --color-primary-hover: #224432;
+  --color-primary-light: #e9f2ee;
+  
+  --color-secondary: #c85a32;
+  --color-secondary-hover: #ab4a26;
+  --color-secondary-light: #faede8;
+  
+  --color-accent: #e6a817;
+  --color-accent-hover: #cf9410;
+  --color-accent-light: #fef8eb;
+  
+  --color-bg-sand: #faf8f4;
+  --color-card-white: #ffffff;
+  --color-text-earth: #222d27;
+  --color-text-muted: #64756c;
+  --color-border-light: #e6ece8;
+  
+  /* Font Families */
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Outfit", sans-serif;
+  
+  /* Layout Constants */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+}
+
+/* Custom Base Layer Adjustments */
+@utility container {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+body {
+  background-color: var(--color-bg-sand);
+  color: var(--color-text-earth);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+}
+
+/* Smooth transitions */
+.transition-all-custom {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
