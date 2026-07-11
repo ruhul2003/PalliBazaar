@@ -2,5 +2,5 @@
   "version": 3,
   "sources": [],
   "sections": [
-    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["file:///D:/Programming%20hero/TypeScript/PalliBazaar/src/app/globals.css"],"sourcesContent":["* {\r\n  margin: 0;\r\n  padding: 0;\r\n  box-sizing: border-box;\r\n}"],"names":[],"mappings":"AAAA"}}]
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["file:///D:/Programming%20hero/TypeScript/PalliBazaar/src/app/globals.css"],"sourcesContent":["* {\r\n  margin: 0;\r\n  padding: 1;\r\n  box-sizing: border-box;\r\n}"],"names":[],"mappings":"AAAA"}}]
 }
