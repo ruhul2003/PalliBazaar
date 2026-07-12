@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -67,10 +68,16 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 bg-white border-b border-border-light shadow-sm">
       <div className="container flex items-center justify-between h-[75px]">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <span className="text-2xl">🌱</span>
+        <Link href="/" className="flex items-center gap-2 group">
+          <motion.span 
+            className="text-2xl"
+            whileHover={{ rotate: [0, -10, 10, -10, 0] }}
+            transition={{ duration: 0.5 }}
+          >
+            🌱
+          </motion.span>
           <span className="font-serif text-2xl font-bold text-primary tracking-tight">PalliBazaar</span>
-          <span className="text-[10px] bg-accent-light text-primary px-1.5 py-0.5 rounded font-bold ml-1">
+          <span className="text-[10px] bg-accent-light text-primary px-1.5 py-0.5 rounded font-bold ml-1 transition-all group-hover:bg-accent-hover group-hover:text-white">
             পল্লীবাজার
           </span>
         </Link>
@@ -86,7 +93,21 @@ export default function Navbar() {
           {user && user.role === "customer" && (
             <>
               <Link href="/cart" className="font-medium text-text-muted hover:text-primary transition-colors flex items-center gap-1.5">
-                Cart {cartCount > 0 && <span className="bg-secondary text-white text-[11px] font-bold px-2 py-0.5 rounded-full">{cartCount}</span>}
+                Cart
+                <AnimatePresence mode="wait">
+                  {cartCount > 0 && (
+                    <motion.span
+                      key={cartCount}
+                      initial={{ scale: 0.6, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0.6, opacity: 0 }}
+                      transition={{ type: "spring", stiffness: 500, damping: 15 }}
+                      className="bg-secondary text-white text-[11px] font-bold px-2 py-0.5 rounded-full inline-block"
+                    >
+                      {cartCount}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
               </Link>
               <Link href="/dashboard/buyer" className="font-medium text-text-muted hover:text-primary transition-colors">
                 Wishlist
@@ -101,8 +122,10 @@ export default function Navbar() {
             <div className="flex items-center gap-4">
               {/* Notifications Trigger */}
               <div className="relative">
-                <button
-                  className="relative p-1.5 text-text-muted hover:text-primary transition-colors"
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="relative p-1.5 text-text-muted hover:text-primary transition-colors cursor-pointer"
                   onClick={() => {
                     setShowNotifications(!showNotifications);
                     if (!showNotifications && unreadNotifications > 0) {
@@ -117,78 +140,96 @@ export default function Navbar() {
                       {unreadNotifications}
                     </span>
                   )}
-                </button>
+                </motion.button>
                 
                 {/* Notifications Dropdown */}
-                {showNotifications && (
-                  <div className="absolute top-11 right-0 bg-white border border-border-light rounded-md shadow-xl w-[290px] p-4 z-50">
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-text-earth border-b border-border-light pb-2 mb-2">
-                      Recent Notifications
-                    </h4>
-                    {notifications.length === 0 ? (
-                      <p className="text-xs text-text-muted text-center py-3">No notifications yet.</p>
-                    ) : (
-                      <ul className="list-none max-height-[200px] overflow-y-auto">
-                        {notifications.slice(0, 5).map((n) => (
-                          <li
-                            key={n._id}
-                            className={`text-xs p-2 border-b border-border-light last:border-b-0 rounded leading-relaxed ${
-                              n.isRead ? "text-text-muted" : "bg-primary-light text-primary font-semibold"
-                            }`}
-                          >
-                            {n.message}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                )}
+                <AnimatePresence>
+                  {showNotifications && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 15, scale: 0.95 }}
+                      transition={{ duration: 0.15, ease: "easeOut" }}
+                      className="absolute top-11 right-0 bg-white border border-border-light rounded-md shadow-xl w-[290px] p-4 z-50 origin-top-right"
+                    >
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-text-earth border-b border-border-light pb-2 mb-2">
+                        Recent Notifications
+                      </h4>
+                      {notifications.length === 0 ? (
+                        <p className="text-xs text-text-muted text-center py-3">No notifications yet.</p>
+                      ) : (
+                        <ul className="list-none max-height-[200px] overflow-y-auto">
+                          {notifications.slice(0, 5).map((n) => (
+                            <li
+                              key={n._id}
+                              className={`text-xs p-2 border-b border-border-light last:border-b-0 rounded leading-relaxed ${
+                                n.isRead ? "text-text-muted" : "bg-primary-light text-primary font-semibold"
+                              }`}
+                            >
+                              {n.message}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
 
               {/* Dashboard redirection buttons */}
               {user.role === "customer" && (
-                <Link
-                  href="/dashboard/buyer"
-                  className="hidden sm:inline-flex items-center justify-center px-4 py-1.5 border border-primary text-primary hover:bg-primary hover:text-white rounded-md text-sm font-semibold transition"
-                >
-                  My Profile
-                </Link>
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                  <Link
+                    href="/dashboard/buyer"
+                    className="hidden sm:inline-flex items-center justify-center px-4 py-1.5 border border-primary text-primary hover:bg-primary hover:text-white rounded-md text-sm font-semibold transition"
+                  >
+                    My Profile
+                  </Link>
+                </motion.div>
               )}
               {user.role === "seller" && (
-                <Link
-                  href="/dashboard/farmer"
-                  className="hidden sm:inline-flex items-center justify-center px-4 py-1.5 bg-secondary text-white hover:bg-secondary-hover rounded-md text-sm font-semibold transition"
-                >
-                  Farmer Dashboard
-                </Link>
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                  <Link
+                    href="/dashboard/farmer"
+                    className="hidden sm:inline-flex items-center justify-center px-4 py-1.5 bg-secondary text-white hover:bg-secondary-hover rounded-md text-sm font-semibold transition"
+                  >
+                    Farmer Dashboard
+                  </Link>
+                </motion.div>
               )}
               {user.role === "admin" && (
-                <Link
-                  href="/dashboard/farmer"
-                  className="hidden sm:inline-flex items-center justify-center px-4 py-1.5 bg-primary text-white hover:bg-primary-hover rounded-md text-sm font-semibold transition"
-                >
-                  Admin View
-                </Link>
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                  <Link
+                    href="/dashboard/farmer"
+                    className="hidden sm:inline-flex items-center justify-center px-4 py-1.5 bg-primary text-white hover:bg-primary-hover rounded-md text-sm font-semibold transition"
+                  >
+                    Admin View
+                  </Link>
+                </motion.div>
               )}
 
-              <button
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={logout}
-                className="px-4 py-1.5 border border-border-light text-text-muted hover:bg-danger hover:border-danger hover:text-white rounded-md text-sm font-semibold transition"
+                className="px-4 py-1.5 border border-border-light text-text-muted hover:bg-danger hover:border-danger hover:text-white rounded-md text-sm font-semibold transition cursor-pointer"
               >
                 Logout
-              </button>
+              </motion.button>
             </div>
           ) : (
             <div className="flex items-center gap-5">
               <Link href="/login" className="font-semibold text-text-earth hover:text-primary transition-colors">
                 Login
               </Link>
-              <Link
-                href="/signup"
-                className="inline-flex items-center justify-center px-4 py-2 bg-primary text-white hover:bg-primary-hover rounded-md text-sm font-semibold transition"
-              >
-                Join Marketplace
-              </Link>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Link
+                  href="/signup"
+                  className="inline-flex items-center justify-center px-4 py-2 bg-primary text-white hover:bg-primary-hover rounded-md text-sm font-semibold transition"
+                >
+                  Join Marketplace
+                </Link>
+              </motion.div>
             </div>
           )}
         </div>

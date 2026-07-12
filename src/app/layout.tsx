@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { AuthProvider } from "@/context/AuthContext";
 import Navbar from "@/app/Components/Navbar";
+import Footer from "@/app/Components/Footer";
 
 export const metadata: Metadata = {
   title: "PalliBazaar - Online Rural Marketplace",
@@ -17,8 +18,13 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <AuthProvider>
-          <Navbar />
-          {children}
+          <div className="flex flex-col min-h-screen">
+            <Navbar />
+            <div className="flex-grow">
+              {children}
+            </div>
+            <Footer />
+          </div>
         </AuthProvider>
       </body>
     </html>
