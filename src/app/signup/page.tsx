@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
+import { ShoppingCart, Wheat, Wrench } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function SignupPage() {
   const { signup } = useAuth();
@@ -24,6 +26,7 @@ export default function SignupPage() {
 
     if (password.length < 6) {
       setError("Password must be at least 6 characters long.");
+      toast.error("Password must be at least 6 characters long.");
       setIsSubmitting(false);
       return;
     }
@@ -31,7 +34,9 @@ export default function SignupPage() {
     try {
       const res = await signup(name, email, password, role);
       if (res.success) {
-        setSuccess(res.message || "Registration successful! Please verify your email.");
+        const msg = res.message || "Registration successful! Please verify your email.";
+        setSuccess(msg);
+        toast.success(msg);
         if (res.debugVerificationLink) {
           setDebugLink(res.debugVerificationLink);
         }
@@ -39,11 +44,15 @@ export default function SignupPage() {
         setEmail("");
         setPassword("");
       } else {
-        setError(res.error || "Failed to sign up.");
+        const msg = res.error || "Failed to sign up.";
+        setError(msg);
+        toast.error(msg);
         setIsSubmitting(false);
       }
     } catch (err: any) {
-      setError("An error occurred during signup. Please try again.");
+      const msg = "An error occurred during signup. Please try again.";
+      setError(msg);
+      toast.error(msg);
       setIsSubmitting(false);
     }
   };
@@ -67,9 +76,12 @@ export default function SignupPage() {
             <p className="text-center">{success}</p>
             {debugLink && (
               <div className="mt-3 border-t border-green-200 pt-3">
-                <strong className="text-[11px] uppercase tracking-wider text-primary block mb-1">
-                  🔧 Local Dev Simulation:
-                </strong>
+                <div className="flex items-center gap-1 mb-1">
+                  <Wrench className="w-3.5 h-3.5 text-primary" />
+                  <strong className="text-[11px] uppercase tracking-wider text-primary block">
+                    Local Dev Simulation:
+                  </strong>
+                </div>
                 <a
                   href={debugLink}
                   target="_blank"
@@ -89,22 +101,22 @@ export default function SignupPage() {
             <label className="block text-sm font-semibold text-text-earth mb-2">Register As</label>
             <div className="grid grid-cols-2 gap-4">
               <div
-                className={`border-2 rounded-xl p-4 text-center cursor-pointer transition flex flex-col items-center gap-1.5 hover:border-primary ${
+                className={`border-2 rounded-xl p-4 text-center cursor-pointer transition flex flex-col items-center gap-2 hover:border-primary ${
                   role === "customer" ? "border-primary bg-primary-light" : "border-border-light bg-white"
                 }`}
                 onClick={() => setRole("customer")}
               >
-                <span className="text-2xl">🛒</span>
+                <ShoppingCart className={`w-6 h-6 ${role === "customer" ? "text-primary" : "text-text-muted"}`} />
                 <span className="font-bold text-sm text-text-earth">Buyer</span>
                 <span className="text-[10px] text-text-muted leading-tight">Purchase organic food & crafts</span>
               </div>
               <div
-                className={`border-2 rounded-xl p-4 text-center cursor-pointer transition flex flex-col items-center gap-1.5 hover:border-primary ${
+                className={`border-2 rounded-xl p-4 text-center cursor-pointer transition flex flex-col items-center gap-2 hover:border-primary ${
                   role === "seller" ? "border-primary bg-primary-light" : "border-border-light bg-white"
                 }`}
                 onClick={() => setRole("seller")}
               >
-                <span className="text-2xl">🌾</span>
+                <Wheat className={`w-6 h-6 ${role === "seller" ? "text-primary" : "text-text-muted"}`} />
                 <span className="font-bold text-sm text-text-earth">Farmer/Artisan</span>
                 <span className="text-[10px] text-text-muted leading-tight">Sell crops, livestock & crafts</span>
               </div>

@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { ShieldAlert, BarChart3, Wheat, Tractor, Star, AlertTriangle, X, Plus } from "lucide-react";
+import toast from "react-hot-toast";
 
 interface ProductType {
   _id: string;
@@ -165,17 +167,20 @@ export default function FarmerDashboard() {
       const data = await res.json();
 
       if (res.ok) {
-        alert(data.message || "Product saved successfully!");
+        toast.success(data.message || "Product saved successfully!");
         setShowModal(false);
         fetchSellerData();
         if (user?.role === "admin") {
           fetchAdminData();
         }
       } else {
-        setFormError(data.error || "Failed to save product");
+        const msg = data.error || "Failed to save product";
+        setFormError(msg);
+        toast.error(msg);
       }
     } catch (err) {
       setFormError("An error occurred while saving the product.");
+      toast.error("An error occurred while saving the product.");
     }
   };
 
@@ -214,14 +219,16 @@ export default function FarmerDashboard() {
     try {
       const res = await fetch(`/api/products/${prodId}`, { method: "DELETE" });
       if (res.ok) {
-        alert("Listing deleted successfully!");
+        toast.success("Listing deleted successfully!");
         fetchSellerData();
         if (user?.role === "admin") {
           fetchAdminData();
         }
+      } else {
+        toast.error("Failed to delete listing.");
       }
     } catch (e) {
-      alert("Failed to delete listing");
+      toast.error("Failed to delete listing.");
     }
   };
 
@@ -234,17 +241,17 @@ export default function FarmerDashboard() {
         body: JSON.stringify({ orderStatus: newStatus }),
       });
       if (res.ok) {
-        alert("Order status updated successfully!");
+        toast.success("Order status updated successfully!");
         fetchSellerData();
         if (user?.role === "admin") {
           fetchAdminData();
         }
       } else {
         const data = await res.json();
-        alert(data.error || "Failed to update order status");
+        toast.error(data.error || "Failed to update order status");
       }
     } catch (e) {
-      alert("Failed to update status");
+      toast.error("Failed to update status");
     }
   };
 
@@ -257,12 +264,14 @@ export default function FarmerDashboard() {
         body: JSON.stringify({ isApproved: true }),
       });
       if (res.ok) {
-        alert("Product approved successfully!");
+        toast.success("Product approved successfully!");
         fetchAdminData();
         fetchSellerData();
+      } else {
+        toast.error("Failed to approve product.");
       }
     } catch (e) {
-      alert("Failed to approve product");
+      toast.error("Failed to approve product");
     }
   };
 
@@ -275,14 +284,14 @@ export default function FarmerDashboard() {
         body: JSON.stringify({ isBanned: !isCurrentlyBanned }),
       });
       if (res.ok) {
-        alert(isCurrentlyBanned ? "User unbanned successfully!" : "User banned successfully!");
+        toast.success(isCurrentlyBanned ? "User unbanned successfully!" : "User banned successfully!");
         fetchAdminData();
       } else {
         const data = await res.json();
-        alert(data.error || "Failed to update user status");
+        toast.error(data.error || "Failed to update user status");
       }
     } catch (e) {
-      alert("Failed to update status");
+      toast.error("Failed to update status");
     }
   };
 
@@ -317,52 +326,57 @@ export default function FarmerDashboard() {
               <li>
                 <button
                   onClick={() => setActiveTab("admin")}
-                  className={`w-full text-left bg-transparent border-0 px-4 py-2.5 rounded-lg text-sm font-semibold cursor-pointer transition-colors ${
+                  className={`w-full text-left bg-transparent border-0 px-4 py-2.5 rounded-lg text-sm font-semibold cursor-pointer transition-colors flex items-center gap-2 ${
                     activeTab === "admin" ? "bg-primary text-white" : "text-text-muted hover:bg-bg-sand hover:text-primary"
                   }`}
                 >
-                  🛡️ Admin Panel
+                  <ShieldAlert className="w-4 h-4" />
+                  <span>Admin Panel</span>
                 </button>
               </li>
             )}
             <li>
               <button
                 onClick={() => setActiveTab("overview")}
-                className={`w-full text-left bg-transparent border-0 px-4 py-2.5 rounded-lg text-sm font-semibold cursor-pointer transition-colors ${
+                className={`w-full text-left bg-transparent border-0 px-4 py-2.5 rounded-lg text-sm font-semibold cursor-pointer transition-colors flex items-center gap-2 ${
                   activeTab === "overview" ? "bg-primary text-white" : "text-text-muted hover:bg-bg-sand hover:text-primary"
                 }`}
               >
-                📊 Dashboard Metrics
+                <BarChart3 className="w-4 h-4" />
+                <span>Dashboard Metrics</span>
               </button>
             </li>
             <li>
               <button
                 onClick={() => setActiveTab("listings")}
-                className={`w-full text-left bg-transparent border-0 px-4 py-2.5 rounded-lg text-sm font-semibold cursor-pointer transition-colors ${
+                className={`w-full text-left bg-transparent border-0 px-4 py-2.5 rounded-lg text-sm font-semibold cursor-pointer transition-colors flex items-center gap-2 ${
                   activeTab === "listings" ? "bg-primary text-white" : "text-text-muted hover:bg-bg-sand hover:text-primary"
                 }`}
               >
-                🌾 My Listings
+                <Wheat className="w-4 h-4" />
+                <span>My Listings</span>
               </button>
             </li>
             <li>
               <button
                 onClick={() => setActiveTab("orders")}
-                className={`w-full text-left bg-transparent border-0 px-4 py-2.5 rounded-lg text-sm font-semibold cursor-pointer transition-colors ${
+                className={`w-full text-left bg-transparent border-0 px-4 py-2.5 rounded-lg text-sm font-semibold cursor-pointer transition-colors flex items-center gap-2 ${
                   activeTab === "orders" ? "bg-primary text-white" : "text-text-muted hover:bg-bg-sand hover:text-primary"
                 }`}
               >
-                🚜 Orders Received
+                <Tractor className="w-4 h-4" />
+                <span>Orders Received</span>
               </button>
             </li>
             <li>
               <button
                 onClick={() => setActiveTab("reviews")}
-                className={`w-full text-left bg-transparent border-0 px-4 py-2.5 rounded-lg text-sm font-semibold cursor-pointer transition-colors ${
+                className={`w-full text-left bg-transparent border-0 px-4 py-2.5 rounded-lg text-sm font-semibold cursor-pointer transition-colors flex items-center gap-2 ${
                   activeTab === "reviews" ? "bg-primary text-white" : "text-text-muted hover:bg-bg-sand hover:text-primary"
                 }`}
               >
-                ⭐ Market Feedback
+                <Star className="w-4 h-4" />
+                <span>Market Feedback</span>
               </button>
             </li>
           </ul>
@@ -393,7 +407,10 @@ export default function FarmerDashboard() {
                 </div>
                 <div className="bg-bg-sand border border-border-light rounded-xl p-5 flex flex-col gap-1">
                   <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider">Avg Rating</span>
-                  <span className="text-xl font-extrabold text-primary">⭐ {analytics.averageRating || "New"}</span>
+                  <span className="text-xl font-extrabold text-primary flex items-center gap-1">
+                    <Star className="w-4 h-4 text-accent fill-accent shrink-0" />
+                    <span>{analytics.averageRating || "New"}</span>
+                  </span>
                 </div>
               </div>
 
@@ -456,15 +473,16 @@ export default function FarmerDashboard() {
                 <h3 className="font-serif text-2xl font-bold text-primary">My Village Products</h3>
                 <button
                   onClick={handleAddProductOpen}
-                  className="px-4 py-2 bg-primary hover:bg-primary-hover text-white rounded-lg text-xs font-bold transition cursor-pointer"
+                  className="px-4 py-2 bg-primary hover:bg-primary-hover text-white rounded-lg text-xs font-bold transition cursor-pointer flex items-center gap-1.5"
                 >
-                  + Add New Product 🍎
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>Add New Product</span>
                 </button>
               </div>
 
               {products.length === 0 ? (
-                <div className="text-center py-12 text-text-muted">
-                  <span className="text-4xl block mb-2">🌾</span>
+                <div className="text-center py-12 text-text-muted flex flex-col items-center">
+                  <Wheat className="w-8 h-8 opacity-40 mb-2 text-text-muted" />
                   <p className="text-sm">You haven't listed any products yet.</p>
                 </div>
               ) : (
@@ -601,7 +619,11 @@ export default function FarmerDashboard() {
                         <span className="font-bold text-text-earth">{rev.customer.name}</span>
                         <span className="text-text-muted">{new Date(rev.createdAt).toLocaleDateString()}</span>
                       </div>
-                      <div className="text-xs text-accent mb-2">{"★".repeat(rev.rating)}</div>
+                      <div className="text-xs text-accent mb-2 flex gap-0.5">
+                        {Array.from({ length: rev.rating }).map((_, i) => (
+                          <Star key={i} className="w-3.5 h-3.5 text-accent fill-accent shrink-0" />
+                        ))}
+                      </div>
                       <p className="text-xs text-text-earth italic font-medium">Product: {rev.product.name}</p>
                       <p className="text-xs text-text-muted leading-relaxed mt-1">{rev.comment}</p>
                     </div>
@@ -702,7 +724,16 @@ export default function FarmerDashboard() {
                             <td className="p-3 text-text-earth">{usr.name}</td>
                             <td className="p-3">{usr.email}</td>
                             <td className="p-3 capitalize">{usr.role}</td>
-                            <td className="p-3">{usr.isBanned ? "⚠️ Yes" : "No"}</td>
+                            <td className="p-3">
+                              {usr.isBanned ? (
+                                <span className="flex items-center gap-1 text-danger">
+                                  <AlertTriangle className="w-3.5 h-3.5" />
+                                  <span>Yes</span>
+                                </span>
+                              ) : (
+                                "No"
+                              )}
+                            </td>
                             <td className="p-3">
                               {usr._id !== user.id ? (
                                 <button
@@ -739,8 +770,8 @@ export default function FarmerDashboard() {
               <h3 className="font-serif text-xl font-bold text-primary">
                 {modalMode === "add" ? "List New Village Product" : "Edit Listed Product"}
               </h3>
-              <button onClick={() => setShowModal(false)} className="text-2xl font-bold text-text-muted bg-transparent border-0 cursor-pointer">
-                ×
+              <button onClick={() => setShowModal(false)} className="text-text-muted bg-transparent border-0 cursor-pointer p-1.5 hover:bg-bg-sand rounded-lg transition-colors flex items-center justify-center">
+                <X className="w-5 h-5" />
               </button>
             </div>
 
@@ -857,9 +888,10 @@ export default function FarmerDashboard() {
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2.5 bg-primary hover:bg-primary-hover text-white rounded-lg text-xs font-bold cursor-pointer transition"
+                  className="px-5 py-2.5 bg-primary hover:bg-primary-hover text-white rounded-lg text-xs font-bold cursor-pointer transition flex items-center gap-1.5"
                 >
-                  Save Listing 🌾
+                  <Wheat className="w-4 h-4 shrink-0" />
+                  <span>Save Listing</span>
                 </button>
               </div>
             </form>

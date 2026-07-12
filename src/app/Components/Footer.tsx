@@ -3,6 +3,35 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { Leaf, Wheat, Tractor, AlertCircle, CheckCircle } from "lucide-react";
+
+// Inline Custom SVGs for Social Media Icons to avoid lucide-react version variations
+const Facebook = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+  </svg>
+);
+
+const Instagram = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+  </svg>
+);
+
+const Youtube = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" />
+    <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" />
+  </svg>
+);
+
+const Twitter = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
+  </svg>
+);
 
 export default function Footer() {
   const [email, setEmail] = useState("");
@@ -31,12 +60,12 @@ export default function Footer() {
   };
 
   const categories = [
-    { name: "Fruits 🍎", slug: "fruits" },
-    { name: "Vegetables 🥬", slug: "vegetables" },
-    { name: "Dairy & Milk 🥛", slug: "dairy" },
-    { name: "Handicrafts 🏺", slug: "handicrafts" },
-    { name: "Seeds & Fertilizer 🌱", slug: "seeds" },
-    { name: "Livestock 🐄", slug: "livestock" },
+    { name: "Fruits", slug: "fruits" },
+    { name: "Vegetables", slug: "vegetables" },
+    { name: "Dairy & Milk", slug: "dairy" },
+    { name: "Handicrafts", slug: "handicrafts" },
+    { name: "Seeds & Fertilizer", slug: "seeds" },
+    { name: "Livestock", slug: "livestock" },
   ];
 
   const quickLinks = [
@@ -45,6 +74,13 @@ export default function Footer() {
     { name: "My Cart", href: "/cart" },
     { name: "Become a Seller", href: "/signup" },
     { name: "Help Center", href: "#" },
+  ];
+
+  const socialLinks = [
+    { icon: Facebook, name: "Facebook", link: "#" },
+    { icon: Instagram, name: "Instagram", link: "#" },
+    { icon: Youtube, name: "YouTube", link: "#" },
+    { icon: Twitter, name: "Twitter", link: "#" },
   ];
 
   return (
@@ -57,8 +93,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           {/* Brand & About */}
           <div className="flex flex-col gap-4">
-            <Link href="/" className="flex items-center gap-2">
-              <span className="text-3xl">🌱</span>
+            <Link href="/" className="flex items-center gap-2.5">
+              <Leaf className="w-6 h-6 text-accent" />
               <span className="font-serif text-2xl font-bold text-white tracking-tight">
                 PalliBazaar
               </span>
@@ -72,21 +108,16 @@ export default function Footer() {
             </p>
             {/* Social Icons with Framer Motion hover pops */}
             <div className="flex items-center gap-3 mt-4">
-              {[
-                { icon: "🌐", name: "Facebook", link: "#" },
-                { icon: "📸", name: "Instagram", link: "#" },
-                { icon: "🎥", name: "YouTube", link: "#" },
-                { icon: "🐦", name: "Twitter", link: "#" },
-              ].map((social, idx) => (
+              {socialLinks.map((social, idx) => (
                 <motion.a
                   key={idx}
                   href={social.link}
                   whileHover={{ scale: 1.15, rotate: 5, backgroundColor: "#2e5a44" }}
                   whileTap={{ scale: 0.95 }}
-                  className="w-10 h-10 rounded-full bg-[#244233] flex items-center justify-center text-lg border border-[#2e5a44]/30 hover:border-accent/50 transition-colors"
+                  className="w-10 h-10 rounded-full bg-[#244233] flex items-center justify-center border border-[#2e5a44]/30 hover:border-accent/50 transition-colors group"
                   title={social.name}
                 >
-                  <span>{social.icon}</span>
+                  <social.icon className="w-4.5 h-4.5 text-[#a2b5ab] group-hover:text-white transition-colors" />
                 </motion.a>
               ))}
             </div>
@@ -104,9 +135,7 @@ export default function Footer() {
                     href={link.href}
                     className="hover:text-accent transition-colors flex items-center gap-1.5 group"
                   >
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-xs">
-                      🌾
-                    </span>
+                    <Wheat className="w-3.5 h-3.5 opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 transition-all duration-200 text-accent shrink-0" />
                     <span className="group-hover:translate-x-1 transition-transform duration-200">
                       {link.name}
                     </span>
@@ -128,9 +157,7 @@ export default function Footer() {
                     href={`/shop?category=${cat.slug}`}
                     className="hover:text-accent transition-colors flex items-center gap-1.5 group"
                   >
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-xs">
-                      🚜
-                    </span>
+                    <Tractor className="w-3.5 h-3.5 opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 transition-all duration-200 text-accent shrink-0" />
                     <span className="group-hover:translate-x-1 transition-transform duration-200">
                       {cat.name}
                     </span>
@@ -189,9 +216,10 @@ export default function Footer() {
                       <motion.p
                         initial={{ opacity: 0, y: -5 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="text-xs text-red-400 font-semibold mt-1"
+                        className="text-xs text-red-400 font-semibold mt-1 flex items-center gap-1"
                       >
-                        ⚠️ {errorMessage}
+                        <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                        <span>{errorMessage}</span>
                       </motion.p>
                     )}
                   </motion.form>
@@ -207,9 +235,9 @@ export default function Footer() {
                       initial={{ scale: 0 }}
                       animate={{ scale: [0, 1.2, 1] }}
                       transition={{ delay: 0.1, duration: 0.4 }}
-                      className="text-2xl text-accent"
+                      className="text-accent"
                     >
-                      🌾✨
+                      <CheckCircle className="w-8 h-8 text-accent" />
                     </motion.div>
                     <h4 className="text-xs font-bold text-white uppercase tracking-wider">
                       Successfully Joined!

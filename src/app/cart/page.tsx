@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { Trash2, ShoppingCart, CreditCard, ArrowRight } from "lucide-react";
+import toast from "react-hot-toast";
 
 interface CartItemType {
   product: {
@@ -66,11 +68,12 @@ export default function CartPage() {
       const data = await res.json();
       if (res.ok && data.cart) {
         setCartItems(data.cart.items.filter((item: any) => item.product !== null));
+        toast.success("Quantity updated.");
       } else {
-        alert(data.error || "Failed to update quantity");
+        toast.error(data.error || "Failed to update quantity");
       }
     } catch (e) {
-      console.error(e);
+      toast.error("Failed to update quantity");
     }
   };
 
@@ -82,9 +85,12 @@ export default function CartPage() {
       const data = await res.json();
       if (res.ok && data.cart) {
         setCartItems(data.cart.items.filter((item: any) => item.product !== null));
+        toast.success("Item removed from cart.");
+      } else {
+        toast.error("Failed to remove item.");
       }
     } catch (e) {
-      console.error(e);
+      toast.error("Failed to remove item.");
     }
   };
 
@@ -94,9 +100,12 @@ export default function CartPage() {
       const data = await res.json();
       if (res.ok && data.cart) {
         setCartItems([]);
+        toast.success("Cart cleared.");
+      } else {
+        toast.error("Failed to clear cart.");
       }
     } catch (e) {
-      console.error(e);
+      toast.error("Failed to clear cart.");
     }
   };
 
@@ -123,14 +132,15 @@ export default function CartPage() {
 
   if (cartItems.length === 0) {
     return (
-      <div className="container py-20 text-center">
-        <span className="text-5xl block mb-4">🛒</span>
+      <div className="container py-20 text-center flex flex-col items-center">
+        <ShoppingCart className="w-16 h-16 text-primary/30 mb-4" />
         <h2 className="font-serif text-2xl font-bold text-text-earth mb-3">Your Cart is Empty</h2>
         <p className="text-text-muted text-sm max-w-sm mx-auto mb-6">
           Looks like you haven't added any fresh village goods to your cart yet. Explore our fresh harvests and crafts!
         </p>
-        <Link href="/shop" className="btn btn-primary">
-          Start Shopping 🌾
+        <Link href="/shop" className="inline-flex items-center gap-2 px-6 py-2.5 bg-primary text-white rounded-lg font-bold hover:bg-primary-hover transition shadow-sm">
+          <span>Start Shopping</span>
+          <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
     );
@@ -203,10 +213,10 @@ export default function CartPage() {
                         <td className="p-5">
                           <button
                             onClick={() => handleRemoveItem(prod._id)}
-                            className="text-text-muted hover:text-danger font-bold text-sm transition"
+                            className="text-text-muted hover:text-danger p-2 hover:bg-red-50 rounded-lg transition"
                             title="Remove item"
                           >
-                            🗑️
+                            <Trash2 className="w-4 h-4 text-text-muted hover:text-danger shrink-0" />
                           </button>
                         </td>
                       </tr>
@@ -250,7 +260,7 @@ export default function CartPage() {
             
             {shipping > 0 && (
               <p className="text-[11px] text-text-muted bg-primary-light p-2.5 rounded-lg border border-primary/5">
-                🎉 Shop for <strong className="text-primary">BDT {1000 - subtotal}</strong> more to get <strong>FREE delivery</strong>!
+                Shop for <strong className="text-primary">BDT {1000 - subtotal}</strong> more to get <strong>FREE delivery</strong>!
               </p>
             )}
 
@@ -261,9 +271,10 @@ export default function CartPage() {
 
             <Link
               href="/checkout"
-              className="w-full inline-flex items-center justify-center py-3 bg-secondary hover:bg-secondary-hover text-white font-bold rounded-lg hover:scale-101 active:scale-99 transition mt-6 text-center cursor-pointer"
+              className="w-full inline-flex items-center justify-center gap-2 py-3 bg-secondary hover:bg-secondary-hover text-white font-bold rounded-lg hover:scale-101 active:scale-99 transition mt-6 text-center cursor-pointer"
             >
-              Proceed to Checkout 💳
+              <CreditCard className="w-4 h-4" />
+              <span>Proceed to Checkout</span>
             </Link>
           </div>
         </div>

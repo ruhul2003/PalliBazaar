@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { CheckCircle, Package, Banknote, CreditCard, Tractor, AlertCircle } from "lucide-react";
+import toast from "react-hot-toast";
 
 interface CartItemType {
   product: {
@@ -115,11 +117,16 @@ export default function CheckoutPage() {
       if (res.ok) {
         setConfirmedOrderId(data.orderId);
         setOrderConfirmed(true);
+        toast.success("Order placed successfully!");
       } else {
-        setError(data.error || "Failed to place order");
+        const msg = data.error || "Failed to place order";
+        setError(msg);
+        toast.error(msg);
       }
     } catch (err: any) {
-      setError("An error occurred while placing your order.");
+      const msg = "An error occurred while placing your order.";
+      setError(msg);
+      toast.error(msg);
     } finally {
       setIsSubmitting(false);
     }
@@ -143,14 +150,14 @@ export default function CheckoutPage() {
 
   if (orderConfirmed) {
     return (
-      <div className="container py-20 text-center">
-        <span className="text-6xl block mb-5">🎉</span>
+      <div className="container py-20 text-center flex flex-col items-center">
+        <CheckCircle className="w-16 h-16 text-success mb-4" />
         <h2 className="font-serif text-3xl font-bold text-primary mb-3">Order Confirmed!</h2>
         <p className="text-text-muted text-sm max-w-md mx-auto mb-6">
           Thank you for supporting village harvests! Your order has been placed successfully.
         </p>
         
-        <div className="bg-white border border-border-light rounded-xl p-5 max-w-sm mx-auto mb-8 shadow-sm">
+        <div className="bg-white border border-border-light rounded-xl p-5 max-w-sm w-full mx-auto mb-8 shadow-sm text-center">
           <p className="text-xs text-text-muted uppercase font-bold tracking-wider">Order ID</p>
           <p className="font-mono text-sm text-text-earth font-bold mt-0.5">{confirmedOrderId}</p>
           <p className="text-xs text-secondary font-bold mt-2">
@@ -159,10 +166,11 @@ export default function CheckoutPage() {
         </div>
 
         <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <Link href="/dashboard/buyer" className="btn btn-primary">
-            Track Order progress 📦
+          <Link href="/dashboard/buyer" className="inline-flex items-center gap-2 px-6 py-2.5 bg-primary text-white rounded-lg font-bold hover:bg-primary-hover transition shadow-sm">
+            <Package className="w-4 h-4" />
+            <span>Track Order progress</span>
           </Link>
-          <Link href="/shop" className="btn btn-outline">
+          <Link href="/shop" className="inline-flex items-center gap-2 px-6 py-2.5 border border-border-light text-text-muted bg-white hover:bg-bg-sand rounded-lg font-bold transition shadow-sm">
             Continue Shopping
           </Link>
         </div>
@@ -175,8 +183,9 @@ export default function CheckoutPage() {
       <h2 className="font-serif text-3xl font-bold text-primary mb-8">Checkout Details</h2>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-danger text-sm rounded-lg p-3.5 mb-6 text-center font-semibold">
-          {error}
+        <div className="bg-red-50 border border-red-200 text-danger text-sm rounded-lg p-3.5 mb-6 text-center font-semibold flex items-center justify-center gap-1.5">
+          <AlertCircle className="w-4 h-4 shrink-0" />
+          <span>{error}</span>
         </div>
       )}
 
@@ -286,7 +295,7 @@ export default function CheckoutPage() {
                 }`}
                 onClick={() => setPaymentMethod("cod")}
               >
-                <span className="text-xl">💵</span>
+                <Banknote className="w-5 h-5 text-primary shrink-0" />
                 <div>
                   <p className="font-bold text-sm text-text-earth">Cash on Delivery (COD)</p>
                   <p className="text-[10px] text-text-muted">Pay with cash when items are delivered to your door</p>
@@ -299,7 +308,7 @@ export default function CheckoutPage() {
                 }`}
                 onClick={() => setPaymentMethod("stripe")}
               >
-                <span className="text-xl">💳</span>
+                <CreditCard className="w-5 h-5 text-primary shrink-0" />
                 <div>
                   <p className="font-bold text-sm text-text-earth">Online Payment (Mock Stripe)</p>
                   <p className="text-[10px] text-text-muted">Simulate card payment instantly (Safe & secure sandbox)</p>
@@ -345,14 +354,17 @@ export default function CheckoutPage() {
 
             <button
               type="submit"
-              className="w-full py-3 bg-secondary hover:bg-secondary-hover text-white font-bold rounded-lg hover:scale-101 active:scale-99 transition mt-6 cursor-pointer"
+              className="w-full py-3 bg-secondary hover:bg-secondary-hover text-white font-bold rounded-lg hover:scale-101 active:scale-99 transition mt-6 cursor-pointer flex items-center justify-center gap-2"
               disabled={isSubmitting}
             >
-              {isSubmitting
-                ? "Placing Order..."
-                : paymentMethod === "cod"
-                ? "Place Cash on Delivery Order 🚜"
-                : "Confirm Payment via Card 💳"}
+              {paymentMethod === "cod" ? <Tractor className="w-4 h-4" /> : <CreditCard className="w-4 h-4" />}
+              <span>
+                {isSubmitting
+                  ? "Placing Order..."
+                  : paymentMethod === "cod"
+                  ? "Place Cash on Delivery Order"
+                  : "Confirm Payment via Card"}
+              </span>
             </button>
           </div>
         </div>

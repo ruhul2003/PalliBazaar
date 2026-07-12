@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
   const { user, login, loading } = useAuth();
@@ -31,13 +32,18 @@ export default function LoginPage() {
     try {
       const res = await login(email, password);
       if (res.success) {
+        toast.success("Welcome back! Login successful.");
         // Redirection logic is triggered by useEffect
       } else {
-        setError(res.error || "Invalid email or password");
+        const msg = res.error || "Invalid email or password";
+        setError(msg);
+        toast.error(msg);
         setIsSubmitting(false);
       }
     } catch (err: any) {
-      setError("An error occurred. Please try again.");
+      const msg = "An error occurred. Please try again.";
+      setError(msg);
+      toast.error(msg);
       setIsSubmitting(false);
     }
   };

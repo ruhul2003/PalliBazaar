@@ -3,6 +3,7 @@
 import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { Wheat, MapPin, Star } from "lucide-react";
 
 interface CategoryType {
   _id: string;
@@ -244,11 +245,11 @@ function ShopContent() {
                         alt={product.name}
                         className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                       />
-                      <span className="absolute top-3 left-3 bg-accent text-text-earth text-xs font-extrabold px-2 py-1 rounded">
-                        Harvested 🌾
+                      <span className="absolute top-3 left-3 bg-accent text-text-earth text-xs font-extrabold px-2.5 py-1 rounded flex items-center gap-1">
+                        <Wheat className="w-3.5 h-3.5" /> Harvested
                       </span>
-                      <span className="absolute top-3 right-3 bg-black/75 text-white text-[10px] px-2 py-1 rounded font-semibold">
-                        📍 {product.district}
+                      <span className="absolute top-3 right-3 bg-black/75 text-white text-[10px] px-2 py-1 rounded font-semibold flex items-center gap-1">
+                        <MapPin className="w-3 h-3 text-accent" /> {product.district}
                       </span>
                     </div>
 
@@ -260,7 +261,7 @@ function ShopContent() {
                         <Link href={`/products/${product._id}`}>{product.name}</Link>
                       </h3>
                       <div className="text-xs text-accent-hover mb-4 flex items-center gap-1">
-                        ⭐ {product.ratings.average || "New"} ({product.ratings.count || 0} reviews)
+                        <Star className="w-3.5 h-3.5 fill-accent stroke-accent" /> {product.ratings.average || "New"} ({product.ratings.count || 0} reviews)
                       </div>
 
                       <div className="flex items-center justify-between border-t border-border-light pt-4 mt-auto">

@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, useParams } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { Wheat, Package, Tractor, Phone, ShoppingCart, Star, MapPin } from "lucide-react";
+import toast from "react-hot-toast";
 
 interface ProductDetailType {
   _id: string;
@@ -41,61 +43,66 @@ interface ReviewType {
 }
 
 export default function ProductDetailPage() {
-  const params = useParams();
   const router = useRouter();
+  const { id } = useParams() as { id: string };
   const { user } = useAuth();
-  const id = params.id as string;
 
-  // State
   const [product, setProduct] = useState<ProductDetailType | null>(null);
-  const [similarProducts, setSimilarProducts] = useState<any[]>([]);
   const [reviews, setReviews] = useState<ReviewType[]>([]);
+  const [similarProducts, setSimilarProducts] = useState<ProductDetailType[]>([]);
+  const [loading, setLoading] = useState(true);
   const [activeImage, setActiveImage] = useState("");
   const [quantity, setQuantity] = useState(1);
-  const [loading, setLoading] = useState(true);
-
-  // Review form state
-  const [rating, setRating] = useState(5);
-  const [comment, setComment] = useState("");
-  const [reviewError, setReviewError] = useState("");
-  const [reviewSuccess, setReviewSuccess] = useState("");
-  const [submittingReview, setSubmittingReview] = useState(false);
-
-  // Cart action state
-  const [cartSuccess, setCartSuccess] = useState("");
-  const [cartError, setCartError] = useState("");
   const [addingToCart, setAddingToCart] = useState(false);
 
-  // Fetch product data
-  useEffect(() => {
-    if (!id) return;
-    setLoading(true);
+  // Review Form state
+  const [rating, setRating] = useState(5);
+  const [comment, setComment] = useState("");
+  const [submittingReview, setSubmittingReview] = useState(false);
 
-    fetch(`/api/products/${id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.product) {
+  useEffect(() => {
+    const fetchProductDetails = async () => {
+      try {
+        const res = await fetch(`/api/products/${id}`);
+        if (res.ok) {
+          const data = await res.json();
           setProduct(data.product);
-          setSimilarProducts(data.similarProducts || []);
           if (data.product.images && data.product.images.length > 0) {
             setActiveImage(data.product.images[0]);
           }
+          
+          // Fetch similar products
+          const simRes = await fetch(`/api/products?category=${data.product.category.slug}&limit=4`);
+          if (simRes.ok) {
+            const simData = await simRes.json();
+            setSimilarProducts(
+              (simData.products || []).filter((p: ProductDetailType) => p._id !== id)
+            );
+          }
         }
-      })
-      .catch((err) => console.error("Error loading product detail:", err));
+      } catch (err) {
+        console.error("Failed to load product details:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    fetch(`/api/reviews?productId=${id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.reviews) {
-          setReviews(data.reviews);
+    const fetchReviews = async () => {
+      try {
+        const res = await fetch(`/api/reviews?productId=${id}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.reviews) {
+            setReviews(data.reviews);
+          }
         }
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error loading reviews:", err);
-        setLoading(false);
-      });
+      } catch (e) {
+        // ignore
+      }
+    };
+
+    fetchProductDetails();
+    fetchReviews();
   }, [id]);
 
   const handleAddToCart = async () => {
@@ -105,12 +112,10 @@ export default function ProductDetailPage() {
     }
 
     if (user.role === "seller") {
-      setCartError("Farmers/Sellers cannot purchase products.");
+      toast.error("Farmers/Sellers cannot purchase products.");
       return;
     }
 
-    setCartSuccess("");
-    setCartError("");
     setAddingToCart(true);
 
     try {
@@ -121,12 +126,12 @@ export default function ProductDetailPage() {
       });
       const data = await res.json();
       if (res.ok) {
-        setCartSuccess("Added to cart successfully! Click Navbar to view.");
+        toast.success("Added to cart successfully! Click Cart to view.");
       } else {
-        setCartError(data.error || "Failed to add to cart");
+        toast.error(data.error || "Failed to add to cart");
       }
     } catch (e) {
-      setCartError("Failed to add to cart");
+      toast.error("Failed to add to cart");
     } finally {
       setAddingToCart(false);
     }
@@ -134,8 +139,6 @@ export default function ProductDetailPage() {
 
   const handleReviewSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setReviewError("");
-    setReviewSuccess("");
     setSubmittingReview(true);
 
     try {
@@ -147,7 +150,7 @@ export default function ProductDetailPage() {
       const data = await res.json();
 
       if (res.ok) {
-        setReviewSuccess("Review submitted successfully!");
+        toast.success("Review submitted successfully!");
         setComment("");
         // Reload reviews list
         const reviewRes = await fetch(`/api/reviews?productId=${id}`);
@@ -156,10 +159,10 @@ export default function ProductDetailPage() {
           setReviews(reviewData.reviews);
         }
       } else {
-        setReviewError(data.error || "Failed to submit review");
+        toast.error(data.error || "Failed to submit review");
       }
     } catch (e) {
-      setReviewError("An error occurred. Please make sure you have purchased this product.");
+      toast.error("An error occurred. Make sure you purchased this product.");
     } finally {
       setSubmittingReview(false);
     }
@@ -228,13 +231,15 @@ export default function ProductDetailPage() {
           </div>
 
           <div className="flex flex-wrap gap-3 mb-6">
-            <span className="bg-primary-light text-primary text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1">
-              🌾 Harvested: {product.district}
+            <span className="bg-primary-light text-primary text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5">
+              <Wheat className="w-4 h-4 text-primary shrink-0" />
+              <span>Harvested: {product.district}</span>
             </span>
-            <span className={`text-xs font-bold px-3 py-1.5 rounded-full ${
+            <span className={`text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 ${
               product.stock > 0 ? "bg-green-50 text-success" : "bg-red-50 text-danger"
             }`}>
-              📦 Stock: {product.stock > 0 ? `${product.stock} items remaining` : "Out of Stock"}
+              <Package className="w-4 h-4 shrink-0" />
+              <span>Stock: {product.stock > 0 ? `${product.stock} items remaining` : "Out of Stock"}</span>
             </span>
           </div>
 
@@ -245,14 +250,18 @@ export default function ProductDetailPage() {
 
           {/* Seller Information */}
           <div className="bg-primary-light rounded-xl p-4 mb-6 flex items-center gap-4 border border-primary/10">
-            <div className="w-12 h-12 rounded-full bg-primary text-white font-bold flex items-center justify-center text-xl">
+            <div className="w-12 h-12 rounded-full bg-primary text-white font-bold flex items-center justify-center text-xl shrink-0">
               {product.seller.name[0]}
             </div>
             <div>
               <h4 className="font-bold text-sm text-text-earth">{product.seller.name}</h4>
-              <p className="text-xs text-text-muted">🚜 Local Farmer / Artisan</p>
+              <p className="text-xs text-text-muted flex items-center gap-1 mt-0.5">
+                <Tractor className="w-3.5 h-3.5 text-primary" /> Local Farmer / Artisan
+              </p>
               {product.seller.phoneNumber && (
-                <p className="text-xs text-primary font-semibold mt-0.5">📞 {product.seller.phoneNumber}</p>
+                <p className="text-xs text-primary font-semibold mt-1 flex items-center gap-1">
+                  <Phone className="w-3 h-3" /> {product.seller.phoneNumber}
+                </p>
               )}
             </div>
           </div>
@@ -279,15 +288,13 @@ export default function ProductDetailPage() {
 
                 <button
                   onClick={handleAddToCart}
-                  className="flex-grow py-3 bg-primary hover:bg-primary-hover text-white font-bold rounded-lg hover:scale-101 active:scale-99 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-grow py-3 bg-primary hover:bg-primary-hover text-white font-bold rounded-lg hover:scale-101 active:scale-99 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   disabled={addingToCart}
                 >
-                  {addingToCart ? "Adding to Cart..." : "Add to Cart 🛒"}
+                  <ShoppingCart className="w-4 h-4" />
+                  <span>{addingToCart ? "Adding to Cart..." : "Add to Cart"}</span>
                 </button>
               </div>
-
-              {cartSuccess && <div className="text-xs font-semibold text-success text-center mt-1">{cartSuccess}</div>}
-              {cartError && <div className="text-xs font-semibold text-danger text-center mt-1">{cartError}</div>}
             </div>
           )}
         </div>
@@ -295,16 +302,15 @@ export default function ProductDetailPage() {
 
       {/* Reviews list */}
       <section className="mt-12 bg-white border border-border-light rounded-2xl p-6 sm:p-8 shadow-sm">
-        <h3 className="font-serif text-2xl font-bold text-primary mb-6 border-b border-border-light pb-3">
-          Customer Reviews ⭐ {product.ratings.average || "New"} ({product.ratings.count} reviews)
+        <h3 className="font-serif text-2xl font-bold text-primary mb-6 border-b border-border-light pb-3 flex items-center gap-2">
+          <Star className="w-6 h-6 fill-accent text-accent" />
+          <span>Customer Reviews ({product.ratings.average || "New"} - {product.ratings.count} reviews)</span>
         </h3>
 
         {/* Review Submission Form */}
         {user && user.role === "customer" && (
           <div className="bg-primary-light rounded-xl p-5 mb-8 border border-primary/10">
             <h4 className="font-bold text-text-earth mb-3">Write a review</h4>
-            {reviewError && <div className="text-xs font-bold text-danger mb-3">{reviewError}</div>}
-            {reviewSuccess && <div className="text-xs font-bold text-success mb-3">{reviewSuccess}</div>}
             
             <form onSubmit={handleReviewSubmit} className="space-y-4">
               <div>
@@ -362,9 +368,15 @@ export default function ProductDetailPage() {
                   <span className="font-bold text-sm text-text-earth">{rev.customer.name}</span>
                   <span className="text-xs text-text-muted">{new Date(rev.createdAt).toLocaleDateString()}</span>
                 </div>
-                <div className="text-accent text-sm mb-1.5">
-                  {"★".repeat(rev.rating)}
-                  {"☆".repeat(5 - rev.rating)}
+                <div className="text-accent text-sm mb-1.5 flex gap-0.5">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star
+                      key={i}
+                      className={`w-4 h-4 ${
+                        i < rev.rating ? "fill-accent text-accent" : "text-gray-300"
+                      }`}
+                    />
+                  ))}
                 </div>
                 <p className="text-xs sm:text-sm text-text-muted leading-relaxed">{rev.comment}</p>
               </div>
@@ -382,8 +394,8 @@ export default function ProductDetailPage() {
               <div key={p._id} className="bg-white border border-border-light rounded-xl overflow-hidden shadow-sm flex flex-col hover:shadow-md hover:-translate-y-1 transition duration-300">
                 <div className="w-full h-44 bg-bg-sand overflow-hidden relative">
                   <img src={p.images[0]} alt={p.name} className="w-full h-full object-cover" />
-                  <span className="absolute top-2 right-2 bg-black/70 text-white text-[9px] px-2 py-0.5 rounded font-semibold">
-                    📍 {p.district}
+                  <span className="absolute top-2 right-2 bg-black/70 text-white text-[9px] px-2 py-0.5 rounded font-semibold flex items-center gap-1">
+                    <MapPin className="w-3 h-3 text-accent" /> {p.district}
                   </span>
                 </div>
                 <div className="p-4 flex flex-col flex-grow">
@@ -393,7 +405,7 @@ export default function ProductDetailPage() {
                   <div className="flex items-center justify-between mt-auto">
                     <div className="text-primary font-bold text-sm">BDT {p.price}</div>
                     <Link href={`/products/${p._id}`} className="text-xs text-secondary font-bold hover:underline">
-                      View Details →
+                      View Details
                     </Link>
                   </div>
                 </div>

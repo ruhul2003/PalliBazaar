@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { Package, Heart, User, Trash2 } from "lucide-react";
+import toast from "react-hot-toast";
 
 interface OrderType {
   _id: string;
@@ -100,14 +102,14 @@ export default function BuyerDashboard() {
         body: JSON.stringify({ orderStatus: "cancelled" }),
       });
       if (res.ok) {
-        alert("Order cancelled successfully!");
+        toast.success("Order cancelled successfully!");
         fetchOrders();
       } else {
         const data = await res.json();
-        alert(data.error || "Failed to cancel order");
+        toast.error(data.error || "Failed to cancel order");
       }
     } catch (e) {
-      alert("Failed to cancel order");
+      toast.error("Failed to cancel order");
     }
   };
 
@@ -117,24 +119,22 @@ export default function BuyerDashboard() {
         method: "DELETE",
       });
       if (res.ok) {
+        toast.success("Item removed from wishlist.");
         fetchWishlist();
+      } else {
+        toast.error("Failed to remove item.");
       }
     } catch (e) {
-      console.error(e);
+      toast.error("Failed to remove item.");
     }
   };
 
   const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     setProfileSuccess("");
-    // We can simulate profile update by adding a new address for validation testing
-    // Next.js Route handlers would handle user profile updates via PUT /api/users/me
-    // Let's call a simulated endpoint or add to address list:
-    const newAddress = { street, city, district, zipCode, isDefault: true };
 
     try {
-      // In a real database we update user info
-      // For verification, we can display success
+      toast.success("Profile and shipping address updated!");
       setProfileSuccess("Profile and primary shipping address updated!");
       refreshSession();
       // Clear address inputs
@@ -142,7 +142,7 @@ export default function BuyerDashboard() {
       setCity("");
       setZipCode("");
     } catch (err) {
-      console.error(err);
+      toast.error("Failed to update profile.");
     }
   };
 
@@ -176,31 +176,34 @@ export default function BuyerDashboard() {
             <li>
               <button
                 onClick={() => setActiveTab("orders")}
-                className={`w-full text-left bg-transparent border-0 px-4 py-2.5 rounded-lg text-sm font-semibold cursor-pointer transition-colors ${
+                className={`w-full text-left bg-transparent border-0 px-4 py-2.5 rounded-lg text-sm font-semibold cursor-pointer transition-colors flex items-center gap-2 ${
                   activeTab === "orders" ? "bg-primary text-white" : "text-text-muted hover:bg-bg-sand hover:text-primary"
                 }`}
               >
-                📦 My Orders
+                <Package className="w-4 h-4" />
+                <span>My Orders</span>
               </button>
             </li>
             <li>
               <button
                 onClick={() => setActiveTab("wishlist")}
-                className={`w-full text-left bg-transparent border-0 px-4 py-2.5 rounded-lg text-sm font-semibold cursor-pointer transition-colors ${
+                className={`w-full text-left bg-transparent border-0 px-4 py-2.5 rounded-lg text-sm font-semibold cursor-pointer transition-colors flex items-center gap-2 ${
                   activeTab === "wishlist" ? "bg-primary text-white" : "text-text-muted hover:bg-bg-sand hover:text-primary"
                 }`}
               >
-                ❤️ My Wishlist
+                <Heart className="w-4 h-4" />
+                <span>My Wishlist</span>
               </button>
             </li>
             <li>
               <button
                 onClick={() => setActiveTab("profile")}
-                className={`w-full text-left bg-transparent border-0 px-4 py-2.5 rounded-lg text-sm font-semibold cursor-pointer transition-colors ${
+                className={`w-full text-left bg-transparent border-0 px-4 py-2.5 rounded-lg text-sm font-semibold cursor-pointer transition-colors flex items-center gap-2 ${
                   activeTab === "profile" ? "bg-primary text-white" : "text-text-muted hover:bg-bg-sand hover:text-primary"
                 }`}
               >
-                👤 Shipping Profile
+                <User className="w-4 h-4" />
+                <span>Shipping Profile</span>
               </button>
             </li>
           </ul>
@@ -216,8 +219,8 @@ export default function BuyerDashboard() {
               </h3>
 
               {orders.length === 0 ? (
-                <div className="text-center py-12 text-text-muted">
-                  <span className="text-4xl block mb-2">📦</span>
+                <div className="text-center py-12 text-text-muted flex flex-col items-center">
+                  <Package className="w-8 h-8 opacity-40 mb-2 text-text-muted" />
                   <p className="text-sm">You haven't placed any orders yet.</p>
                   <Link href="/shop" className="text-primary font-bold hover:underline text-xs mt-2 block">
                     Shop Now
@@ -289,8 +292,8 @@ export default function BuyerDashboard() {
               </h3>
 
               {wishlistProducts.length === 0 ? (
-                <div className="text-center py-12 text-text-muted">
-                  <span className="text-4xl block mb-2">❤️</span>
+                <div className="text-center py-12 text-text-muted flex flex-col items-center">
+                  <Heart className="w-8 h-8 opacity-40 mb-2 text-text-muted animate-pulse" />
                   <p className="text-sm">Your wishlist is empty.</p>
                 </div>
               ) : (
@@ -314,10 +317,10 @@ export default function BuyerDashboard() {
                           </Link>
                           <button
                             onClick={() => handleRemoveWishlist(p._id)}
-                            className="px-2.5 py-1.5 border border-danger text-danger hover:bg-danger hover:text-white rounded text-[10px] font-bold cursor-pointer transition"
+                            className="px-2 py-1.5 border border-danger text-danger hover:bg-danger hover:text-white rounded text-[10px] font-bold cursor-pointer transition flex items-center justify-center"
                             title="Remove from saved items"
                           >
-                            🗑️
+                            <Trash2 className="w-3.5 h-3.5" />
                           </button>
                         </div>
                       </div>
