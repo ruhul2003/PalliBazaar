@@ -23,8 +23,10 @@
     "typescript": "^5.9.2"
   },
   "dependencies": {
+    "@better-auth/mongo-adapter": "^1.6.23",
     "@tailwindcss/postcss": "^4.3.2",
     "bcryptjs": "^3.0.3",
+    "better-auth": "^1.6.23",
     "dotenv": "^17.4.2",
     "framer-motion": "^12.42.2",
     "jsonwebtoken": "^9.0.3",

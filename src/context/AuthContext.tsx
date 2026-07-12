@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 
 export interface UserType {
   id: string;
@@ -31,10 +32,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const refreshSession = async () => {
     try {
-      const res = await fetch("/api/auth/me");
-      if (res.ok) {
-        const data = await res.json();
-        setUser(data.user);
+      const { data: session } = await authClient.getSession();
+      if (session) {
+        setUser({
+          id: session.user.id,
+          name: session.user.name,
+          email: session.user.email,
+          role: (session.user as any).role || "customer",
+          profilePicture: (session.user as any).profilePicture || session.user.image || undefined,
+          phoneNumber: (session.user as any).phoneNumber || undefined,
+        });
       } else {
         setUser(null);
       }
@@ -52,18 +59,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (email: string, password: string) => {
     try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+      const { error } = await authClient.signIn.email({
+        email,
+        password,
       });
-      const data = await res.json();
-      if (res.ok) {
-        setUser(data.user);
-        return { success: true };
-      } else {
-        return { success: false, error: data.error || "Login failed" };
+      if (error) {
+        return { success: false, error: error.message || "Login failed" };
       }
+      await refreshSession();
+      return { success: true };
     } catch (err: any) {
       return { success: false, error: err.message || "An error occurred during login" };
     }
@@ -71,21 +75,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signup = async (name: string, email: string, password: string, role: string) => {
     try {
-      const res = await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password, role }),
+      const { error } = await authClient.signUp.email({
+        name,
+        email,
+        password,
+        role,
       });
-      const data = await res.json();
-      if (res.ok) {
-        return {
-          success: true,
-          message: data.message,
-          debugVerificationLink: data.debugVerificationLink,
-        };
-      } else {
-        return { success: false, error: data.error || "Signup failed" };
+      if (error) {
+        return { success: false, error: error.message || "Signup failed" };
       }
+      return {
+        success: true,
+        message: "Registration successful! A mock verification link has been printed to the server terminal console.",
+      };
     } catch (err: any) {
       return { success: false, error: err.message || "An error occurred during signup" };
     }
@@ -93,7 +95,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = async () => {
     try {
-      await fetch("/api/auth/logout", { method: "POST" });
+      await authClient.signOut();
       setUser(null);
       router.push("/");
     } catch (err) {
