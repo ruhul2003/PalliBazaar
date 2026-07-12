@@ -278,7 +278,7 @@ export default function Navbar() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={logout}
-                className="hidden sm:inline-flex px-4 py-2 border border-border-light text-text-muted hover:bg-danger hover:border-danger hover:text-white rounded-lg text-xs font-bold transition duration-200 cursor-pointer"
+                className="hidden sm:inline-flex px-4 py-2 border border-border-light text-text-muted hover:bg-danger-light hover:border-danger/35 hover:text-danger rounded-lg text-xs font-bold transition duration-200 cursor-pointer"
               >
                 Logout
               </motion.button>
@@ -421,7 +421,7 @@ export default function Navbar() {
                         setMobileMenuOpen(false);
                         logout();
                       }}
-                      className="w-full py-2.5 border border-border-light text-text-muted hover:bg-danger hover:text-white hover:border-danger font-bold text-center rounded-lg text-sm transition cursor-pointer"
+                      className="w-full py-2.5 border border-border-light text-text-muted hover:bg-danger-light hover:text-danger hover:border-danger/35 font-bold text-center rounded-lg text-sm transition cursor-pointer"
                     >
                       Logout
                     </button>

@@ -22,6 +22,19 @@
   --color-text-muted: #566d60;
   --color-border-light: #e1ebe5;
   
+  /* Custom Status Colors */
+  --color-danger: #be3b21;
+  --color-danger-hover: #9e2f19;
+  --color-danger-light: #fdf2f0;
+  
+  --color-success: #2e7d32;
+  --color-success-hover: #1b5e20;
+  --color-success-light: #edf7ed;
+  
+  --color-warning: #b57a15;
+  --color-warning-hover: #93600f;
+  --color-warning-light: #fffbeb;
+  
   /* Font Families */
   --font-serif: "Playfair Display", serif;
   --font-sans: "Outfit", sans-serif;
