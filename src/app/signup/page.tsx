@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { ShoppingCart, Wheat, Wrench } from "lucide-react";
 import toast from "react-hot-toast";
@@ -9,13 +10,12 @@ import { authClient } from "@/lib/auth-client";
 
 export default function SignupPage() {
   const { signup } = useAuth();
+  const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState<"customer" | "seller">("customer");
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-  const [debugLink, setDebugLink] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleGoogleSignup = async () => {
@@ -35,8 +35,6 @@ export default function SignupPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    setSuccess("");
-    setDebugLink("");
     setIsSubmitting(true);
 
     if (password.length < 6) {
@@ -49,15 +47,9 @@ export default function SignupPage() {
     try {
       const res = await signup(name, email, password, role);
       if (res.success) {
-        const msg = res.message || "Registration successful! Please verify your email.";
-        setSuccess(msg);
-        toast.success(msg);
-        if (res.debugVerificationLink) {
-          setDebugLink(res.debugVerificationLink);
-        }
-        setName("");
-        setEmail("");
-        setPassword("");
+        toast.success("Account created successfully!");
+        // Redirect based on role
+        router.push(role === "customer" ? "/dashboard/buyer" : "/dashboard/farmer");
       } else {
         const msg = res.error || "Failed to sign up.";
         setError(msg);
@@ -86,29 +78,6 @@ export default function SignupPage() {
           </div>
         )}
 
-        {success && (
-          <div className="bg-green-50 border border-green-200 text-success text-sm rounded-lg p-4 mb-5 font-medium">
-            <p className="text-center">{success}</p>
-            {debugLink && (
-              <div className="mt-3 border-t border-green-200 pt-3">
-                <div className="flex items-center gap-1 mb-1">
-                  <Wrench className="w-3.5 h-3.5 text-primary" />
-                  <strong className="text-[11px] uppercase tracking-wider text-primary block">
-                    Local Dev Simulation:
-                  </strong>
-                </div>
-                <a
-                  href={debugLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary underline font-bold hover:text-primary-hover text-xs break-all"
-                >
-                  Click here to auto-verify your email address
-                </a>
-              </div>
-            )}
-          </div>
-        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Role selector cards */}
@@ -186,9 +155,9 @@ export default function SignupPage() {
           <button
             type="submit"
             className="w-full py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-hover hover:scale-[1.01] active:scale-[0.99] transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
-            disabled={isSubmitting && !success}
+            disabled={isSubmitting}
           >
-            {isSubmitting && !success ? "Registering account..." : "Sign Up"}
+            {isSubmitting ? "Registering account..." : "Sign Up"}
           </button>
         </form>
 

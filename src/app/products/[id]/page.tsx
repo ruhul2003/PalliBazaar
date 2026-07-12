@@ -6,6 +6,7 @@ import { useRouter, useParams } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { Wheat, Package, Tractor, Phone, ShoppingCart, Star, MapPin } from "lucide-react";
 import toast from "react-hot-toast";
+import Image from "next/image";
 
 interface ProductDetailType {
   _id: string;
@@ -72,12 +73,14 @@ export default function ProductDetailPage() {
           }
           
           // Fetch similar products
-          const simRes = await fetch(`/api/products?category=${data.product.category.slug}&limit=4`);
-          if (simRes.ok) {
-            const simData = await simRes.json();
-            setSimilarProducts(
-              (simData.products || []).filter((p: ProductDetailType) => p._id !== id)
-            );
+          if (data.product.category) {
+            const simRes = await fetch(`/api/products?category=${data.product.category.slug}&limit=4`);
+            if (simRes.ok) {
+              const simData = await simRes.json();
+              setSimilarProducts(
+                (simData.products || []).filter((p: ProductDetailType) => p._id !== id)
+              );
+            }
           }
         }
       } catch (err) {
@@ -197,8 +200,8 @@ export default function ProductDetailPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 bg-white border border-border-light rounded-2xl p-6 sm:p-8 shadow-sm">
         {/* Photo Gallery Column */}
         <div className="flex flex-col gap-4">
-          <div className="w-full h-[380px] bg-bg-sand rounded-xl overflow-hidden border border-border-light">
-            <img src={activeImage} alt={product.name} className="w-full h-full object-cover" />
+          <div className="relative w-full h-[380px] bg-bg-sand rounded-xl overflow-hidden border border-border-light">
+            <Image src={activeImage} alt={product.name} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
           </div>
           {product.images.length > 1 && (
             <div className="flex gap-3">
@@ -210,7 +213,7 @@ export default function ProductDetailPage() {
                     activeImage === img ? "border-primary scale-102" : "border-transparent opacity-80"
                   }`}
                 >
-                  <img src={img} alt={`thumbnail-${index}`} className="w-full h-full object-cover" />
+                  <Image width={80} height={80} src={img} alt={`thumbnail-${index}`} className="w-full h-full object-cover" />
                 </div>
               ))}
             </div>
@@ -220,7 +223,7 @@ export default function ProductDetailPage() {
         {/* Product Details Column */}
         <div className="flex flex-col">
           <span className="text-xs font-bold tracking-wider text-secondary uppercase mb-2">
-            {product.category.name}
+            {product.category?.name || "Uncategorized"}
           </span>
           <h1 className="font-serif text-3xl sm:text-4xl font-bold text-primary mb-3 leading-snug">
             {product.name}

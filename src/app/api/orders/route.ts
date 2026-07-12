@@ -2,6 +2,11 @@ import { NextResponse } from "next/server";
 import { dbConnect } from "@/lib/db";
 import { Order, Product, Cart, Notification } from "@/lib/models";
 import { requireAuth } from "@/lib/auth";
+import Stripe from "stripe";
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
+  apiVersion: "2025-01-27.acacia" as any,
+});
 
 // GET /api/orders - Get orders (Customized by Role)
 export async function GET(request: Request) {
@@ -163,14 +168,28 @@ export async function POST(request: Request) {
       type: "order",
     });
 
-    // Handle Mock Stripe Client response if required
+    // Handle Stripe Client response if required
     let clientSecret = "";
     if (paymentMethod === "stripe") {
-      // Simulate/mock Stripe payment intent creation
-      clientSecret = `mock_client_secret_for_order_${order._id}`;
-      // In a real flow, you would instantiate Stripe and run:
-      // const paymentIntent = await stripe.paymentIntents.create({ amount: totalAmount * 100, currency: 'bdt' });
-      // clientSecret = paymentIntent.client_secret
+      if (!process.env.STRIPE_SECRET_KEY) {
+        console.error("Stripe integration error: STRIPE_SECRET_KEY is missing from environment variables.");
+        return NextResponse.json(
+          { error: "Stripe payment service is not configured. Please contact support." },
+          { status: 500 }
+        );
+      }
+      // Convert BDT to USD cents assuming 1 USD = 120 BDT
+      const usdAmountInCents = Math.round((totalAmount / 120) * 100);
+
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: usdAmountInCents,
+        currency: "usd",
+        metadata: {
+          orderId: order._id.toString(),
+          customerEmail: user.email,
+        },
+      });
+      clientSecret = paymentIntent.client_secret || "";
     }
 
     return NextResponse.json(

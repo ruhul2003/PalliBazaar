@@ -16,13 +16,15 @@ async function runTestAndSeed() {
     await dbConnect();
     console.log("✅ Database Connection Successful!");
 
-    // ==========================================
-    // 1. CLEANUP PREVIOUS TEST DATA
-    // ==========================================
-    console.log("\n🧹 Cleaning up previous test data (matching 'test_palli_' or test accounts)...");
+    console.log("\n🧹 Cleaning up previous test data...");
     await User.deleteMany({ email: /test_palli_/ });
     await Category.deleteMany({ slug: /test-category|fruits|vegetables|dairy|handicrafts|seeds|livestock/ });
-    // Let's delete products, orders, reviews, carts, wishlists, and notifications associated with the seed/test data
+    await Product.deleteMany({});
+    await Order.deleteMany({});
+    await Review.deleteMany({});
+    await Wishlist.deleteMany({});
+    await Cart.deleteMany({});
+    await Notification.deleteMany({});
     console.log("🧹 DB Cleanup complete.");
 
     // ==========================================
@@ -141,7 +143,7 @@ async function runTestAndSeed() {
         name: "Fresh Green Chilis (Kacha Morich)",
         description: "Extra spicy, freshly plucked green chilis from Bogra. Perfect for daily cooking.",
         price: 80,
-        images: ["https://images.unsplash.com/photo-1588252393666-880fae3725b8?q=80&w=600"],
+        images: ["https://images.unsplash.com/photo-1563206767-5b18f218e8de?q=80&w=600"],
         category: vegCat._id,
         stock: 100,
         seller: sellerUser._id,
@@ -152,7 +154,7 @@ async function runTestAndSeed() {
         name: "Organic Red Amaranth (Lal Shak)",
         description: "Nutrient-rich, fiber-packed fresh red amaranth leaves. Grown without chemical pesticides in Savar.",
         price: 25,
-        images: ["https://images.unsplash.com/photo-1628543102309-1a4f15d31514?q=80&w=600"],
+        images: ["https://images.unsplash.com/photo-1576045057995-568f588f82fb?q=80&w=600"],
         category: vegCat._id,
         stock: 80,
         seller: sellerUser._id,
@@ -186,7 +188,7 @@ async function runTestAndSeed() {
         name: "Premium Pabna Ghee",
         description: "Homemade traditional clarified butter made from pure desi cow milk in Pabna. Rich aroma and texture.",
         price: 1400,
-        images: ["https://images.unsplash.com/photo-1622484211148-716598e04044?q=80&w=600"],
+        images: ["https://images.unsplash.com/photo-1589733901241-5e56478f4a8f?q=80&w=600"],
         category: dairyCat._id,
         stock: 25,
         seller: sellerUser._id,

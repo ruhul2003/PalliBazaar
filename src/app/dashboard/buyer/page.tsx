@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { Package, Heart, User, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
+import Image from "next/image";
 
 interface OrderType {
   _id: string;
@@ -301,7 +302,13 @@ export default function BuyerDashboard() {
                   {wishlistProducts.map((p) => (
                     <div key={p._id} className="border border-border-light rounded-xl overflow-hidden shadow-sm flex flex-col hover:shadow-md transition">
                       <div className="w-full h-40 bg-bg-sand overflow-hidden relative">
-                        <img src={p.images[0]} alt={p.name} className="w-full h-full object-cover" />
+                        <Image
+                          src={p.images[0]}
+                          alt={p.name}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 20vw"
+                          className="object-cover"
+                        />
                       </div>
                       <div className="p-4 flex flex-col flex-grow">
                         <h4 className="font-serif text-sm font-bold text-text-earth mb-1.5 line-clamp-2">

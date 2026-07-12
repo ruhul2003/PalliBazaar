@@ -4,7 +4,9 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { Apple, Leaf, Milk, Paintbrush, Sprout, Wheat, MapPin, Star, Sparkles, Droplets, Tractor } from "lucide-react";
+import Image from "next/image";
+import toast from "react-hot-toast";
+import { Apple, Leaf, Milk, Paintbrush, Sprout, Wheat, MapPin, Star, Sparkles, Droplets, Tractor, Users, ShieldCheck, Mail, ArrowRight, ShoppingCart } from "lucide-react";
 
 // Custom SVG Cow Component for livestock
 const Cow = ({ className }: { className?: string }) => (
@@ -174,7 +176,7 @@ export default function HomePage() {
   return (
     <main className="w-full">
       {/* Animated Hero Section */}
-      <section className="relative bg-gradient-to-br from-[#1a3327] via-[#244736] to-[#336149] text-white overflow-hidden py-16 md:py-24 lg:py-28">
+      <section className="relative bg-gradient-to-br from-[#275239] via-[#467756] to-[#76aa7b] text-white overflow-hidden py-16 md:py-24 lg:py-28">
         {/* Animated Background Leaves */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <LeafParticle x={8} y={-30} delay={0} scale={0.75} duration={13} />
@@ -303,10 +305,12 @@ export default function HomePage() {
               className="relative w-[210px] h-[270px] sm:w-[240px] sm:h-[310px] bg-white border-4 border-white rounded-[2rem] shadow-2xl overflow-hidden ring-8 ring-white/5 group"
             >
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10" />
-              <img
+              <Image
                 src="https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?q=80&w=800"
                 alt="Green Bangladeshi Farm"
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                fill
+                sizes="(max-width: 640px) 210px, 240px"
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
               <div className="absolute bottom-5 left-5 right-5 z-20 text-left">
                 <span className="text-[10px] font-bold text-accent tracking-wider uppercase">Feature Focus</span>
@@ -424,10 +428,9 @@ export default function HomePage() {
           {categoriesList.map((cat) => (
             <motion.div
               variants={cardVariants}
-              whileHover={{ scale: 1.05, y: -4, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.05)" }}
               whileTap={{ scale: 0.98 }}
               key={cat.slug}
-              className="bg-white border border-border-light rounded-2xl cursor-pointer"
+              className="bg-white border border-border-light rounded-2xl cursor-pointer hover-card-premium"
             >
               <Link
                 href={`/shop?category=${cat.slug}`}
@@ -439,6 +442,81 @@ export default function HomePage() {
             </motion.div>
           ))}
         </motion.div>
+      </section>
+
+      {/* How It Works Section */}
+      <section className="py-16 container">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-12"
+        >
+          <h2 className="font-serif text-3xl md:text-4xl font-bold text-primary mb-3">How PalliBazaar Works</h2>
+          <p className="text-text-muted text-sm md:text-base max-w-lg mx-auto">
+            A simple, secure, and transparent ecosystem designed to bridge the gap between rural farms and urban dining rooms.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+          {/* Connector Line for Desktop */}
+          <div className="hidden md:block absolute top-[28%] left-[15%] right-[15%] h-[2px] bg-gradient-soft -translate-y-1/2 -z-10 opacity-30" />
+
+          {/* Step 1 */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="bg-white border border-border-light rounded-2xl p-8 text-center flex flex-col items-center hover-card-premium cursor-default"
+          >
+            <div className="w-14 h-14 rounded-full bg-primary-light text-primary flex items-center justify-center font-bold text-lg mb-5 shadow-sm">
+              1
+            </div>
+            <Wheat className="w-8 h-8 text-primary mb-4" />
+            <h3 className="font-serif text-lg font-bold text-text-earth mb-2.5">Harvest & Upload</h3>
+            <p className="text-xs text-text-muted leading-relaxed">
+              Verified rural farmers upload fresh yields of organic crops, pure honey, seeds, or authentic handicrafts directly from the village fields.
+            </p>
+          </motion.div>
+
+          {/* Step 2 */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.5, delay: 0.25 }}
+            className="bg-white border border-border-light rounded-2xl p-8 text-center flex flex-col items-center hover-card-premium cursor-default"
+          >
+            <div className="w-14 h-14 rounded-full bg-secondary-light text-secondary flex items-center justify-center font-bold text-lg mb-5 shadow-sm">
+              2
+            </div>
+            <ShoppingCart className="w-8 h-8 text-secondary mb-4" />
+            <h3 className="font-serif text-lg font-bold text-text-earth mb-2.5">Direct Purchase</h3>
+            <p className="text-xs text-text-muted leading-relaxed">
+              City buyers browse and order directly from their preferred farmers. Transparent pricing ensures no hidden middlemen cuts.
+            </p>
+          </motion.div>
+
+          {/* Step 3 */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="bg-white border border-border-light rounded-2xl p-8 text-center flex flex-col items-center hover-card-premium cursor-default"
+          >
+            <div className="w-14 h-14 rounded-full bg-accent-light text-accent-hover flex items-center justify-center font-bold text-lg mb-5 shadow-sm">
+              3
+            </div>
+            <Tractor className="w-8 h-8 text-accent-hover mb-4" />
+            <h3 className="font-serif text-lg font-bold text-text-earth mb-2.5">Fast Eco-Delivery</h3>
+            <p className="text-xs text-text-muted leading-relaxed">
+              Harvests are packed in environment-friendly packaging and shipped directly via green routes, arriving fresh and pesticide-free.
+            </p>
+          </motion.div>
+        </div>
       </section>
 
       {/* Featured Products */}
@@ -474,9 +552,8 @@ export default function HomePage() {
               {products.map((product) => (
                 <motion.div 
                   variants={cardVariants}
-                  whileHover={{ y: -6, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.08)" }}
                   key={product._id} 
-                  className="bg-white border border-border-light rounded-2xl overflow-hidden shadow-sm flex flex-col h-full transition-all duration-300"
+                  className="bg-white border border-border-light rounded-2xl overflow-hidden shadow-sm flex flex-col h-full hover-card-premium cursor-pointer"
                 >
                   <div className="relative w-full h-[200px] bg-bg-sand overflow-hidden group">
                     <motion.img
@@ -496,7 +573,7 @@ export default function HomePage() {
 
                   <div className="p-5 flex flex-col flex-grow">
                     <span className="text-[10px] font-bold tracking-wider text-secondary uppercase mb-1.5">
-                      {product.category.name}
+                      {product.category?.name || "Uncategorized"}
                     </span>
                     <h3 className="font-serif text-lg font-bold text-text-earth mb-2 line-clamp-2 hover:text-primary transition-colors">
                       <Link href={`/products/${product._id}`}>{product.name}</Link>
@@ -540,6 +617,65 @@ export default function HomePage() {
               </Link>
             </motion.div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Our Impact Stats Section */}
+      <section className="py-16 bg-[#eaf4ed]/45 border-y border-border-light/70">
+        <div className="container">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            {/* Stat 1 */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ type: "spring", stiffness: 100, damping: 15 }}
+              className="text-center p-6 bg-white rounded-2xl border border-border-light shadow-sm hover-card-premium cursor-default"
+            >
+              <Users className="w-8 h-8 text-primary mx-auto mb-3" />
+              <h3 className="text-3xl font-extrabold text-primary">12,000+</h3>
+              <p className="text-[10px] uppercase tracking-wider text-text-muted font-bold mt-1">Happy Families</p>
+            </motion.div>
+
+            {/* Stat 2 */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ type: "spring", stiffness: 100, damping: 15, delay: 0.1 }}
+              className="text-center p-6 bg-white rounded-2xl border border-border-light shadow-sm hover-card-premium cursor-default"
+            >
+              <Tractor className="w-8 h-8 text-secondary mx-auto mb-3" />
+              <h3 className="text-3xl font-extrabold text-secondary">850+</h3>
+              <p className="text-[10px] uppercase tracking-wider text-text-muted font-bold mt-1">Empowered Farmers</p>
+            </motion.div>
+
+            {/* Stat 3 */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ type: "spring", stiffness: 100, damping: 15, delay: 0.2 }}
+              className="text-center p-6 bg-white rounded-2xl border border-border-light shadow-sm hover-card-premium cursor-default"
+            >
+              <MapPin className="w-8 h-8 text-accent-hover mx-auto mb-3" />
+              <h3 className="text-3xl font-extrabold text-accent-hover">15+</h3>
+              <p className="text-[10px] uppercase tracking-wider text-text-muted font-bold mt-1">Village Districts</p>
+            </motion.div>
+
+            {/* Stat 4 */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ type: "spring", stiffness: 100, damping: 15, delay: 0.3 }}
+              className="text-center p-6 bg-white rounded-2xl border border-border-light shadow-sm hover-card-premium cursor-default"
+            >
+              <ShieldCheck className="w-8 h-8 text-primary mx-auto mb-3" />
+              <h3 className="text-3xl font-extrabold text-primary">0%</h3>
+              <p className="text-[10px] uppercase tracking-wider text-text-muted font-bold mt-1">Middlemen Cuts</p>
+            </motion.div>
+          </div>
         </div>
       </section>
 
@@ -589,6 +725,123 @@ export default function HomePage() {
             />
           </motion.div>
         </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-16 container">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-12"
+        >
+          <h2 className="font-serif text-3xl md:text-4xl font-bold text-primary mb-3">Community Voices</h2>
+          <p className="text-text-muted text-sm md:text-base max-w-md mx-auto">
+            Read what our farmers and buyers say about their direct marketplace experience.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Testimonial 1 */}
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ type: "spring", stiffness: 80, damping: 15 }}
+            className="bg-white border border-border-light rounded-2xl p-8 shadow-sm flex flex-col justify-between hover-card-premium cursor-default"
+          >
+            <div>
+              <div className="flex gap-1 mb-4 text-[#e6a817]">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-4.5 h-4.5 fill-current" />
+                ))}
+              </div>
+              <p className="text-sm italic text-text-earth leading-relaxed mb-6">
+                "Finding organic food in Dhaka used to be difficult and expensive. PalliBazaar has changed everything. The vegetables are fresh, the honey is 100% pure, and I love knowing that my money goes directly to the village farmer who harvested them."
+              </p>
+            </div>
+            <div className="flex items-center gap-3.5 border-t border-border-light pt-4 mt-auto">
+              <div className="relative w-12 h-12 rounded-full overflow-hidden bg-bg-sand">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200" alt="Nusrat J." className="object-cover w-full h-full" />
+              </div>
+              <div>
+                <h4 className="font-bold text-sm text-text-earth">Nusrat Jahan</h4>
+                <p className="text-[10px] text-text-muted font-semibold uppercase tracking-wider">City Buyer (Dhaka)</p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Testimonial 2 */}
+          <motion.div 
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ type: "spring", stiffness: 80, damping: 15 }}
+            className="bg-white border border-border-light rounded-2xl p-8 shadow-sm flex flex-col justify-between hover-card-premium cursor-default"
+          >
+            <div>
+              <div className="flex gap-1 mb-4 text-[#e6a817]">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-4.5 h-4.5 fill-current" />
+                ))}
+              </div>
+              <p className="text-sm italic text-text-earth leading-relaxed mb-6">
+                "Earlier, local merchants in Jessore bought my mangoes and rice for a fraction of the cost, making all the profit. Now through PalliBazaar, I list my items directly and get the full payment. It has helped me send my children to a better school."
+              </p>
+            </div>
+            <div className="flex items-center gap-3.5 border-t border-border-light pt-4 mt-auto">
+              <div className="relative w-12 h-12 rounded-full overflow-hidden bg-bg-sand">
+                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200" alt="Rafiqul I." className="object-cover w-full h-full" />
+              </div>
+              <div>
+                <h4 className="font-bold text-sm text-text-earth">Md. Rafiqul Islam</h4>
+                <p className="text-[10px] text-text-muted font-semibold uppercase tracking-wider">Organic Farmer (Jessore)</p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Newsletter / Join Us Section */}
+      <section className="py-16 container">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ type: "spring", stiffness: 80, damping: 15 }}
+          className="bg-gradient-primary rounded-[2.5rem] p-8 md:p-14 text-center text-white shadow-xl relative overflow-hidden"
+        >
+          {/* Ambient shapes */}
+          <div className="absolute top-0 right-0 w-[200px] h-[200px] bg-white/5 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-white/5 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="relative z-10 max-w-2xl mx-auto flex flex-col items-center">
+            <Mail className="w-10 h-10 text-accent mb-6" />
+            <h2 className="font-serif text-3xl md:text-5xl font-bold leading-tight mb-4">
+              Get notified of the Fresh Harvests!
+            </h2>
+            <p className="text-white/80 text-sm md:text-base mb-8 max-w-lg font-light leading-relaxed">
+              Subscribe to receive weekly notifications when local farmers in Rajshahi, Jessore, and Sundarbans upload their fresh yields.
+            </p>
+
+            <form onSubmit={(e) => { e.preventDefault(); toast.success("Subscribed successfully!"); }} className="w-full max-w-md flex flex-col sm:flex-row gap-3 bg-white/10 backdrop-blur-md border border-white/20 p-2 rounded-2xl">
+              <input 
+                type="email" 
+                placeholder="Enter your email address" 
+                className="flex-grow px-4 py-3 bg-transparent text-white placeholder-white/60 outline-none text-sm font-medium focus:ring-0 border-0" 
+                required
+              />
+              <button 
+                type="submit" 
+                className="px-6 py-3 bg-white text-primary hover:bg-bg-sand font-bold text-sm rounded-xl transition cursor-pointer flex items-center justify-center gap-1.5 shrink-0"
+              >
+                <span>Subscribe</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </form>
+          </div>
+        </motion.div>
       </section>
     </main>
   );

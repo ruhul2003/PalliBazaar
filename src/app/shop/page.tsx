@@ -4,6 +4,7 @@ import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Wheat, MapPin, Star } from "lucide-react";
+import Image from "next/image";
 
 interface CategoryType {
   _id: string;
@@ -238,12 +239,14 @@ function ShopContent() {
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 {products.map((product) => (
-                  <div key={product._id} className="bg-white border border-border-light rounded-2xl overflow-hidden shadow-sm flex flex-col h-full hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+                  <div key={product._id} className="bg-white border border-border-light rounded-2xl overflow-hidden shadow-sm flex flex-col h-full hover-card-premium cursor-pointer">
                     <div className="relative w-full h-[200px] bg-bg-sand overflow-hidden">
-                      <img
+                      <Image
                         src={product.images[0]}
                         alt={product.name}
-                        className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="object-cover transition-transform duration-300 hover:scale-105"
                       />
                       <span className="absolute top-3 left-3 bg-accent text-text-earth text-xs font-extrabold px-2.5 py-1 rounded flex items-center gap-1">
                         <Wheat className="w-3.5 h-3.5" /> Harvested
@@ -255,7 +258,7 @@ function ShopContent() {
 
                     <div className="p-5 flex flex-col flex-grow">
                       <span className="text-[10px] font-bold tracking-wider text-secondary uppercase mb-1">
-                        {product.category.name}
+                        {product.category?.name || "Uncategorized"}
                       </span>
                       <h3 className="font-serif text-lg font-bold text-text-earth mb-2 line-clamp-2 hover:text-primary transition-colors">
                         <Link href={`/products/${product._id}`}>{product.name}</Link>

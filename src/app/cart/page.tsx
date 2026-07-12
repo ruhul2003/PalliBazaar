@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { Trash2, ShoppingCart, CreditCard, ArrowRight } from "lucide-react";
 import toast from "react-hot-toast";
+import Image from "next/image";
 
 interface CartItemType {
   product: {
@@ -174,9 +175,11 @@ export default function CartPage() {
                       <tr key={prod._id} className="hover:bg-bg-sand/30 transition">
                         <td className="p-5">
                           <div className="flex items-center gap-4">
-                            <img
+                            <Image
                               src={prod.images[0]}
                               alt={prod.name}
+                              width={64}
+                              height={64}
                               className="w-16 h-16 rounded-lg object-cover border border-border-light"
                             />
                             <div>

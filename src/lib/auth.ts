@@ -9,7 +9,7 @@ import { getOAuthState } from "better-auth/api";
 // Ensure database connection before initializing Better Auth
 await dbConnect();
 const client = mongoose.connection.getClient();
-const db = client.db();
+const db = client.db(process.env.DB_NAME || "Palli_Bazar");
 
 export const auth = betterAuth({
   database: mongodbAdapter(db, {
@@ -43,17 +43,8 @@ export const auth = betterAuth({
   },
   emailAndPassword: {
     enabled: true,
-    autoSignIn: false, // Don't sign in automatically if email verification is required
-    requireEmailVerification: true,
-  },
-  emailVerification: {
-    sendOnSignUp: true,
-    sendVerificationEmail: async ({ user, url, token }) => {
-      console.log("-----------------------------------------");
-      console.log(`[PALLIBAZAAR EMAIL MOCK] Verification link for ${user.email}:`);
-      console.log(url);
-      console.log("-----------------------------------------");
-    },
+    autoSignIn: true,
+    requireEmailVerification: false,
   },
   socialProviders: {
     google: {
@@ -65,13 +56,20 @@ export const auth = betterAuth({
     user: {
       create: {
         before: async (user, ctx) => {
-          // Retrieve role from OAuth state
-          const additionalData = (await getOAuthState()) as { role?: string } | null;
+          let role = (user as any).role;
+          try {
+            const additionalData = (await getOAuthState()) as { role?: string } | null;
+            if (additionalData?.role) {
+              role = additionalData.role;
+            }
+          } catch (e) {
+            // ignore: not an OAuth flow
+          }
           return {
             data: {
               ...user,
-              role: additionalData?.role || "customer",
-              isVerified: user.isVerified || false,
+              role: role || "customer",
+              isVerified: true,
               isBanned: false,
             },
           };

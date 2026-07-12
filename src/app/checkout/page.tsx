@@ -6,6 +6,13 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { CheckCircle, Package, Banknote, CreditCard, Tractor, AlertCircle } from "lucide-react";
 import toast from "react-hot-toast";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import CheckoutForm from "./CheckoutForm";
+
+const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+  ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
+  : null;
 
 interface CartItemType {
   product: {
@@ -37,6 +44,11 @@ export default function CheckoutPage() {
   const [error, setError] = useState("");
   const [orderConfirmed, setOrderConfirmed] = useState(false);
   const [confirmedOrderId, setConfirmedOrderId] = useState("");
+
+  // Stripe Payment States
+  const [stripeClientSecret, setStripeClientSecret] = useState("");
+  const [stripeOrderId, setStripeOrderId] = useState("");
+  const [showStripeForm, setShowStripeForm] = useState(false);
 
   const districts = ["Dhaka", "Rajshahi", "Sundarbans", "Jessore", "Khulna", "Mymensingh", "Kushtia"];
 
@@ -85,6 +97,14 @@ export default function CheckoutPage() {
   const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
+    if (paymentMethod === "stripe" && !process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
+      const msg = "Stripe is not configured. Please add NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY to your .env.local file.";
+      setError(msg);
+      toast.error(msg);
+      return;
+    }
+
     setIsSubmitting(true);
 
     const shippingAddress = {
@@ -115,9 +135,16 @@ export default function CheckoutPage() {
       const data = await res.json();
 
       if (res.ok) {
-        setConfirmedOrderId(data.orderId);
-        setOrderConfirmed(true);
-        toast.success("Order placed successfully!");
+        if (paymentMethod === "stripe" && data.clientSecret) {
+          setStripeClientSecret(data.clientSecret);
+          setStripeOrderId(data.orderId);
+          setShowStripeForm(true);
+          toast.success("Order details saved. Proceeding to payment...");
+        } else {
+          setConfirmedOrderId(data.orderId);
+          setOrderConfirmed(true);
+          toast.success("Order placed successfully!");
+        }
       } else {
         const msg = data.error || "Failed to place order";
         setError(msg);
@@ -130,6 +157,19 @@ export default function CheckoutPage() {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleStripeSuccess = (confirmedId: string) => {
+    setConfirmedOrderId(confirmedId);
+    setOrderConfirmed(true);
+    setShowStripeForm(false);
+  };
+
+  const handleStripeCancel = () => {
+    setShowStripeForm(false);
+    setStripeClientSecret("");
+    setStripeOrderId("");
+    toast.error("Payment cancelled. You can retry checkout.");
   };
 
   const calculateSubtotal = () => {
@@ -174,6 +214,42 @@ export default function CheckoutPage() {
             Continue Shopping
           </Link>
         </div>
+      </div>
+    );
+  }
+
+  if (showStripeForm && stripeClientSecret) {
+    return (
+      <div className="container py-12 max-w-lg mx-auto">
+        {stripePromise ? (
+          <Elements
+            stripe={stripePromise}
+            options={{
+              clientSecret: stripeClientSecret,
+            }}
+          >
+            <CheckoutForm
+              orderId={stripeOrderId}
+              totalAmount={total}
+              onSuccess={handleStripeSuccess}
+              onCancel={handleStripeCancel}
+            />
+          </Elements>
+        ) : (
+          <div className="bg-white border border-border-light rounded-2xl p-6 sm:p-8 shadow-sm text-center">
+            <h3 className="font-serif text-xl font-bold text-danger mb-2">Stripe Configuration Error</h3>
+            <p className="text-sm text-text-muted mb-4">
+              Stripe Publishable Key is not configured. Please add `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` to your environment variables.
+            </p>
+            <button
+              type="button"
+              onClick={handleStripeCancel}
+              className="px-6 py-2 bg-primary text-white font-bold rounded-lg hover:bg-primary-hover transition cursor-pointer"
+            >
+              Go Back
+            </button>
+          </div>
+        )}
       </div>
     );
   }

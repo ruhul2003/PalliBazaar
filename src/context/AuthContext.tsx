@@ -84,10 +84,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (error) {
         return { success: false, error: error.message || "Signup failed" };
       }
-      return {
-        success: true,
-        message: "Registration successful! A mock verification link has been printed to the server terminal console.",
-      };
+      await refreshSession();
+      return { success: true };
     } catch (err: any) {
       return { success: false, error: err.message || "An error occurred during signup" };
     }
