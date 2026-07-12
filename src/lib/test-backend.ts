@@ -101,8 +101,8 @@ async function runTestAndSeed() {
     // ==========================================
     // 4. CREATE PRODUCTS
     // ==========================================
-    console.log("\n🛍️ Seeding Products...");
     const productsData = [
+      // 1. FRUITS
       {
         name: "Fresh Organic Mangoes (Himsagar)",
         description: "Directly harvested from the orchards of Rajshahi. Sweet, juicy, and 100% formalin-free.",
@@ -115,38 +115,62 @@ async function runTestAndSeed() {
         isApproved: true,
       },
       {
+        name: "Sweet Organic Jackfruit (Kathal)",
+        description: "Freshly harvested jackfruit from the hilly areas of Gazipur. Famous for sweet, firm, and golden-yellow pulp.",
+        price: 350,
+        images: ["https://images.unsplash.com/photo-1590779033100-9f60a05a013d?q=80&w=600"],
+        category: fruitCat._id,
+        stock: 15,
+        seller: sellerUser._id,
+        district: "Gazipur",
+        isApproved: true,
+      },
+      {
         name: "Natural Honey (Sundarbans)",
         description: "Pure multi-floral honey collected by Mouals from the Sundarbans mangrove forest.",
         price: 850,
         images: ["https://images.unsplash.com/photo-1587049352846-4a222e784d38?q=80&w=600"],
-        category: foodCatIdSelector(fruitCat._id), // Helper to use valid categories
+        category: fruitCat._id,
         stock: 20,
         seller: sellerUser._id,
         district: "Khulna",
         isApproved: true,
       },
+      // 2. VEGETABLES
       {
-        name: "Handmade Nakshi Kantha",
-        description: "Exquisite traditional hand-embroidered quilt made by rural women artisans of Jessore.",
-        price: 2500,
-        images: ["https://images.unsplash.com/photo-1606744824163-985d376605aa?q=80&w=600"],
-        category: craftCat._id,
-        stock: 5,
+        name: "Fresh Green Chilis (Kacha Morich)",
+        description: "Extra spicy, freshly plucked green chilis from Bogra. Perfect for daily cooking.",
+        price: 80,
+        images: ["https://images.unsplash.com/photo-1588252393666-880fae3725b8?q=80&w=600"],
+        category: vegCat._id,
+        stock: 100,
         seller: sellerUser._id,
-        district: "Jessore",
+        district: "Bogra",
         isApproved: true,
       },
       {
-        name: "High Yield Paddy Seeds (BRRI Dhan-28)",
-        description: "Premium quality certified paddy seeds for high crop yield. Best for Boro season.",
+        name: "Organic Red Amaranth (Lal Shak)",
+        description: "Nutrient-rich, fiber-packed fresh red amaranth leaves. Grown without chemical pesticides in Savar.",
+        price: 25,
+        images: ["https://images.unsplash.com/photo-1628543102309-1a4f15d31514?q=80&w=600"],
+        category: vegCat._id,
+        stock: 80,
+        seller: sellerUser._id,
+        district: "Savars",
+        isApproved: true,
+      },
+      {
+        name: "Round Green Eggplants (Gol Begun)",
+        description: "Large, glossy, soft-textured green eggplants from Jamalpur. Ideal for frying and traditional bhorta.",
         price: 60,
-        images: ["https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?q=80&w=600"],
-        category: seedCat._id,
-        stock: 500,
+        images: ["https://images.unsplash.com/photo-1615485290382-441e4d049cb5?q=80&w=600"],
+        category: vegCat._id,
+        stock: 40,
         seller: sellerUser._id,
-        district: "Mymensingh",
+        district: "Jamalpur",
         isApproved: true,
       },
+      // 3. DAIRY
       {
         name: "Desi Cow Milk (Pure)",
         description: "Fresh milk from grass-fed cows. Delivered raw and untouched.",
@@ -159,6 +183,97 @@ async function runTestAndSeed() {
         isApproved: true,
       },
       {
+        name: "Premium Pabna Ghee",
+        description: "Homemade traditional clarified butter made from pure desi cow milk in Pabna. Rich aroma and texture.",
+        price: 1400,
+        images: ["https://images.unsplash.com/photo-1622484211148-716598e04044?q=80&w=600"],
+        category: dairyCat._id,
+        stock: 25,
+        seller: sellerUser._id,
+        district: "Pabna",
+        isApproved: true,
+      },
+      {
+        name: "Traditional Clay-Pot Dahi (Buffalo Curd)",
+        description: "Authentic buffalo milk yogurt (Dahi) prepared inside clay pots in Bhola. Rich, thick, and sweet.",
+        price: 220,
+        images: ["https://images.unsplash.com/photo-1488477181946-6428a0291777?q=80&w=600"],
+        category: dairyCat._id,
+        stock: 15,
+        seller: sellerUser._id,
+        district: "Bhola",
+        isApproved: true,
+      },
+      // 4. HANDICRAFTS
+      {
+        name: "Handmade Nakshi Kantha",
+        description: "Exquisite traditional hand-embroidered quilt made by rural women artisans of Jessore.",
+        price: 2500,
+        images: ["https://images.unsplash.com/photo-1606744824163-985d376605aa?q=80&w=600"],
+        category: craftCat._id,
+        stock: 5,
+        seller: sellerUser._id,
+        district: "Jessore",
+        isApproved: true,
+      },
+      {
+        name: "Terracotta Flower Tub (Clay Pottery)",
+        description: "Hand-sculpted traditional clay terracotta pot for plants. Breathable material, crafted in Rayerbazar.",
+        price: 180,
+        images: ["https://images.unsplash.com/photo-1616046229478-9901c5536a45?q=80&w=600"],
+        category: craftCat._id,
+        stock: 30,
+        seller: sellerUser._id,
+        district: "Dhaka",
+        isApproved: true,
+      },
+      {
+        name: "Handcrafted Bamboo Basket (Jhuri)",
+        description: "Lightweight, highly durable basket hand-woven from natural bamboo strips by Sylhet craftsmen.",
+        price: 120,
+        images: ["https://images.unsplash.com/photo-1595475207264-40a2dfebd6c2?q=80&w=600"],
+        category: craftCat._id,
+        stock: 50,
+        seller: sellerUser._id,
+        district: "Sylhet",
+        isApproved: true,
+      },
+      // 5. SEEDS
+      {
+        name: "High Yield Paddy Seeds (BRRI Dhan-28)",
+        description: "Premium quality certified paddy seeds for high crop yield. Best for Boro season.",
+        price: 60,
+        images: ["https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?q=80&w=600"],
+        category: seedCat._id,
+        stock: 500,
+        seller: sellerUser._id,
+        district: "Mymensingh",
+        isApproved: true,
+      },
+      {
+        name: "Organic Vermicompost Fertilizer",
+        description: "100% organic, earthworm-produced compost. Excellent nutrient source for crop fields and home gardens.",
+        price: 25,
+        images: ["https://images.unsplash.com/photo-1599599810769-bcde5a160d32?q=80&w=600"],
+        category: seedCat._id,
+        stock: 1000,
+        seller: sellerUser._id,
+        district: "Rangpur",
+        isApproved: true,
+      },
+      {
+        name: "Premium Mustard Seeds (Shorisha)",
+        description: "Selected black mustard seeds for oil extraction or sowing. Yields high quality crop.",
+        price: 110,
+        images: ["https://images.unsplash.com/photo-1596755094514-f87e34085b2c?q=80&w=600"],
+        category: seedCat._id,
+        stock: 200,
+        seller: sellerUser._id,
+        district: "Tangail",
+        isApproved: true,
+      },
+      // 6. LIVESTOCK
+      {
         name: "Healthy Black Bengal Goat",
         description: "Active, grass-fed Black Bengal goat. Ideal for farming or Eid-ul-Adha.",
         price: 12000,
@@ -167,14 +282,31 @@ async function runTestAndSeed() {
         stock: 3,
         seller: sellerUser._id,
         district: "Kushtia",
-        isApproved: false, // Let's keep one product unapproved to test Admin Approval flow
+        isApproved: true,
+      },
+      {
+        name: "Desi Poultry Hen (Free Range)",
+        description: "Naturally reared, active free-range local hens (Desi Murgi). Healthy and organic feed.",
+        price: 450,
+        images: ["https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?q=80&w=600"],
+        category: liveCat._id,
+        stock: 15,
+        seller: sellerUser._id,
+        district: "Narsingdi",
+        isApproved: true,
+      },
+      {
+        name: "Healthy Desi Cow (Ox)",
+        description: "Well-reared Desi Ox fed on organic grass, straw, and husk. Ready for field work or Qurbani.",
+        price: 85000,
+        images: ["https://images.unsplash.com/photo-1570042225831-d98fa7577f1e?q=80&w=600"],
+        category: liveCat._id,
+        stock: 2,
+        seller: sellerUser._id,
+        district: "Sirajganj",
+        isApproved: false, // Keeping one livestock unapproved to test Admin Approval flow
       },
     ];
-
-    // Helper function to map correct reference fields
-    function foodCatIdSelector(fallbackId: any) {
-      return fallbackId;
-    }
 
     const seededProducts = await Product.insertMany(productsData);
     console.log(`✅ Seeded ${seededProducts.length} products.`);
@@ -298,7 +430,9 @@ async function runTestAndSeed() {
     console.log(`  - Customer: test_palli_customer@example.com (pw: password123)`);
     console.log(`Data Seeded:`);
     console.log(`  - Categories: ${seededCategories.length}`);
-    console.log(`  - Products:   ${seededProducts.length} (5 Approved, 1 Pending Admin Approval)`);
+    const approvedCount = seededProducts.filter((p) => p.isApproved).length;
+    const pendingCount = seededProducts.filter((p) => !p.isApproved).length;
+    console.log(`  - Products:   ${seededProducts.length} (${approvedCount} Approved, ${pendingCount} Pending Admin Approval)`);
     console.log(`  - Orders:     2 (1 Delivered, 1 Pending Stripe Payment)`);
     console.log(`  - Reviews:    1 (5 Star Review on Organic Mangoes)`);
     console.log("=======================================================\n");
