@@ -188,7 +188,7 @@ async function runTestAndSeed() {
         name: "Premium Pabna Ghee",
         description: "Homemade traditional clarified butter made from pure desi cow milk in Pabna. Rich aroma and texture.",
         price: 1400,
-        images: ["https://images.unsplash.com/photo-1589733901241-5e56478f4a8f?q=80&w=600"],
+        images: ["https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?q=80&w=600"],
         category: dairyCat._id,
         stock: 25,
         seller: sellerUser._id,

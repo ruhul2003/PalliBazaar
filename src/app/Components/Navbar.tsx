@@ -90,6 +90,12 @@ export default function Navbar() {
           { name: "Wishlist", href: "/dashboard/buyer" },
         ]
       : []),
+    ...(user && user.role === "seller"
+      ? [
+          { name: "Add Product", href: "/items/add" },
+          { name: "Manage Listings", href: "/items/manage" },
+        ]
+      : []),
   ];
 
   return (

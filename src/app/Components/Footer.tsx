@@ -121,6 +121,21 @@ export default function Footer() {
                 </motion.a>
               ))}
             </div>
+            {/* Contact Details */}
+            <div className="flex flex-col gap-2 text-xs text-[#a2b5ab] mt-4 border-t border-[#2e5a44]/30 pt-4">
+              <div className="flex items-center gap-2">
+                <span>📍</span>
+                <span>Mirpur 10, Dhaka, Bangladesh</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span>📞</span>
+                <span>+880 1711-223344</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span>✉️</span>
+                <span>support@pallibazaar.com</span>
+              </div>
+            </div>
           </div>
 
           {/* Quick Links */}

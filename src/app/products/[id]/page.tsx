@@ -270,35 +270,48 @@ export default function ProductDetailPage() {
           </div>
 
           {/* Action Row */}
-          {product.stock > 0 && (
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-4">
-                <div className="flex items-center border-2 border-border-light rounded-lg bg-bg-sand overflow-hidden">
+          {user?.role === "seller" ? (
+            (user.id === product.seller._id || user.email === product.seller.email) && (
+              <div className="pt-5 border-t border-border-light mt-auto">
+                <Link
+                  href={`/items/edit/${product._id}`}
+                  className="w-full py-3 bg-secondary hover:bg-secondary-hover text-white font-bold rounded-lg hover:scale-101 active:scale-99 transition cursor-pointer flex items-center justify-center gap-2 text-center text-sm"
+                >
+                  Edit Product Listing
+                </Link>
+              </div>
+            )
+          ) : (
+            product.stock > 0 && (
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center border-2 border-border-light rounded-lg bg-bg-sand overflow-hidden">
+                    <button
+                      onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}
+                      className="w-10 h-10 font-bold hover:bg-white transition"
+                    >
+                      -
+                    </button>
+                    <span className="w-10 text-center font-bold text-text-earth">{quantity}</span>
+                    <button
+                      onClick={() => setQuantity(quantity < product.stock ? quantity + 1 : product.stock)}
+                      className="w-10 h-10 font-bold hover:bg-white transition"
+                    >
+                      +
+                    </button>
+                  </div>
+
                   <button
-                    onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}
-                    className="w-10 h-10 font-bold hover:bg-white transition"
+                    onClick={handleAddToCart}
+                    className="flex-grow py-3 bg-primary hover:bg-primary-hover text-white font-bold rounded-lg hover:scale-101 active:scale-99 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    disabled={addingToCart}
                   >
-                    -
-                  </button>
-                  <span className="w-10 text-center font-bold text-text-earth">{quantity}</span>
-                  <button
-                    onClick={() => setQuantity(quantity < product.stock ? quantity + 1 : product.stock)}
-                    className="w-10 h-10 font-bold hover:bg-white transition"
-                  >
-                    +
+                    <ShoppingCart className="w-4 h-4" />
+                    <span>{addingToCart ? "Adding to Cart..." : "Add to Cart"}</span>
                   </button>
                 </div>
-
-                <button
-                  onClick={handleAddToCart}
-                  className="flex-grow py-3 bg-primary hover:bg-primary-hover text-white font-bold rounded-lg hover:scale-101 active:scale-99 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                  disabled={addingToCart}
-                >
-                  <ShoppingCart className="w-4 h-4" />
-                  <span>{addingToCart ? "Adding to Cart..." : "Add to Cart"}</span>
-                </button>
               </div>
-            </div>
+            )
           )}
         </div>
       </div>
@@ -395,7 +408,7 @@ export default function ProductDetailPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {similarProducts.map((p) => (
               <div key={p._id} className="bg-white border border-border-light rounded-xl overflow-hidden shadow-sm flex flex-col hover:shadow-md hover:-translate-y-1 transition duration-300">
-                <div className="w-full h-44 bg-bg-sand overflow-hidden relative">
+                <div className="w-full aspect-[10/8] bg-bg-sand overflow-hidden relative">
                   <img src={p.images[0]} alt={p.name} className="w-full h-full object-cover" />
                   <span className="absolute top-2 right-2 bg-black/70 text-white text-[9px] px-2 py-0.5 rounded font-semibold flex items-center gap-1">
                     <MapPin className="w-3 h-3 text-accent" /> {p.district}

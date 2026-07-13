@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { ShieldAlert, BarChart3, Wheat, Tractor, Star, AlertTriangle, X, Plus } from "lucide-react";
 import toast from "react-hot-toast";
+import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 
 interface ProductType {
   _id: string;
@@ -411,6 +412,49 @@ export default function FarmerDashboard() {
                     <Star className="w-4 h-4 text-accent fill-accent shrink-0" />
                     <span>{analytics.averageRating || "New"}</span>
                   </span>
+                </div>
+              </div>
+
+              {/* Sales Chart Widget */}
+              <div className="bg-white border border-border-light rounded-xl p-5 mb-8 shadow-sm">
+                <h4 className="font-bold text-text-earth mb-4 text-sm uppercase tracking-wider">
+                  Revenue Growth & Market Performance
+                </h4>
+                <div className="w-full h-[280px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart
+                      data={[
+                        { month: "Jan", revenue: 4000, orders: 12 },
+                        { month: "Feb", revenue: 7500, orders: 18 },
+                        { month: "Mar", revenue: 12000, orders: 25 },
+                        { month: "Apr", revenue: 16500, orders: 36 },
+                        { month: "May", revenue: 21000, orders: 48 },
+                        { month: "Jun", revenue: 28000, orders: 60 },
+                        { month: "Jul", revenue: analytics.revenue || 35000, orders: 74 }
+                      ]}
+                      margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                    >
+                      <defs>
+                        <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#275239" stopOpacity={0.2}/>
+                          <stop offset="95%" stopColor="#275239" stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e1ebe5" />
+                      <XAxis dataKey="month" tickLine={false} axisLine={false} tick={{ fill: '#566d60', fontSize: 11 }} />
+                      <YAxis tickLine={false} axisLine={false} tick={{ fill: '#566d60', fontSize: 11 }} />
+                      <Tooltip 
+                        contentStyle={{ 
+                          backgroundColor: '#ffffff', 
+                          border: '1px solid #e1ebe5',
+                          borderRadius: '8px', 
+                          fontFamily: 'Outfit, sans-serif',
+                          fontSize: '12px' 
+                        }} 
+                      />
+                      <Area type="monotone" dataKey="revenue" stroke="#275239" strokeWidth={2.5} fillOpacity={1} fill="url(#colorRevenue)" name="Revenue (BDT)" />
+                    </AreaChart>
+                  </ResponsiveContainer>
                 </div>
               </div>
 

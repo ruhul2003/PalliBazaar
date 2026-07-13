@@ -137,8 +137,8 @@ export async function POST(request: Request) {
       );
     }
 
-    // Set approved status: admin-created is auto-approved, seller-created requires approval
-    const isApproved = user.role === "admin";
+    // Set approved status: all created products are auto-approved
+    const isApproved = true;
 
     const newProduct = await Product.create({
       name,
@@ -154,9 +154,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(
       {
-        message: isApproved
-          ? "Product created and approved successfully."
-          : "Product created successfully. Pending administrator approval.",
+        message: "Product created successfully.",
         product: newProduct,
       },
       { status: 201 }

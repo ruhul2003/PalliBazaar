@@ -89,10 +89,8 @@ export async function PUT(request: Request, { params }: RouteParams) {
       }
     }
 
-    // If seller edits, the product goes back to unapproved status for safety
-    if (user.role !== "admin") {
-      updates.isApproved = false;
-    }
+    // Edited products remain approved
+    updates.isApproved = true;
 
     const updatedProduct = await Product.findByIdAndUpdate(id, updates, {
       new: true,
@@ -100,9 +98,7 @@ export async function PUT(request: Request, { params }: RouteParams) {
     }).populate("category", "name slug");
 
     return NextResponse.json({
-      message: user.role === "admin"
-        ? "Product updated successfully."
-        : "Product updated successfully. Pending administrator re-approval.",
+      message: "Product updated successfully.",
       product: updatedProduct,
     });
   } catch (error: any) {

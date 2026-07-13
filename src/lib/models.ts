@@ -90,6 +90,7 @@ export interface IProduct extends Document {
     average: number;
     count: number;
   };
+  shortDescription?: string;
   isApproved: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -98,6 +99,7 @@ export interface IProduct extends Document {
 const ProductSchema = new Schema<IProduct>(
   {
     name: { type: String, required: true, trim: true },
+    shortDescription: { type: String, default: "" },
     description: { type: String, required: true },
     price: { type: Number, required: true, min: 0 },
     images: [{ type: String, required: true }],
@@ -109,7 +111,7 @@ const ProductSchema = new Schema<IProduct>(
       average: { type: Number, default: 0 },
       count: { type: Number, default: 0 },
     },
-    isApproved: { type: Boolean, default: false },
+    isApproved: { type: Boolean, default: true },
   },
   { timestamps: true }
 );

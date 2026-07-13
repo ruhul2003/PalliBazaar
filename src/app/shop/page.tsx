@@ -15,6 +15,8 @@ interface CategoryType {
 interface ProductType {
   _id: string;
   name: string;
+  shortDescription?: string;
+  description: string;
   price: number;
   images: string[];
   category: {
@@ -92,13 +94,13 @@ function ShopContent() {
   };
 
   return (
-    <div className="container py-8 sm:py-12">
+    <div className="max-w-[1400px] mx-auto px-6 py-8 sm:py-12">
       <div className="mb-8">
         <h2 className="font-serif text-3xl md:text-4xl font-bold text-primary mb-2">Village Marketplace</h2>
         <p className="text-text-muted text-sm md:text-base">Direct harvests and crafts from rural communities</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-10">
+      <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-8">
         {/* Sidebar Filters */}
         <aside className="bg-white border border-border-light rounded-2xl p-6 h-fit sticky top-24 shadow-sm">
           <h3 className="font-serif text-lg font-bold text-primary mb-5 border-b border-border-light pb-2">
@@ -227,8 +229,20 @@ function ShopContent() {
 
           {/* Grid display */}
           {loading ? (
-            <div className="text-center py-20 bg-white border border-border-light rounded-2xl shadow-sm">
-              <h3 className="text-lg font-bold text-primary animate-pulse">Gathering village products...</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {[...Array(8)].map((_, index) => (
+                <div key={index} className="bg-white border border-border-light rounded-2xl overflow-hidden shadow-sm flex flex-col h-[420px] animate-pulse">
+                  <div className="w-full h-[200px] bg-gray-200"></div>
+                  <div className="p-5 flex flex-col flex-grow gap-3">
+                    <div className="h-3 w-16 bg-gray-200 rounded"></div>
+                    <div className="h-5 w-3/4 bg-gray-200 rounded"></div>
+                    <div className="h-4 w-1/2 bg-gray-200 rounded"></div>
+                    <div className="h-3 w-5/6 bg-gray-200 rounded mt-2"></div>
+                    <div className="h-3 w-4/6 bg-gray-200 rounded"></div>
+                    <div className="h-8 w-full bg-gray-200 rounded mt-auto"></div>
+                  </div>
+                </div>
+              ))}
             </div>
           ) : products.length === 0 ? (
             <div className="text-center py-20 bg-white border border-border-light rounded-2xl shadow-sm text-text-muted">
@@ -237,15 +251,15 @@ function ShopContent() {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 {products.map((product) => (
-                  <div key={product._id} className="bg-white border border-border-light rounded-2xl overflow-hidden shadow-sm flex flex-col h-full hover-card-premium cursor-pointer">
-                    <div className="relative w-full h-[200px] bg-bg-sand overflow-hidden">
+                  <div key={product._id} className="bg-white border border-border-light rounded-2xl overflow-hidden shadow-sm flex flex-col h-full hover-card-premium cursor-pointer animate-fade-in">
+                    <div className="relative w-full aspect-[10/8] bg-bg-sand overflow-hidden">
                       <Image
                         src={product.images[0]}
                         alt={product.name}
                         fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                         className="object-cover transition-transform duration-300 hover:scale-105"
                       />
                       <span className="absolute top-3 left-3 bg-accent text-text-earth text-xs font-extrabold px-2.5 py-1 rounded flex items-center gap-1">
@@ -260,12 +274,16 @@ function ShopContent() {
                       <span className="text-[10px] font-bold tracking-wider text-secondary uppercase mb-1">
                         {product.category?.name || "Uncategorized"}
                       </span>
-                      <h3 className="font-serif text-lg font-bold text-text-earth mb-2 line-clamp-2 hover:text-primary transition-colors">
+                      <h3 className="font-serif text-lg font-bold text-text-earth mb-1 line-clamp-2 hover:text-primary transition-colors">
                         <Link href={`/products/${product._id}`}>{product.name}</Link>
                       </h3>
-                      <div className="text-xs text-accent-hover mb-4 flex items-center gap-1">
+                      <div className="text-xs text-accent-hover mb-2 flex items-center gap-1">
                         <Star className="w-3.5 h-3.5 fill-accent stroke-accent" /> {product.ratings.average || "New"} ({product.ratings.count || 0} reviews)
                       </div>
+                      
+                      <p className="text-xs text-text-muted mb-4 line-clamp-2 leading-relaxed">
+                        {product.shortDescription || product.description}
+                      </p>
 
                       <div className="flex items-center justify-between border-t border-border-light pt-4 mt-auto">
                         <div className="font-sans text-lg font-extrabold text-primary">

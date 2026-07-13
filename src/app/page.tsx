@@ -88,6 +88,8 @@ const infoImageVariants = {
 interface ProductType {
   _id: string;
   name: string;
+  shortDescription?: string;
+  description: string;
   price: number;
   images: string[];
   category: {
@@ -534,8 +536,20 @@ export default function HomePage() {
           </motion.div>
 
           {loading ? (
-            <div className="text-center py-10">
-              <h3 className="text-lg font-bold text-primary animate-pulse">Loading featured products...</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {[...Array(4)].map((_, index) => (
+                <div key={index} className="bg-white border border-border-light rounded-2xl overflow-hidden shadow-sm flex flex-col h-[420px] animate-pulse">
+                  <div className="w-full h-[200px] bg-gray-200"></div>
+                  <div className="p-5 flex flex-col flex-grow gap-3">
+                    <div className="h-3 w-16 bg-gray-200 rounded"></div>
+                    <div className="h-5 w-3/4 bg-gray-200 rounded"></div>
+                    <div className="h-4 w-1/2 bg-gray-200 rounded"></div>
+                    <div className="h-3 w-5/6 bg-gray-200 rounded mt-2"></div>
+                    <div className="h-3 w-4/6 bg-gray-200 rounded"></div>
+                    <div className="h-8 w-full bg-gray-200 rounded mt-auto"></div>
+                  </div>
+                </div>
+              ))}
             </div>
           ) : products.length === 0 ? (
             <div className="text-center py-10 text-text-muted">
@@ -555,7 +569,7 @@ export default function HomePage() {
                   key={product._id} 
                   className="bg-white border border-border-light rounded-2xl overflow-hidden shadow-sm flex flex-col h-full hover-card-premium cursor-pointer"
                 >
-                  <div className="relative w-full h-[200px] bg-bg-sand overflow-hidden group">
+                  <div className="relative w-full aspect-[10/8] bg-bg-sand overflow-hidden group">
                     <motion.img
                       whileHover={{ scale: 1.08 }}
                       transition={{ duration: 0.4 }}
@@ -575,12 +589,16 @@ export default function HomePage() {
                     <span className="text-[10px] font-bold tracking-wider text-secondary uppercase mb-1.5">
                       {product.category?.name || "Uncategorized"}
                     </span>
-                    <h3 className="font-serif text-lg font-bold text-text-earth mb-2 line-clamp-2 hover:text-primary transition-colors">
+                    <h3 className="font-serif text-lg font-bold text-text-earth mb-1 line-clamp-2 hover:text-primary transition-colors">
                       <Link href={`/products/${product._id}`}>{product.name}</Link>
                     </h3>
-                    <div className="text-xs text-accent-hover mb-4 flex items-center gap-1">
+                    <div className="text-xs text-accent-hover mb-2 flex items-center gap-1">
                       <Star className="w-3.5 h-3.5 fill-accent stroke-accent" /> {product.ratings.average || "New"} ({product.ratings.count || 0} reviews)
                     </div>
+                    
+                    <p className="text-xs text-text-muted mb-4 line-clamp-2 leading-relaxed">
+                      {product.shortDescription || product.description}
+                    </p>
 
                     <div className="flex items-center justify-between border-t border-border-light pt-4 mt-auto">
                       <div className="font-sans text-lg font-extrabold text-primary">
