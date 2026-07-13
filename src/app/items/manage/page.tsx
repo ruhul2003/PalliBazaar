@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { Trash2, Eye, Plus, Leaf, Loader2, Star, MapPin } from "lucide-react";
 import toast from "react-hot-toast";
+import Image from "next/image";
 
 interface ProductType {
   _id: string;
@@ -158,10 +159,12 @@ export default function ManageItemsPage() {
                     {/* Harvest details */}
                     <td className="py-4.5 px-5 flex items-center gap-3">
                       <div className="w-12 h-12 rounded-lg bg-bg-sand overflow-hidden border border-border-light shrink-0">
-                        <img 
+                        <Image 
                           src={product.images[0]} 
                           alt={product.name} 
                           className="w-full h-full object-cover" 
+                          width={48}
+                          height={48}
                         />
                       </div>
                       <span className="font-bold text-text-earth line-clamp-1">{product.name}</span>

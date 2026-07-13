@@ -201,7 +201,7 @@ export default function ProductDetailPage() {
         {/* Photo Gallery Column */}
         <div className="flex flex-col gap-4">
           <div className="relative w-full h-[380px] bg-bg-sand rounded-xl overflow-hidden border border-border-light">
-            <Image src={activeImage} alt={product.name} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
+            <Image src={activeImage} alt={product.name} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" priority />
           </div>
           {product.images.length > 1 && (
             <div className="flex gap-3">

@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Leaf, Users, ShieldCheck, Heart, Tractor, ArrowRight } from "lucide-react";
+import Image from "next/image";
 
 export default function AboutPage() {
   const values = [
@@ -84,10 +85,12 @@ export default function AboutPage() {
             </div>
           </div>
           <div className="rounded-2xl overflow-hidden h-[300px] shadow-md border border-border-light">
-            <img 
+            <Image 
               src="https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?q=80&w=800" 
               alt="Bangladeshi farmer green fields" 
               className="w-full h-full object-cover" 
+              width={800}
+              height={800}
             />
           </div>
         </div>

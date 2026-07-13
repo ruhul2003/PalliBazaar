@@ -736,10 +736,12 @@ export default function HomePage() {
             viewport={{ once: true, margin: "-100px" }}
             className="h-[280px] sm:h-[350px] rounded-xl overflow-hidden shadow-md"
           >
-            <img
+            <Image
               src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?q=80&w=800"
               alt="Bangladeshi village farm fields"
               className="w-full h-full object-cover"
+              width={800}
+              height={800}
             />
           </motion.div>
         </div>
@@ -781,7 +783,7 @@ export default function HomePage() {
             </div>
             <div className="flex items-center gap-3.5 border-t border-border-light pt-4 mt-auto">
               <div className="relative w-12 h-12 rounded-full overflow-hidden bg-bg-sand">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200" alt="Nusrat J." className="object-cover w-full h-full" />
+                <Image src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200" alt="Nusrat J." className="object-cover w-full h-full" width={200} height={200} />
               </div>
               <div>
                 <h4 className="font-bold text-sm text-text-earth">Nusrat Jahan</h4>
@@ -810,7 +812,7 @@ export default function HomePage() {
             </div>
             <div className="flex items-center gap-3.5 border-t border-border-light pt-4 mt-auto">
               <div className="relative w-12 h-12 rounded-full overflow-hidden bg-bg-sand">
-                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200" alt="Rafiqul I." className="object-cover w-full h-full" />
+                <Image src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200" alt="Rafiqul I." className="object-cover w-full h-full" width={200} height={200} />
               </div>
               <div>
                 <h4 className="font-bold text-sm text-text-earth">Md. Rafiqul Islam</h4>
