@@ -50,31 +50,7 @@ export default function LoginPage() {
     }
   };
 
-  const triggerDemoLogin = async (role: "customer" | "seller") => {
-    const demoEmail = role === "customer" 
-      ? "test_palli_customer@example.com" 
-      : "test_palli_seller@example.com";
-    setEmail(demoEmail);
-    setPassword("password123");
-    setError("");
-    setIsSubmitting(true);
-    
-    try {
-      const res = await login(demoEmail, "password123");
-      if (res.success) {
-        toast.success(`Demo ${role === "customer" ? "Buyer" : "Farmer"} Login successful!`);
-      } else {
-        const msg = res.error || "Login failed";
-        setError(msg);
-        toast.error(msg);
-        setIsSubmitting(false);
-      }
-    } catch (err: any) {
-      setError("An error occurred");
-      toast.error("An error occurred");
-      setIsSubmitting(false);
-    }
-  };
+
 
   if (loading) {
     return (
@@ -148,26 +124,6 @@ export default function LoginPage() {
         </form>
 
 
-        {/* Demo Login Buttons */}
-        <div className="mt-6 pt-5 border-t border-border-light text-center">
-          <p className="text-xs font-bold text-text-earth uppercase tracking-wider mb-3">Demo Quick Log In</p>
-          <div className="flex gap-3">
-            <button
-              type="button"
-              onClick={() => triggerDemoLogin("customer")}
-              className="flex-grow py-2 border border-primary/20 bg-primary-light hover:bg-primary/10 text-primary text-xs font-bold rounded-lg transition active:scale-95"
-            >
-              Demo Buyer
-            </button>
-            <button
-              type="button"
-              onClick={() => triggerDemoLogin("seller")}
-              className="flex-grow py-2 border border-secondary/20 bg-secondary-light hover:bg-secondary/15 text-secondary-hover text-xs font-bold rounded-lg transition active:scale-95"
-            >
-              Demo Farmer
-            </button>
-          </div>
-        </div>
 
         <div className="text-center mt-5 text-sm text-text-muted">
           Don't have an account?{" "}
