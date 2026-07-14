@@ -15,8 +15,13 @@ async function runTestAndSeed() {
 
     await dbConnect();
     console.log("✅ Database Connection Successful!");
-
     console.log("\n🧹 Cleaning up previous test data...");
+    const testUsers = await User.find({ email: /test_palli_/ }, "_id");
+    const testUserIds = testUsers.map(u => u._id.toString());
+    const dbConnection = mongoose.connection.db;
+    if (dbConnection) {
+      await dbConnection.collection("accounts").deleteMany({ userId: { $in: testUserIds } });
+    }
     await User.deleteMany({ email: /test_palli_/ });
     await Category.deleteMany({ slug: /test-category|fruits|vegetables|dairy|handicrafts|seeds|livestock/ });
     await Product.deleteMany({});
@@ -27,53 +32,76 @@ async function runTestAndSeed() {
     await Notification.deleteMany({});
     console.log("🧹 DB Cleanup complete.");
 
-                                                 
-                                                        
-                                                 
     console.log("\n👤 Creating Test & Demo Accounts...");
-    const salt = await bcrypt.genSalt(10);
-    const passwordHash = await bcrypt.hash("password123", salt);
+    const { auth } = await import("./auth");
 
-    const adminUser = await User.create({
-      name: "Abir Hossain (Admin)",
-      email: "test_palli_admin@example.com",
-      passwordHash,
-      role: "admin",
-      isVerified: true,
-      phoneNumber: "01711111111",
-      addresses: [
-        { street: "Sector 4", city: "Uttara", district: "Dhaka", zipCode: "1230", isDefault: true }
-      ],
-      isBanned: false,
+    const adminSignUp = await auth.api.signUpEmail({
+      body: {
+        name: "Abir Hossain (Admin)",
+        email: "test_palli_admin@example.com",
+        password: "password123",
+      }
     });
+    const adminUser = await User.findByIdAndUpdate(
+      adminSignUp.user.id,
+      {
+        role: "admin",
+        isVerified: true,
+        phoneNumber: "01711111111",
+        addresses: [
+          { street: "Sector 4", city: "Uttara", district: "Dhaka", zipCode: "1230", isDefault: true }
+        ],
+        isBanned: false,
+      },
+      { new: true }
+    );
+    if (!adminUser) throw new Error("Failed to update Admin user fields");
     console.log(`- Created Admin: ${adminUser.email}`);
 
-    const sellerUser = await User.create({
-      name: "Kazi Farm (Seller)",
-      email: "test_palli_seller@example.com",
-      passwordHash,
-      role: "seller",
-      isVerified: true,
-      phoneNumber: "01722222222",
-      addresses: [
-        { street: "Kazi Road", city: "Jessore Sadar", district: "Jessore", zipCode: "7400", isDefault: true }
-      ],
-      isBanned: false,
+    const sellerSignUp = await auth.api.signUpEmail({
+      body: {
+        name: "Kazi Farm (Seller)",
+        email: "test_palli_seller@example.com",
+        password: "password123",
+      }
     });
+    const sellerUser = await User.findByIdAndUpdate(
+      sellerSignUp.user.id,
+      {
+        role: "seller",
+        isVerified: true,
+        phoneNumber: "01722222222",
+        addresses: [
+          { street: "Kazi Road", city: "Jessore Sadar", district: "Jessore", zipCode: "7400", isDefault: true }
+        ],
+        isBanned: false,
+      },
+      { new: true }
+    );
+    if (!sellerUser) throw new Error("Failed to update Seller user fields");
     console.log(`- Created Seller: ${sellerUser.email}`);
 
-    const customerUser = await User.create({
-      name: "Rahim Ali (Customer)",
-      email: "test_palli_customer@example.com",
-      passwordHash,
-      role: "customer",
-      isVerified: true,
-      phoneNumber: "01733333333",
-      addresses: [
-        { street: "Mirpur 10", city: "Dhaka", district: "Dhaka", zipCode: "1216", isDefault: true }
-      ],
-      isBanned: false,
+    const customerSignUp = await auth.api.signUpEmail({
+      body: {
+        name: "Rahim Ali (Customer)",
+        email: "test_palli_customer@example.com",
+        password: "password123",
+      }
     });
+    const customerUser = await User.findByIdAndUpdate(
+      customerSignUp.user.id,
+      {
+        role: "customer",
+        isVerified: true,
+        phoneNumber: "01733333333",
+        addresses: [
+          { street: "Mirpur 10", city: "Dhaka", district: "Dhaka", zipCode: "1216", isDefault: true }
+        ],
+        isBanned: false,
+      },
+      { new: true }
+    );
+    if (!customerUser) throw new Error("Failed to update Customer user fields");
     console.log(`- Created Customer: ${customerUser.email}`);
 
     // ==========================================
