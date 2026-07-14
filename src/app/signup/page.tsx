@@ -35,7 +35,7 @@ export default function SignupPage() {
       const res = await signup(name, email, password, role);
       if (res.success) {
         toast.success("Account created successfully!");
-        // Redirect based on role
+                                 
         router.push(role === "customer" ? "/dashboard/buyer" : "/dashboard/farmer");
       } else {
         const msg = res.error || "Failed to sign up.";
@@ -67,7 +67,7 @@ export default function SignupPage() {
 
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Role selector cards */}
+          {                         }
           <div>
             <label className="block text-sm font-semibold text-text-earth mb-2">Register As</label>
             <div className="grid grid-cols-2 gap-4">

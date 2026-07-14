@@ -28,7 +28,7 @@ export default function CheckoutForm({
     e.preventDefault();
 
     if (!stripe || !elements) {
-      // Stripe.js has not yet loaded.
+                                      
       return;
     }
 
@@ -36,17 +36,17 @@ export default function CheckoutForm({
     setErrorMessage("");
 
     try {
-      // 1. Confirm the payment on Stripe's side (without redirecting if possible)
+                                                                                  
       const { error, paymentIntent } = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          // redirect is "if_required" so we handle success directly in Next.js SPA
+                                                                                   
         },
         redirect: "if_required",
       });
 
       if (error) {
-        // Show error to customer (e.g., card declined, incomplete details)
+                                                                           
         const msg = error.message || "An error occurred with your payment.";
         setErrorMessage(msg);
         toast.error(msg);
@@ -55,7 +55,7 @@ export default function CheckoutForm({
       }
 
       if (paymentIntent && paymentIntent.status === "succeeded") {
-        // 2. Call our backend to verify the transaction
+                                                        
         const res = await fetch("/api/orders/confirm-payment", {
           method: "POST",
           headers: { "Content-Type": "application/json" },

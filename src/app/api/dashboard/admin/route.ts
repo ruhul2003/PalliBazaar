@@ -3,39 +3,39 @@ import { dbConnect } from "@/lib/db";
 import { User, Product, Order, Category } from "@/lib/models";
 import { requireAuth } from "@/lib/auth";
 
-// GET /api/dashboard/admin - Platform administration overview & stats
+                                                                      
 export async function GET() {
   try {
-    // Authenticate and restrict to admin
+                                         
     await requireAuth(["admin"]);
     await dbConnect();
 
-    // 1. User stats
+                    
     const totalUsers = await User.countDocuments();
     const customersCount = await User.countDocuments({ role: "customer" });
     const sellersCount = await User.countDocuments({ role: "seller" });
     const adminsCount = await User.countDocuments({ role: "admin" });
     const bannedUsersCount = await User.countDocuments({ isBanned: true });
 
-    // 2. Product stats
+                       
     const totalProducts = await Product.countDocuments();
     const approvedProductsCount = await Product.countDocuments({ isApproved: true });
     const pendingProductsCount = await Product.countDocuments({ isApproved: false });
 
-    // 3. Category stats
+                        
     const totalCategories = await Category.countDocuments();
 
-    // 4. Order stats
+                     
     const totalOrders = await Order.countDocuments();
     const pendingOrdersCount = await Order.countDocuments({ orderStatus: "pending" });
     const deliveredOrdersCount = await Order.countDocuments({ orderStatus: "delivered" });
     const cancelledOrdersCount = await Order.countDocuments({ orderStatus: "cancelled" });
 
-    // Calculate Platform Revenue (paid orders)
+                                               
     const paidOrders = await Order.find({ paymentStatus: "paid", orderStatus: { $ne: "cancelled" } });
     const totalRevenue = paidOrders.reduce((acc, order) => acc + order.totalAmount, 0);
 
-    // Fetch lists for administration panels
+                                            
     const pendingProducts = await Product.find({ isApproved: false })
       .populate("category", "name")
       .populate("seller", "name email")

@@ -7,7 +7,7 @@ interface RouteParams {
   params: Promise<{ id: string }>;
 }
 
-// Recalculates and updates product ratings
+                                           
 async function updateProductRatings(productId: string) {
   const productReviews = await Review.find({ product: productId });
   const product = await Product.findById(productId);
@@ -25,8 +25,8 @@ async function updateProductRatings(productId: string) {
   }
 }
 
-// PUT /api/reviews/[id] - Edit user review
-// Body: { rating, comment, images }
+                                           
+                                    
 export async function PUT(request: Request, { params }: RouteParams) {
   try {
     const user = await requireAuth();
@@ -38,7 +38,7 @@ export async function PUT(request: Request, { params }: RouteParams) {
       return NextResponse.json({ error: "Review not found" }, { status: 404 });
     }
 
-    // Only review owner can edit
+                                 
     if (review.customer.toString() !== user._id.toString()) {
       return NextResponse.json({ error: "Forbidden. You can only edit your own reviews." }, { status: 403 });
     }
@@ -63,7 +63,7 @@ export async function PUT(request: Request, { params }: RouteParams) {
 
     await review.save();
 
-    // Recalculate product rating
+                                 
     await updateProductRatings(review.product.toString());
 
     return NextResponse.json({
@@ -79,7 +79,7 @@ export async function PUT(request: Request, { params }: RouteParams) {
   }
 }
 
-// DELETE /api/reviews/[id] - Delete review (Owner or Admin only)
+                                                                 
 export async function DELETE(request: Request, { params }: RouteParams) {
   try {
     const user = await requireAuth();
@@ -91,7 +91,7 @@ export async function DELETE(request: Request, { params }: RouteParams) {
       return NextResponse.json({ error: "Review not found" }, { status: 404 });
     }
 
-    // Authorization: Owner or Admin
+                                    
     const isOwner = review.customer.toString() === user._id.toString();
     const isAdmin = user.role === "admin";
 
@@ -103,7 +103,7 @@ export async function DELETE(request: Request, { params }: RouteParams) {
 
     await Review.findByIdAndDelete(id);
 
-    // Recalculate product rating
+                                 
     await updateProductRatings(productId);
 
     return NextResponse.json({

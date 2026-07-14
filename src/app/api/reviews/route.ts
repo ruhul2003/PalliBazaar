@@ -3,8 +3,8 @@ import { dbConnect } from "@/lib/db";
 import { Review, Product, Order, Notification } from "@/lib/models";
 import { requireAuth } from "@/lib/auth";
 
-// GET /api/reviews - Get reviews for a specific product
-// Query parameters: ?productId=xxx
+                                                        
+                                   
 export async function GET(request: Request) {
   try {
     await dbConnect();
@@ -26,8 +26,8 @@ export async function GET(request: Request) {
   }
 }
 
-// POST /api/reviews - Write a new review (Only if customer purchased and received the product)
-// Body: { productId, rating, comment, images }
+                                                                                               
+                                               
 export async function POST(request: Request) {
   try {
     const user = await requireAuth();
@@ -50,13 +50,13 @@ export async function POST(request: Request) {
       );
     }
 
-    // 1. Verify product exists
+                               
     const product = await Product.findById(productId);
     if (!product) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
 
-    // 2. Authorization check: Check if user purchased and received the product
+                                                                               
     const purchaseCount = await Order.countDocuments({
       customer: user._id,
       orderStatus: "delivered",
@@ -70,7 +70,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // 3. Check if user already reviewed this product
+                                                     
     const existingReview = await Review.findOne({
       product: productId,
       customer: user._id,
@@ -83,7 +83,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // 4. Create the review
+                           
     const review = await Review.create({
       product: productId,
       customer: user._id,
@@ -92,7 +92,7 @@ export async function POST(request: Request) {
       images: images || [],
     });
 
-    // 5. Update Product ratings summary (average and count)
+                                                            
     const productReviews = await Review.find({ product: productId });
     const count = productReviews.length;
     const sum = productReviews.reduce((acc, curr) => acc + curr.rating, 0);
@@ -101,7 +101,7 @@ export async function POST(request: Request) {
     product.ratings = { average, count };
     await product.save();
 
-    // 6. Notify seller
+                       
     await Notification.create({
       recipient: product.seller,
       message: `New Product Review: Your product '${product.name}' was rated ${numRating} stars by ${user.name}.`,

@@ -6,7 +6,7 @@ import { dbConnect } from "./db";
 import { User, IUser } from "./models";
 import { getOAuthState } from "better-auth/api";
 
-// Ensure database connection before initializing Better Auth
+                                                             
 await dbConnect();
 const client = mongoose.connection.getClient();
 const db = client.db(process.env.DB_NAME || "Palli_Bazar");
@@ -57,7 +57,7 @@ export const auth = betterAuth({
               role = additionalData.role;
             }
           } catch (e) {
-            // ignore: not an OAuth flow
+                                        
           }
           return {
             data: {

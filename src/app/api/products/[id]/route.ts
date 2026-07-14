@@ -7,7 +7,7 @@ interface RouteParams {
   params: Promise<{ id: string }>;
 }
 
-// GET /api/products/[id] - Fetch single product details + similar products
+                                                                           
 export async function GET(request: Request, { params }: RouteParams) {
   try {
     await dbConnect();
@@ -21,7 +21,7 @@ export async function GET(request: Request, { params }: RouteParams) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
 
-    // Fetch similar products (same category, excluding current product, limit 4)
+                                                                                 
     const similarProducts = await Product.find({
       category: product.category._id,
       _id: { $ne: product._id },
@@ -44,7 +44,7 @@ export async function GET(request: Request, { params }: RouteParams) {
   }
 }
 
-// PUT /api/products/[id] - Edit product (Owner Seller or Admin only)
+                                                                     
 export async function PUT(request: Request, { params }: RouteParams) {
   try {
     const user = await requireAuth(["seller", "admin"]);
@@ -56,7 +56,7 @@ export async function PUT(request: Request, { params }: RouteParams) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
 
-    // Authorization: Must be the seller who owns the product or an admin
+                                                                         
     if (user.role !== "admin" && product.seller.toString() !== user._id.toString()) {
       return NextResponse.json(
         { error: "Forbidden. You can only edit your own products." },
@@ -75,7 +75,7 @@ export async function PUT(request: Request, { params }: RouteParams) {
       "district",
     ];
 
-    // Filter updates
+                     
     const updates: any = {};
     for (const key of allowedUpdates) {
       if (body[key] !== undefined) {
@@ -89,7 +89,7 @@ export async function PUT(request: Request, { params }: RouteParams) {
       }
     }
 
-    // Edited products remain approved
+                                      
     updates.isApproved = true;
 
     const updatedProduct = await Product.findByIdAndUpdate(id, updates, {
@@ -116,7 +116,7 @@ export async function PUT(request: Request, { params }: RouteParams) {
   }
 }
 
-// DELETE /api/products/[id] - Delete product (Owner Seller or Admin only)
+                                                                          
 export async function DELETE(request: Request, { params }: RouteParams) {
   try {
     const user = await requireAuth(["seller", "admin"]);
@@ -128,7 +128,7 @@ export async function DELETE(request: Request, { params }: RouteParams) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
 
-    // Authorization: Must be the seller who owns the product or an admin
+                                                                         
     if (user.role !== "admin" && product.seller.toString() !== user._id.toString()) {
       return NextResponse.json(
         { error: "Forbidden. You can only delete your own products." },

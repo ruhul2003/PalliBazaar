@@ -35,7 +35,7 @@ export default function LoginPage() {
       const res = await login(email, password);
       if (res.success) {
         toast.success("Welcome back! Login successful.");
-        // Redirection logic is triggered by useEffect
+                                                      
       } else {
         const msg = res.error || "Invalid email or password";
         setError(msg);

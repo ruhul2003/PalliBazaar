@@ -1,8 +1,8 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
-// ==========================================
-// 1. USER
-// ==========================================
+                                             
+          
+                                             
 export interface IAddress {
   street: string;
   city: string;
@@ -54,9 +54,9 @@ const UserSchema = new Schema<IUser>(
   { timestamps: true }
 );
 
-// ==========================================
-// 2. CATEGORY
-// ==========================================
+                                             
+              
+                                             
 export interface ICategory extends Document {
   name: string;
   slug: string;
@@ -74,9 +74,9 @@ const CategorySchema = new Schema<ICategory>(
   { timestamps: true }
 );
 
-// ==========================================
-// 3. PRODUCT
-// ==========================================
+                                             
+             
+                                             
 export interface IProduct extends Document {
   name: string;
   description: string;
@@ -116,13 +116,13 @@ const ProductSchema = new Schema<IProduct>(
   { timestamps: true }
 );
 
-// ==========================================
-// 4. ORDER
-// ==========================================
+                                             
+           
+                                             
 export interface IOrderItem {
   product: mongoose.Types.ObjectId;
   quantity: number;
-  price: number; // captured price at purchase time
+  price: number;                                   
 }
 
 export interface IShippingAddress {
@@ -176,9 +176,9 @@ const OrderSchema = new Schema<IOrder>(
   { timestamps: true }
 );
 
-// ==========================================
-// 5. REVIEW
-// ==========================================
+                                             
+            
+                                             
 export interface IReview extends Document {
   product: mongoose.Types.ObjectId;
   customer: mongoose.Types.ObjectId;
@@ -200,9 +200,9 @@ const ReviewSchema = new Schema<IReview>(
   { timestamps: true }
 );
 
-// ==========================================
-// 6. WISHLIST
-// ==========================================
+                                             
+              
+                                             
 export interface IWishlist extends Document {
   user: mongoose.Types.ObjectId;
   products: mongoose.Types.ObjectId[];
@@ -218,9 +218,9 @@ const WishlistSchema = new Schema<IWishlist>(
   { timestamps: true }
 );
 
-// ==========================================
-// 7. CART
-// ==========================================
+                                             
+          
+                                             
 export interface ICartItem {
   product: mongoose.Types.ObjectId;
   quantity: number;
@@ -246,9 +246,9 @@ const CartSchema = new Schema<ICart>(
   { timestamps: true }
 );
 
-// ==========================================
-// 8. NOTIFICATION
-// ==========================================
+                                             
+                  
+                                             
 export interface INotification extends Document {
   recipient: mongoose.Types.ObjectId;
   message: string;
@@ -268,9 +268,9 @@ const NotificationSchema = new Schema<INotification>(
   { timestamps: true }
 );
 
-// ==========================================
-// Model Export (Multi-compilation Cache-safe)
-// ==========================================
+                                             
+                                              
+                                             
 export const User: Model<IUser> = mongoose.models.User || mongoose.model<IUser>("User", UserSchema);
 export const Category: Model<ICategory> = mongoose.models.Category || mongoose.model<ICategory>("Category", CategorySchema);
 export const Product: Model<IProduct> = mongoose.models.Product || mongoose.model<IProduct>("Product", ProductSchema);

@@ -3,7 +3,7 @@ import { dbConnect } from "@/lib/db";
 import { Product, Category } from "@/lib/models";
 import { requireAuth } from "@/lib/auth";
 
-// GET /api/products - List products with search, filter, sorting, pagination
+                                                                             
 export async function GET(request: Request) {
   try {
     await dbConnect();
@@ -19,26 +19,26 @@ export async function GET(request: Request) {
     const page = parseInt(searchParams.get("page") || "1", 10);
     const limit = parseInt(searchParams.get("limit") || "12", 10);
 
-    // Build query object
-    // Default to listing only approved products
+                         
+                                                
     const query: any = { isApproved: true };
 
-    // Search by product name
+                             
     if (search) {
       query.name = { $regex: search, $options: "i" };
     }
 
-    // Filter by Category (can be category ID or category slug)
+                                                               
     if (category) {
       if (category.match(/^[0-9a-fA-F]{24}$/)) {
         query.category = category;
       } else {
-        // Find category by slug
+                                
         const categoryDoc = await Category.findOne({ slug: category });
         if (categoryDoc) {
           query.category = categoryDoc._id;
         } else {
-          // If category slug is not found, return empty results
+                                                                
           return NextResponse.json({
             products: [],
             total: 0,
@@ -49,14 +49,14 @@ export async function GET(request: Request) {
       }
     }
 
-    // Filter by Price range
+                            
     if (minPrice || maxPrice) {
       query.price = {};
       if (minPrice) query.price.$gte = parseFloat(minPrice);
       if (maxPrice) query.price.$lte = parseFloat(maxPrice);
     }
 
-    // Filter by District
+                         
     if (district) {
       query.district = { $regex: new RegExp(`^${district}$`, "i") };
     }

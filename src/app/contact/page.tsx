@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 export default function ContactPage() {
   const router = useRouter();
 
-  // Contact form state
+                       
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
@@ -19,7 +19,7 @@ export default function ContactPage() {
     e.preventDefault();
     setSubmitting(true);
 
-    // Simulate form submission
+                               
     setTimeout(() => {
       setSubmitting(false);
       toast.success("Thank you! Your message has been sent to our farm support team.");
@@ -35,7 +35,7 @@ export default function ContactPage() {
     <div className="min-h-[calc(100vh-75px)] py-12 px-4 sm:px-6 bg-bg-sand font-sans">
       <div className="max-w-[950px] mx-auto bg-white border border-border-light rounded-3xl shadow-sm p-6 sm:p-12">
         
-        {/* Header */}
+        {            }
         <div className="text-center border-b border-border-light pb-8 mb-10">
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary-light text-primary mb-3">
             <Leaf className="w-6 h-6" />
@@ -46,7 +46,7 @@ export default function ContactPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-[350px_1fr] gap-12">
           
-          {/* Info Column */}
+          {                 }
           <div className="flex flex-col gap-8 bg-primary-light rounded-2xl p-8 border border-primary/10 h-fit">
             <h2 className="font-serif text-xl font-bold text-primary border-b border-primary/20 pb-2.5">Office Contact</h2>
             
@@ -83,7 +83,7 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* Form Column */}
+          {                 }
           <div>
             <h2 className="font-serif text-xl font-bold text-text-earth mb-6 border-b border-border-light pb-2.5">Send a Message</h2>
             

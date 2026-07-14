@@ -46,7 +46,7 @@ export default function CartPage() {
       if (res.ok) {
         const data = await res.json();
         if (data.cart && data.cart.items) {
-          // Filter out items where the product might have been deleted/is null
+                                                                               
           setCartItems(data.cart.items.filter((item: any) => item.product !== null));
         }
       } else {

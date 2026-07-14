@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 
-// Load environment variables manually for script execution
+                                                           
 dotenv.config({ path: ".env.local" });
 
 async function runTestAndSeed() {
@@ -27,9 +27,9 @@ async function runTestAndSeed() {
     await Notification.deleteMany({});
     console.log("🧹 DB Cleanup complete.");
 
-    // ==========================================
-    // 2. CREATE TEST ACCOUNTS (Customer, Seller, Admin)
-    // ==========================================
+                                                 
+                                                        
+                                                 
     console.log("\n👤 Creating Test & Demo Accounts...");
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash("password123", salt);

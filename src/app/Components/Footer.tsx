@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Leaf, Wheat, Tractor, AlertCircle, CheckCircle } from "lucide-react";
 
-// Inline Custom SVGs for Social Media Icons to avoid lucide-react version variations
+                                                                                     
 const Facebook = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
@@ -42,7 +42,7 @@ export default function Footer() {
     e.preventDefault();
     if (!email) return;
 
-    // Basic email validation
+                             
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setStatus("error");
@@ -52,7 +52,7 @@ export default function Footer() {
 
     setStatus("loading");
 
-    // Simulate API request
+                           
     setTimeout(() => {
       setStatus("success");
       setEmail("");
@@ -85,13 +85,13 @@ export default function Footer() {
 
   return (
     <footer className="bg-[#1b3327] text-[#e6ece8] border-t border-[#2e5a44]/30 pt-16 pb-8 relative overflow-hidden font-sans">
-      {/* Decorative top wave pattern or grid lines */}
+      {                                               }
       <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
 
       <div className="container relative z-10 mx-auto px-6 max-w-[1200px]">
-        {/* Main Grid */}
+        {               }
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
-          {/* Brand & About */}
+          {                   }
           <div className="flex flex-col gap-4">
             <Link href="/" className="flex items-center gap-2.5">
               <Leaf className="w-6 h-6 text-accent" />
@@ -106,7 +106,7 @@ export default function Footer() {
               Connecting Bangladesh's rural farmers and artisans directly with urban buyers. 
               Fresh organic harvests, pure dairy, livestock, and traditional cottage crafts.
             </p>
-            {/* Social Icons with Framer Motion hover pops */}
+            {                                                }
             <div className="flex items-center gap-3 mt-4">
               {socialLinks.map((social, idx) => (
                 <motion.a
@@ -121,7 +121,7 @@ export default function Footer() {
                 </motion.a>
               ))}
             </div>
-            {/* Contact Details */}
+            {                     }
             <div className="flex flex-col gap-2 text-xs text-[#a2b5ab] mt-4 border-t border-[#2e5a44]/30 pt-4">
               <div className="flex items-center gap-2">
                 <span>📍</span>
@@ -138,7 +138,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
+          {                 }
           <div className="flex flex-col gap-4">
             <h3 className="font-serif text-lg font-bold text-white tracking-wide border-b border-[#2e5a44]/40 pb-2">
               Quick Links
@@ -160,7 +160,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Rural Categories */}
+          {                      }
           <div className="flex flex-col gap-4">
             <h3 className="font-serif text-lg font-bold text-white tracking-wide border-b border-[#2e5a44]/40 pb-2">
               Rural Categories

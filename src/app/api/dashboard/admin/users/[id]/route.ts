@@ -7,15 +7,15 @@ interface RouteParams {
   params: Promise<{ id: string }>;
 }
 
-// PUT /api/dashboard/admin/users/[id] - Update user status/roles (Admin only)
-// Body: { role, isBanned }
+                                                                              
+                           
 export async function PUT(request: Request, { params }: RouteParams) {
   try {
     const adminUser = await requireAuth(["admin"]);
     await dbConnect();
     const { id } = await params;
 
-    // Prevent administrators from updating their own status/banning themselves
+                                                                               
     if (adminUser._id.toString() === id) {
       return NextResponse.json(
         { error: "Forbidden. You cannot edit your own admin settings or ban yourself." },

@@ -29,7 +29,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // 1. Retrieve the PaymentIntent from Stripe
+                                                
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
 
     if (!paymentIntent) {
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // 2. Validate PaymentIntent state
+                                      
     if (paymentIntent.status !== "succeeded") {
       return NextResponse.json(
         { error: `Payment failed or incomplete. Status: ${paymentIntent.status}` },

@@ -17,11 +17,11 @@ export default function EditItemPage() {
   const router = useRouter();
   const { id } = useParams() as { id: string };
 
-  // Data Loading
+                 
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [fetchingData, setFetchingData] = useState(true);
 
-  // Form State
+               
   const [name, setName] = useState("");
   const [shortDesc, setShortDesc] = useState("");
   const [description, setDescription] = useState("");
@@ -45,7 +45,7 @@ export default function EditItemPage() {
   useEffect(() => {
     const fetchSetupData = async () => {
       try {
-        // Load categories
+                          
         const catRes = await fetch("/api/categories");
         let loadedCategories: CategoryType[] = [];
         if (catRes.ok) {
@@ -54,7 +54,7 @@ export default function EditItemPage() {
           setCategories(loadedCategories);
         }
 
-        // Load existing product details
+                                        
         const prodRes = await fetch(`/api/products/${id}`);
         if (prodRes.ok) {
           const prodData = await prodRes.json();

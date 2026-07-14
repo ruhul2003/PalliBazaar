@@ -3,7 +3,7 @@ import { dbConnect } from "@/lib/db";
 import { Wishlist, Product } from "@/lib/models";
 import { requireAuth } from "@/lib/auth";
 
-// GET /api/wishlist - Get user's wishlist populated with product details
+                                                                         
 export async function GET() {
   try {
     const user = await requireAuth();
@@ -29,8 +29,8 @@ export async function GET() {
   }
 }
 
-// POST /api/wishlist - Toggle product in wishlist (Add if not present, remove if present)
-// Body: { productId }
+                                                                                          
+                      
 export async function POST(request: Request) {
   try {
     const user = await requireAuth();
@@ -42,7 +42,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Product ID is required" }, { status: 400 });
     }
 
-    // Verify product exists
+                            
     const product = await Product.findById(productId);
     if (!product) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
@@ -59,11 +59,11 @@ export async function POST(request: Request) {
 
     let message = "";
     if (itemIndex > -1) {
-      // Remove product if already exists (Toggle behavior)
+                                                           
       wishlist.products.splice(itemIndex, 1);
       message = "Product removed from wishlist";
     } else {
-      // Add product
+                    
       wishlist.products.push(productId as any);
       message = "Product added to wishlist";
     }
@@ -88,8 +88,8 @@ export async function POST(request: Request) {
   }
 }
 
-// DELETE /api/wishlist - Remove product from wishlist
-// Query parameter: ?productId=xxx
+                                                      
+                                  
 export async function DELETE(request: Request) {
   try {
     const user = await requireAuth();

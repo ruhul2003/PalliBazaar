@@ -3,7 +3,7 @@ import { dbConnect } from "@/lib/db";
 import { Notification } from "@/lib/models";
 import { requireAuth } from "@/lib/auth";
 
-// GET /api/notifications - Get notifications for the authenticated user
+                                                                        
 export async function GET() {
   try {
     const user = await requireAuth();
@@ -11,7 +11,7 @@ export async function GET() {
 
     const notifications = await Notification.find({ recipient: user._id })
       .sort({ createdAt: -1 })
-      .limit(50); // limit to recent 50 notifications
+      .limit(50);                                    
 
     return NextResponse.json({ notifications });
   } catch (error: any) {
@@ -23,8 +23,8 @@ export async function GET() {
   }
 }
 
-// PUT /api/notifications - Mark notifications as read
-// Body: { notificationId } (if omitted, marks all as read)
+                                                      
+                                                           
 export async function PUT(request: Request) {
   try {
     const user = await requireAuth();
@@ -34,7 +34,7 @@ export async function PUT(request: Request) {
     const { notificationId } = body;
 
     if (notificationId) {
-      // Mark specific notification as read
+                                           
       const notification = await Notification.findOneAndUpdate(
         { _id: notificationId, recipient: user._id },
         { $set: { isRead: true } },
@@ -45,7 +45,7 @@ export async function PUT(request: Request) {
       }
       return NextResponse.json({ message: "Notification marked as read", notification });
     } else {
-      // Mark all notifications as read for this user
+                                                     
       await Notification.updateMany(
         { recipient: user._id, isRead: false },
         { $set: { isRead: true } }

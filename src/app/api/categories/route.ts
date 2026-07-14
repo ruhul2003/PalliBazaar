@@ -3,20 +3,20 @@ import { dbConnect } from "@/lib/db";
 import { Category } from "@/lib/models";
 import { requireAuth } from "@/lib/auth";
 
-// Helper function to slugify text
+                                  
 function slugify(text: string) {
   return text
     .toString()
     .toLowerCase()
     .trim()
-    .replace(/\s+/g, "-") // Replace spaces with -
-    .replace(/[^\w\-]+/g, "") // Remove all non-word chars
-    .replace(/\-\-+/g, "-") // Replace multiple - with single -
-    .replace(/^-+/, "") // Trim - from start
-    .replace(/-+$/, ""); // Trim - from end
+    .replace(/\s+/g, "-")                         
+    .replace(/[^\w\-]+/g, "")                             
+    .replace(/\-\-+/g, "-")                                    
+    .replace(/^-+/, "")                     
+    .replace(/-+$/, "");                   
 }
 
-// GET /api/categories - Fetch all categories
+                                             
 export async function GET() {
   try {
     await dbConnect();
@@ -31,10 +31,10 @@ export async function GET() {
   }
 }
 
-// POST /api/categories - Add a new category (Admin only)
+                                                         
 export async function POST(request: Request) {
   try {
-    // Authenticate and authorize admin
+                                       
     await requireAuth(["admin"]);
 
     await dbConnect();
@@ -49,7 +49,7 @@ export async function POST(request: Request) {
 
     const finalSlug = slug ? slugify(slug) : slugify(name);
 
-    // Check if category already exists
+                                       
     const existingCategory = await Category.findOne({
       $or: [{ name }, { slug: finalSlug }],
     });

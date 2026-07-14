@@ -28,14 +28,14 @@ export default function BuyerDashboard() {
   const { user, loading, refreshSession } = useAuth();
   const router = useRouter();
 
-  // Navigation state
+                     
   const [activeTab, setActiveTab] = useState<"profile" | "orders" | "wishlist">("orders");
 
-  // Dashboard Data State
+                         
   const [orders, setOrders] = useState<OrderType[]>([]);
   const [wishlistProducts, setWishlistProducts] = useState<any[]>([]);
   
-  // Profile Form state
+                       
   const [phone, setPhone] = useState("");
   const [street, setStreet] = useState("");
   const [city, setCity] = useState("");

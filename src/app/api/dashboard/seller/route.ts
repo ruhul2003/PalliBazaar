@@ -3,23 +3,23 @@ import { dbConnect } from "@/lib/db";
 import { Order, Product, Review } from "@/lib/models";
 import { requireAuth } from "@/lib/auth";
 
-// GET /api/dashboard/seller - Fetch seller statistics & analytics
+                                                                  
 export async function GET() {
   try {
     const user = await requireAuth(["seller", "admin"]);
     await dbConnect();
 
-    // 1. Get all products listed by this seller
+                                                
     const products = await Product.find({ seller: user._id }).populate("category", "name slug");
     const productIds = products.map((p) => p._id);
 
-    // 2. Fetch all orders containing this seller's products
+                                                            
     const orders = await Order.find({ "items.product": { $in: productIds } })
       .populate("customer", "name email")
       .populate("items.product", "name price seller");
 
-    // 3. Calculate metrics:
-    // Revenue is calculated from paid items only
+                            
+                                                 
     let revenue = 0;
     let totalItemsSold = 0;
     let pendingOrdersCount = 0;
@@ -71,12 +71,12 @@ export async function GET() {
       }
     });
 
-    // Calculate rating statistics
+                                  
     const ratingCount = products.reduce((acc, p) => acc + p.ratings.count, 0);
     const ratingSum = products.reduce((acc, p) => acc + p.ratings.average * p.ratings.count, 0);
     const sellerAverageRating = ratingCount > 0 ? parseFloat((ratingSum / ratingCount).toFixed(1)) : 0;
 
-    // Fetch recent reviews for seller's products
+                                                 
     const reviews = await Review.find({ product: { $in: productIds } })
       .populate("customer", "name profilePicture")
       .populate("product", "name")

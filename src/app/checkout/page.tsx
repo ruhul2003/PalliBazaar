@@ -27,7 +27,7 @@ export default function CheckoutPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
 
-  // Form State
+               
   const [street, setStreet] = useState("");
   const [city, setCity] = useState("");
   const [district, setDistrict] = useState("Dhaka");
@@ -35,17 +35,17 @@ export default function CheckoutPage() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<"cod" | "stripe">("cod");
 
-  // Cart Info State
+                    
   const [cartItems, setCartItems] = useState<CartItemType[]>([]);
   const [fetchingCart, setFetchingCart] = useState(true);
   
-  // Checkout Processing State
+                              
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [orderConfirmed, setOrderConfirmed] = useState(false);
   const [confirmedOrderId, setConfirmedOrderId] = useState("");
 
-  // Stripe Payment States
+                          
   const [stripeClientSecret, setStripeClientSecret] = useState("");
   const [stripeOrderId, setStripeOrderId] = useState("");
   const [showStripeForm, setShowStripeForm] = useState(false);
@@ -59,7 +59,7 @@ export default function CheckoutPage() {
     }
 
     if (user) {
-      // Auto-populate form if user has addresses
+                                                 
       if (user.addresses && user.addresses.length > 0) {
         const addr = user.addresses.find((a: any) => a.isDefault) || user.addresses[0];
         setStreet(addr.street || "");
@@ -83,7 +83,7 @@ export default function CheckoutPage() {
           const items = data.cart.items.filter((i: any) => i.product !== null);
           setCartItems(items);
           if (items.length === 0) {
-            router.push("/cart"); // send back if cart is empty
+            router.push("/cart");                              
           }
         }
       }
@@ -116,7 +116,7 @@ export default function CheckoutPage() {
     };
 
     try {
-      // Map cart items format to API requirements: [{ product: id, quantity: num }]
+                                                                                    
       const items = cartItems.map((item) => ({
         product: item.product._id,
         quantity: item.quantity,
@@ -266,7 +266,7 @@ export default function CheckoutPage() {
       )}
 
       <form onSubmit={handlePlaceOrder} className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-10">
-        {/* Shipping Form & Payment Select */}
+        {                                    }
         <div className="space-y-6">
           <div className="bg-white border border-border-light rounded-2xl p-6 sm:p-8 shadow-sm">
             <h3 className="font-serif text-xl font-bold text-primary mb-5 border-b border-border-light pb-2">

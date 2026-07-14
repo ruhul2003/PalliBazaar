@@ -16,11 +16,11 @@ export default function AddItemPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
 
-  // Categories loading
+                       
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [fetchingCategories, setFetchingCategories] = useState(true);
 
-  // Form State
+               
   const [name, setName] = useState("");
   const [shortDesc, setShortDesc] = useState("");
   const [description, setDescription] = useState("");
@@ -79,7 +79,7 @@ export default function AddItemPage() {
 
     const imagesArray = imagesUrl
       ? imagesUrl.split(",").map((url) => url.trim())
-      : ["https://images.unsplash.com/photo-1553279768-865429fa0078?q=80&w=600"]; // default fallback harvest image
+      : ["https://images.unsplash.com/photo-1553279768-865429fa0078?q=80&w=600"];                                  
 
     const payload = {
       name,
@@ -132,7 +132,7 @@ export default function AddItemPage() {
     <div className="min-h-[calc(100vh-75px)] py-12 px-4 bg-bg-sand">
       <div className="max-w-[750px] mx-auto bg-white border border-border-light rounded-2xl shadow-md p-8 sm:p-10">
         
-        {/* Header */}
+        {            }
         <div className="flex items-center justify-between border-b border-border-light pb-5 mb-8">
           <div>
             <h1 className="font-serif text-3xl font-bold text-primary flex items-center gap-2">
@@ -158,7 +158,7 @@ export default function AddItemPage() {
 
         <form onSubmit={handleSubmit} className="space-y-6 font-sans">
           
-          {/* Row 1: Title & Category */}
+          {                             }
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-semibold text-text-earth mb-1.5" htmlFor="title">
@@ -195,7 +195,7 @@ export default function AddItemPage() {
             </div>
           </div>
 
-          {/* Short Description */}
+          {                       }
           <div>
             <label className="block text-sm font-semibold text-text-earth mb-1.5" htmlFor="shortDesc">
               Short Description (Card Summary) *
@@ -212,7 +212,7 @@ export default function AddItemPage() {
             />
           </div>
 
-          {/* Full Description */}
+          {                      }
           <div>
             <label className="block text-sm font-semibold text-text-earth mb-1.5" htmlFor="description">
               Full Description / Story *
@@ -228,7 +228,7 @@ export default function AddItemPage() {
             />
           </div>
 
-          {/* Row 2: Price, Stock & District */}
+          {                                    }
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             <div>
               <label className="block text-sm font-semibold text-text-earth mb-1.5" htmlFor="price">
@@ -292,7 +292,7 @@ export default function AddItemPage() {
             </div>
           </div>
 
-          {/* Image URLs */}
+          {                }
           <div>
             <label className="block text-sm font-semibold text-text-earth mb-1.5" htmlFor="images">
               Optional Image URL
@@ -311,7 +311,7 @@ export default function AddItemPage() {
             <p className="text-[10px] text-text-muted mt-1.5">If left empty, a high-quality fallback organic farm photo will be selected.</p>
           </div>
 
-          {/* Submit area */}
+          {                 }
           <div className="pt-4 border-t border-border-light flex gap-4">
             <button
               type="submit"

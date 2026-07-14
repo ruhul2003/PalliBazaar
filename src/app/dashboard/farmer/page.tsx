@@ -35,10 +35,10 @@ export default function FarmerDashboard() {
   const { user, loading } = useAuth();
   const router = useRouter();
 
-  // Navigation Tabs
+                    
   const [activeTab, setActiveTab] = useState<"overview" | "listings" | "orders" | "reviews" | "admin">("overview");
 
-  // Dashboard Data State
+                         
   const [analytics, setAnalytics] = useState<any>(null);
   const [products, setProducts] = useState<ProductType[]>([]);
   const [pendingOrders, setPendingOrders] = useState<any[]>([]);
@@ -47,18 +47,18 @@ export default function FarmerDashboard() {
   const [categories, setCategories] = useState<any[]>([]);
   const [fetchingData, setFetchingData] = useState(true);
 
-  // Admin Data State
+                     
   const [adminStats, setAdminStats] = useState<any>(null);
   const [pendingProducts, setPendingProducts] = useState<any[]>([]);
   const [allUsers, setAllUsers] = useState<any[]>([]);
   const [allOrders, setAllOrders] = useState<any[]>([]);
 
-  // Modal Control State
+                        
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState<"add" | "edit">("add");
   const [editProductId, setEditProductId] = useState("");
   
-  // Product Form State
+                       
   const [prodName, setProdName] = useState("");
   const [prodDesc, setProdDesc] = useState("");
   const [prodPrice, setProdPrice] = useState("");
@@ -136,14 +136,14 @@ export default function FarmerDashboard() {
     }
   };
 
-  // Create or Update Product
+                             
   const handleProductSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormError("");
 
     const imagesArray = prodImages
       ? prodImages.split(",").map((url) => url.trim())
-      : ["https://images.unsplash.com/photo-1553279768-865429fa0078?q=80&w=600"]; // fallback image
+      : ["https://images.unsplash.com/photo-1553279768-865429fa0078?q=80&w=600"];                  
 
     const payload = {
       name: prodName,

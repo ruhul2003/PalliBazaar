@@ -8,7 +8,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
   apiVersion: "2025-01-27.acacia" as any,
 });
 
-// GET /api/orders - Get orders (Customized by Role)
+                                                    
 export async function GET(request: Request) {
   try {
     const user = await requireAuth();
@@ -19,19 +19,19 @@ export async function GET(request: Request) {
 
     let query: any = {};
 
-    // Filter by role
+                     
     if (user.role === "customer") {
       query.customer = user._id;
     } else if (user.role === "seller") {
-      // Find all products belonging to this seller
+                                                   
       const sellerProducts = await Product.find({ seller: user._id });
       const productIds = sellerProducts.map((p) => p._id);
       query["items.product"] = { $in: productIds };
     } else if (user.role === "admin") {
-      // Admin can see everything
+                                 
     }
 
-    // Optional status filter (pending, processing, shipped, delivered, cancelled)
+                                                                                  
     if (status) {
       query.orderStatus = status;
     }
@@ -45,7 +45,7 @@ export async function GET(request: Request) {
       })
       .sort({ createdAt: -1 });
 
-    // If role is seller, filter the items in each order to only show their products
+                                                                                    
     if (user.role === "seller") {
       const sellerOrders = orders.map((order) => {
         const orderObj = order.toObject();
@@ -67,8 +67,8 @@ export async function GET(request: Request) {
   }
 }
 
-// POST /api/orders - Place a new order
-// Body: { items: [{ product, quantity }], shippingAddress, paymentMethod }
+                                       
+                                                                           
 export async function POST(request: Request) {
   try {
     const user = await requireAuth();
@@ -92,7 +92,7 @@ export async function POST(request: Request) {
     const orderItemsToCreate: any[] = [];
     const productsToUpdate: any[] = [];
 
-    // Verify stock and calculate pricing server-side
+                                                     
     for (const item of items) {
       const dbProduct = await Product.findById(item.product);
 

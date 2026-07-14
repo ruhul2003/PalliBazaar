@@ -44,7 +44,7 @@ export default function Navbar() {
             }
           }
         } catch (e) {
-          // ignore
+                   
         }
       };
 
@@ -58,7 +58,7 @@ export default function Navbar() {
             }
           }
         } catch (e) {
-          // ignore
+                   
         }
       };
 

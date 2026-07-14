@@ -33,7 +33,7 @@ interface ProductType {
 function ShopContent() {
   const searchParams = useSearchParams();
 
-  // Filters State
+                  
   const [search, setSearch] = useState(searchParams.get("search") || "");
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get("category") || "");
   const [minPrice, setMinPrice] = useState("");
@@ -42,7 +42,7 @@ function ShopContent() {
   const [sort, setSort] = useState("newest");
   const [page, setPage] = useState(1);
 
-  // Data State
+               
   const [products, setProducts] = useState<ProductType[]>([]);
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [totalPages, setTotalPages] = useState(1);

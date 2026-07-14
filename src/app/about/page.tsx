@@ -33,7 +33,7 @@ export default function AboutPage() {
   return (
     <div className="min-h-[calc(100vh-75px)] bg-bg-sand font-sans pb-16">
       
-      {/* Hero Section */}
+      {                  }
       <section className="relative bg-gradient-to-br from-[#275239] via-[#467756] to-[#76aa7b] text-white py-16 md:py-20 text-center">
         <div className="container max-w-[800px] mx-auto px-6 relative z-10">
           <motion.div
@@ -64,7 +64,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Narrative Section */}
+      {                       }
       <section className="container max-w-[950px] mx-auto px-6 pt-16">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center bg-white border border-border-light rounded-3xl p-8 sm:p-12 shadow-sm">
           <div>
@@ -96,7 +96,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Core Values Section */}
+      {                         }
       <section className="container max-w-[950px] mx-auto px-6 pt-16">
         <h2 className="font-serif text-3xl font-bold text-primary text-center mb-10">Our Core Values</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
@@ -116,7 +116,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {                 }
       <section className="container max-w-[950px] mx-auto px-6 pt-16">
         <div className="bg-gradient-primary rounded-[2rem] p-8 sm:p-12 text-center text-white shadow-md relative overflow-hidden">
           <div className="relative z-10 max-w-xl mx-auto">

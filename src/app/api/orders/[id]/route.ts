@@ -7,7 +7,7 @@ interface RouteParams {
   params: Promise<{ id: string }>;
 }
 
-// GET /api/orders/[id] - Fetch single order detail & tracking info
+                                                                   
 export async function GET(request: Request, { params }: RouteParams) {
   try {
     const user = await requireAuth();
@@ -26,10 +26,10 @@ export async function GET(request: Request, { params }: RouteParams) {
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 
-    // Authorization checks:
-    // 1. Customer who placed it
-    // 2. Seller who owns a product in it
-    // 3. Admin
+                            
+                                
+                                         
+               
     const isCustomer = order.customer._id.toString() === user._id.toString();
     const isSeller = order.items.some(
       (item: any) => item.product && item.product.seller.toString() === user._id.toString()
@@ -40,7 +40,7 @@ export async function GET(request: Request, { params }: RouteParams) {
       return NextResponse.json({ error: "Forbidden access to this order" }, { status: 403 });
     }
 
-    // If seller, filter items to only show seller's products
+                                                             
     if (user.role === "seller" && !isAdmin) {
       const orderObj = order.toObject();
       orderObj.items = orderObj.items.filter(
@@ -59,8 +59,8 @@ export async function GET(request: Request, { params }: RouteParams) {
   }
 }
 
-// PUT /api/orders/[id] - Cancel order (Customer) or update status (Seller/Admin)
-// Body: { orderStatus, paymentStatus }
+                                                                                 
+                                       
 export async function PUT(request: Request, { params }: RouteParams) {
   try {
     const user = await requireAuth();
@@ -84,7 +84,7 @@ export async function PUT(request: Request, { params }: RouteParams) {
       return NextResponse.json({ error: "Forbidden access to this order" }, { status: 403 });
     }
 
-    // CASE 1: Customer cancelling order (only if currently pending)
+                                                                    
     if (orderStatus === "cancelled" && isCustomer && !isAdmin && !isSeller) {
       if (order.orderStatus !== "pending") {
         return NextResponse.json(
@@ -93,7 +93,7 @@ export async function PUT(request: Request, { params }: RouteParams) {
         );
       }
 
-      // Restore stock levels
+                             
       for (const item of order.items) {
         if (item.product) {
           const product = await Product.findById(item.product._id);
@@ -107,7 +107,7 @@ export async function PUT(request: Request, { params }: RouteParams) {
       order.orderStatus = "cancelled";
       await order.save();
 
-      // Create notification for sellers
+                                        
       const sellerIds = new Set<string>();
       for (const item of order.items) {
         if (item.product) {

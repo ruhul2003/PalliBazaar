@@ -8,26 +8,26 @@ import Image from "next/image";
 import toast from "react-hot-toast";
 import { Apple, Leaf, Milk, Paintbrush, Sprout, Wheat, MapPin, Star, Sparkles, Droplets, Tractor, Users, ShieldCheck, Mail, ArrowRight, ShoppingCart } from "lucide-react";
 
-// Custom SVG Cow Component for livestock
+                                         
 const Cow = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    {/* Head Outline */}
+    {                  }
     <path d="M7 10c0-3.5 2.2-5 5-5h0c2.8 0 5 1.5 5 5v3a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2v-3z" />
-    {/* Horns */}
+    {           }
     <path d="M6 7c-1-2-3-1-3-1s1 3 3 2" />
     <path d="M18 7c1-2 3-1 3-1s-1 3-3 2" />
-    {/* Nose/Muzzle */}
+    {                 }
     <path d="M9 13h6a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2v0a2 2 0 0 1 2-2z" />
-    {/* Eyes */}
+    {          }
     <circle cx="10" cy="10" r="0.8" fill="currentColor" />
     <circle cx="14" cy="10" r="0.8" fill="currentColor" />
-    {/* Nostrils */}
+    {              }
     <circle cx="11" cy="15" r="0.5" fill="currentColor" />
     <circle cx="13" cy="15" r="0.5" fill="currentColor" />
   </svg>
 );
 
-// Framer Motion Animation Variants
+                                   
 const heroContainerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -103,7 +103,7 @@ interface ProductType {
   };
 }
 
-// Leaf particle component for background animation
+                                                   
 const LeafParticle = ({
   delay = 0,
   x = 0,
