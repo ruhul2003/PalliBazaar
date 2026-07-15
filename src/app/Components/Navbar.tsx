@@ -84,6 +84,8 @@ export default function Navbar() {
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "Shop", href: "/shop" },
+    { name: "About", href: "/about" },
+    { name: "Contact", href: "/contact" },
     ...(user && user.role === "customer"
       ? [
           { name: "Cart", href: "/cart", count: cartCount },
