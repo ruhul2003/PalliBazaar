@@ -40,10 +40,10 @@ const heroContainerVariants = {
 } as const;
 
 const heroItemVariants = {
-  hidden: { opacity: 0, y: 25 },
+  hidden: { opacity: 0, x: -35 },
   visible: {
     opacity: 1,
-    y: 0,
+    x: 0,
     transition: { type: "spring", stiffness: 90, damping: 14 },
   },
 } as const;
@@ -170,6 +170,8 @@ export default function HomePage() {
     }, 4500);
     return () => clearInterval(timer);
   }, []);
+
+
 
   const categoriesList = [
     { name: "Fruits", slug: "fruits", icon: Apple, color: "text-[#e11d48]" },
@@ -313,7 +315,12 @@ export default function HomePage() {
           </motion.div>
 
           {/* Right Column - Interactive Showcase */}
-          <div className="lg:col-span-5 relative w-full h-[360px] sm:h-[400px] flex items-center justify-center mt-6 lg:mt-0">
+          <motion.div
+            initial={{ opacity: 0, x: 45 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ type: "spring", stiffness: 90, damping: 14, delay: 0.1 }}
+            className="lg:col-span-5 relative w-full h-[360px] sm:h-[400px] flex items-center justify-center mt-6 lg:mt-0"
+          >
             {/* Dashed Orbital Rings */}
             <motion.div
               animate={{ rotate: 360 }}
@@ -331,17 +338,17 @@ export default function HomePage() {
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentSlide}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 1.05 }}
-                  transition={{ duration: 0.6, ease: "easeInOut" }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
                   className="absolute inset-0 w-full h-full"
                 >
                   <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent z-10" />
                   <img
                     src={bannerSlides[currentSlide].image}
                     alt={bannerSlides[currentSlide].title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-750 group-hover:scale-105"
                   />
                   <div className="absolute bottom-5 left-5 right-5 z-20 text-left">
                     <span className="text-[10px] font-bold text-accent tracking-wider uppercase">
@@ -438,7 +445,7 @@ export default function HomePage() {
                 <p className="text-xs font-black text-accent-hover mt-0.5">Mangoes</p>
               </div>
             </motion.div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
