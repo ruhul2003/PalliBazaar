@@ -4,6 +4,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import Navbar from "@/app/Components/Navbar";
 import Footer from "@/app/Components/Footer";
 import { Toaster } from "react-hot-toast";
+import PageAnimatePresence from "@/app/Components/PageAnimatePresence";
 
 export const metadata: Metadata = {
   title: "PalliBazaar - Online Rural Marketplace",
@@ -22,7 +23,9 @@ export default function RootLayout({
           <div className="flex flex-col min-h-screen">
             <Navbar />
             <div className="flex-grow">
-              {children}
+              <PageAnimatePresence>
+                {children}
+              </PageAnimatePresence>
             </div>
             <Footer />
           </div>
@@ -44,18 +47,18 @@ export default function RootLayout({
                 iconTheme: {
                   primary: "#2e5a44",
                   secondary: "#ffffff",
+                  },
                 },
-              },
-              error: {
-                iconTheme: {
-                  primary: "#c85a32",
-                  secondary: "#ffffff",
+                error: {
+                  iconTheme: {
+                    primary: "#c85a32",
+                    secondary: "#ffffff",
+                  },
                 },
-              },
-            }}
-          />
-        </AuthProvider>
-      </body>
-    </html>
-  );
-}
+              }}
+            />
+          </AuthProvider>
+        </body>
+      </html>
+    );
+  }

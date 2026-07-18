@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import toast from "react-hot-toast";
@@ -143,6 +143,33 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const bannerSlides = [
+    {
+      image: "https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?q=80&w=800",
+      tag: "Organic Crops",
+      title: "100% Organic Local Harvests"
+    },
+    {
+      image: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?q=80&w=800",
+      tag: "Fresh Seeds",
+      title: "High Yield Paddy Seeds"
+    },
+    {
+      image: "https://images.unsplash.com/photo-1606744824163-985d376605aa?q=80&w=800",
+      tag: "Cottage Crafts",
+      title: "Handcrafted Nakshi Kanthas"
+    }
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % bannerSlides.length);
+    }, 4500);
+    return () => clearInterval(timer);
+  }, []);
 
   const categoriesList = [
     { name: "Fruits", slug: "fruits", icon: Apple, color: "text-[#e11d48]" },
@@ -299,26 +326,34 @@ export default function HomePage() {
               className="absolute w-[250px] h-[250px] sm:w-[290px] sm:h-[290px] border border-dashed border-white/15 rounded-full"
             />
             
-            {/* Center Showcase Card */}
-            <motion.div
-              initial={{ scale: 0.85, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: "spring", stiffness: 100, damping: 18, delay: 0.15 }}
-              className="relative w-[210px] h-[270px] sm:w-[240px] sm:h-[310px] bg-white border-4 border-white rounded-[2rem] shadow-2xl overflow-hidden ring-8 ring-white/5 group"
-            >
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10" />
-              <Image
-                src="https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?q=80&w=800"
-                alt="Green Bangladeshi Farm"
-                fill
-                sizes="(max-width: 640px) 210px, 240px"
-                className="object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute bottom-5 left-5 right-5 z-20 text-left">
-                <span className="text-[10px] font-bold text-accent tracking-wider uppercase">Feature Focus</span>
-                <h4 className="font-serif text-base sm:text-lg font-bold text-white mt-1 leading-snug">100% Organic Local Harvests</h4>
-              </div>
-            </motion.div>
+            {/* Center Showcase Card Slideshow */}
+            <div className="relative w-[210px] h-[270px] sm:w-[240px] sm:h-[310px] bg-white border-4 border-white rounded-[2rem] shadow-2xl overflow-hidden ring-8 ring-white/5 group">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentSlide}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 1.05 }}
+                  transition={{ duration: 0.6, ease: "easeInOut" }}
+                  className="absolute inset-0 w-full h-full"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent z-10" />
+                  <img
+                    src={bannerSlides[currentSlide].image}
+                    alt={bannerSlides[currentSlide].title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute bottom-5 left-5 right-5 z-20 text-left">
+                    <span className="text-[10px] font-bold text-accent tracking-wider uppercase">
+                      {bannerSlides[currentSlide].tag}
+                    </span>
+                    <h4 className="font-serif text-base sm:text-lg font-bold text-white mt-1 leading-snug">
+                      {bannerSlides[currentSlide].title}
+                    </h4>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
 
             {/* Orbiting Badge 1 (Honey) - Top Right */}
             <motion.div
