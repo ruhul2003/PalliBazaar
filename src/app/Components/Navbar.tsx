@@ -5,7 +5,14 @@ import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
-import { Leaf, Bell, ShoppingCart, User, Menu, X, Inbox, Mail, Sparkles } from "lucide-react";
+import { Leaf, Bell, ShoppingCart, User, Menu, X, Inbox, Mail, Sparkles, ChevronDown } from "lucide-react";
+
+interface NavLink {
+  name: string;
+  href?: string;
+  count?: number;
+  subLinks?: { name: string; href: string }[];
+}
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -15,6 +22,7 @@ export default function Navbar() {
   const [notifications, setNotifications] = useState<any[]>([]);
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -81,16 +89,31 @@ export default function Navbar() {
     }
   };
 
-  const navLinks = [
+  const aiTools = [
+    ...(user ? [{ name: "AI Analyzer", href: "/analyzer" }] : []),
+    ...(user && user.role === "customer" ? [{ name: "AI Shopper", href: "/shopper" }] : []),
+  ];
+
+  const infoLinks = [
+    { name: "About PalliBazaar", href: "/about" },
+    { name: "Contact Support", href: "/contact" },
+  ];
+
+  const navLinks: NavLink[] = [
     { name: "Home", href: "/" },
     { name: "Shop", href: "/shop" },
-    { name: "About", href: "/about" },
-    { name: "Contact", href: "/contact" },
-    ...(user
+    ...(aiTools.length > 0
       ? [
-          { name: "AI Analyzer", href: "/analyzer" },
+          {
+            name: "AI Copilot",
+            subLinks: aiTools,
+          },
         ]
       : []),
+    {
+      name: "Explore",
+      subLinks: infoLinks,
+    },
     ...(user && user.role === "customer"
       ? [
           { name: "Cart", href: "/cart", count: cartCount },
@@ -139,11 +162,58 @@ export default function Navbar() {
         {/* Desktop Links */}
         <nav className="hidden md:flex items-center gap-2">
           {navLinks.map((link) => {
+            if (link.subLinks) {
+              const hasActiveChild = link.subLinks.some(sub => pathname === sub.href);
+              return (
+                <div
+                  key={link.name}
+                  className="relative"
+                  onMouseEnter={() => setActiveDropdown(link.name)}
+                  onMouseLeave={() => setActiveDropdown(null)}
+                >
+                  <button
+                    className={`px-4 py-2 font-semibold text-sm transition-colors duration-200 rounded-lg flex items-center gap-1 cursor-pointer focus:outline-none ${
+                      hasActiveChild ? "text-primary font-bold bg-primary-light/40" : "text-text-muted hover:text-primary"
+                    }`}
+                  >
+                    <span>{link.name}</span>
+                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeDropdown === link.name ? "rotate-180" : ""}`} />
+                  </button>
+                  <AnimatePresence>
+                    {activeDropdown === link.name && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute left-0 mt-1.5 w-48 bg-white border border-border-light rounded-xl shadow-lg py-2 z-50 overflow-hidden"
+                      >
+                        {link.subLinks.map((sub) => {
+                          const isSubActive = pathname === sub.href;
+                          return (
+                            <Link
+                              key={sub.href}
+                              href={sub.href}
+                              className={`block px-4.5 py-2.5 text-xs font-semibold transition-colors ${
+                                isSubActive ? "text-primary bg-primary-light/60 font-bold" : "text-text-muted hover:text-primary hover:bg-bg-sand/65"
+                              }`}
+                            >
+                              {sub.name}
+                            </Link>
+                          );
+                        })}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            }
+
             const isActive = pathname === link.href;
             return (
               <Link
                 key={link.href}
-                href={link.href}
+                href={link.href!}
                 className={`relative px-4 py-2 font-semibold text-sm transition-colors duration-200 rounded-lg flex items-center gap-1.5 ${
                   isActive ? "text-primary font-bold" : "text-text-muted hover:text-primary"
                 }`}
@@ -362,11 +432,39 @@ export default function Navbar() {
                 {/* Mobile Navigation Links */}
                 <nav className="flex flex-col gap-1">
                   {navLinks.map((link) => {
+                    if (link.subLinks) {
+                      return (
+                        <div key={link.name} className="flex flex-col">
+                          <span className="text-[10px] uppercase font-bold text-text-muted/65 px-3.5 pt-3 pb-1">
+                            {link.name}
+                          </span>
+                          {link.subLinks.map((sub) => {
+                            const isActive = pathname === sub.href;
+                            return (
+                              <Link
+                                key={sub.href}
+                                href={sub.href}
+                                onClick={() => setMobileMenuOpen(false)}
+                                className={`font-semibold text-sm py-2.5 px-6 rounded-lg flex items-center justify-between transition ${
+                                  isActive
+                                    ? "bg-primary-light text-primary font-bold"
+                                    : "text-text-muted hover:bg-bg-sand/60 hover:text-primary"
+                                }`}
+                              >
+                                <span>{sub.name}</span>
+                                <span className="text-text-muted/30">→</span>
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      );
+                    }
+
                     const isActive = pathname === link.href;
                     return (
                       <Link
                         key={link.href}
-                        href={link.href}
+                        href={link.href!}
                         onClick={() => setMobileMenuOpen(false)}
                         className={`font-semibold text-base py-3 px-3.5 rounded-lg flex items-center justify-between transition ${
                           isActive

@@ -302,6 +302,15 @@ export default function HomePage() {
               </motion.div>
               <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }} className="w-full sm:w-auto">
                 <Link
+                  href="/shopper"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-white rounded-xl font-extrabold shadow-lg transition-all"
+                >
+                  <Sparkles className="w-4 h-4 text-accent animate-pulse" />
+                  AI Shopper
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }} className="w-full sm:w-auto">
+                <Link
                   href="/signup"
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 border-2 border-white/60 hover:border-white text-white hover:bg-white hover:text-primary rounded-xl font-extrabold transition-all"
                 >
