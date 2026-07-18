@@ -86,6 +86,11 @@ export default function Navbar() {
     { name: "Shop", href: "/shop" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
+    ...(user
+      ? [
+          { name: "AI Analyzer", href: "/analyzer" },
+        ]
+      : []),
     ...(user && user.role === "customer"
       ? [
           { name: "Cart", href: "/cart", count: cartCount },
@@ -108,7 +113,7 @@ export default function Navbar() {
           : "bg-transparent border-b border-transparent py-4.5"
       }`}
     >
-      <div className="container flex items-center justify-between h-12">
+      <div className="max-w-[1440px] w-full mx-auto px-4 sm:px-6 flex items-center justify-between h-12">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5 group">
           <motion.div
