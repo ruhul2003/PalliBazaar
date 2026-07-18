@@ -9,7 +9,6 @@ import {
   Loader2, ShieldAlert, MapPin, Star, Wheat, ChevronRight, BarChart2 
 } from "lucide-react";
 import toast from "react-hot-toast";
-import { motion } from "framer-motion";
 
 interface MetricType {
   name: string;
@@ -263,12 +262,7 @@ Pest occurrence rating: 1/5"
 
             {/* Results Display */}
             {result && (
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-                className="bg-white border border-border-light rounded-2xl p-6 shadow-sm flex flex-col gap-6"
-              >
+              <div className="bg-white border border-border-light rounded-2xl p-6 shadow-sm flex flex-col gap-6 animate-fade-in">
                 <div className="flex items-center justify-between border-b border-border-light pb-4">
                   <h3 className="font-serif text-lg font-bold text-primary flex items-center gap-2">
                     <BarChart2 className="w-5 h-5 text-primary" />
@@ -349,7 +343,7 @@ Pest occurrence rating: 1/5"
                     </ul>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             )}
           </div>
 
@@ -376,13 +370,7 @@ Pest occurrence rating: 1/5"
                 <div className="space-y-4">
                   <span className="text-[10px] text-text-muted font-bold block uppercase tracking-wider">Recommended Seed Packages:</span>
                   {matchedProducts.map((pkg) => (
-                    <motion.div
-                      key={pkg._id}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="border border-border-light rounded-xl p-3 bg-bg-sand/10 hover:shadow-sm transition flex flex-col gap-2.5"
-                    >
+                    <div key={pkg._id} className="border border-border-light rounded-xl p-3 bg-bg-sand/10 hover:shadow-sm transition flex flex-col gap-2.5">
                       <div className="flex gap-3">
                         <div className="w-12 h-12 bg-bg-sand rounded-lg overflow-hidden shrink-0 relative border border-border-light">
                           <img src={pkg.images?.[0] || "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?q=80&w=600"} alt={pkg.name} className="w-full h-full object-cover" />
@@ -401,7 +389,7 @@ Pest occurrence rating: 1/5"
                           Details <ChevronRight className="w-3.5 h-3.5" />
                         </Link>
                       </div>
-                    </motion.div>
+                    </div>
                   ))}
                 </div>
               )}

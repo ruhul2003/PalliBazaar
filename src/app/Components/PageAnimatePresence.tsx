@@ -1,62 +1,71 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 
 export default function PageAnimatePresence({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
 
-  // Dynamic route-based transitions
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Return static children on SSR and first mount to guarantee zero flicker
+  if (!mounted) {
+    return <>{children}</>;
+  }
+
+  // Only animate the 4 requested pages
+  const animatedPaths = ["/contact", "/analyzer", "/items/add", "/items/manage"];
+  const shouldAnimate = animatedPaths.includes(pathname);
+
+  if (!shouldAnimate) {
+    return <>{children}</>;
+  }
+
   const getPageVariants = () => {
-    if (pathname === "/") {
-      // Landing page: Smooth slide-up rise
-      return {
-        initial: { opacity: 0, y: 25 },
-        animate: { opacity: 1, y: 0 },
-        exit: { opacity: 0, y: -25 },
-        transition: { duration: 0.32, ease: "easeOut" }
-      } as const;
-    } else if (pathname === "/shop") {
-      // Shop: Left-to-Right slide entry
-      return {
-        initial: { opacity: 0, x: -25 },
-        animate: { opacity: 1, x: 0 },
-        exit: { opacity: 0, x: 25 },
-        transition: { duration: 0.3, ease: "easeInOut" }
-      } as const;
-    } else if (pathname === "/about") {
-      // About page: Elastic scale-up
-      return {
-        initial: { opacity: 0, scale: 0.96 },
-        animate: { opacity: 1, scale: 1 },
-        exit: { opacity: 0, scale: 0.96 },
-        transition: { duration: 0.35, ease: [0.34, 1.3, 0.64, 1] }
-      } as const;
-    } else if (pathname === "/contact") {
-      // Contact: Right-to-Left slide entry
-      return {
-        initial: { opacity: 0, x: 25 },
-        animate: { opacity: 1, x: 0 },
-        exit: { opacity: 0, x: -25 },
-        transition: { duration: 0.3, ease: "easeInOut" }
-      } as const;
-    } else if (pathname === "/analyzer") {
-      // Analyzer page: Elegant blur & focus fade
-      return {
-        initial: { opacity: 0, filter: "blur(6px)" },
-        animate: { opacity: 1, filter: "blur(0px)" },
-        exit: { opacity: 0, filter: "blur(6px)" },
-        transition: { duration: 0.28, ease: "easeOut" }
-      } as const;
-    } else {
-      // Standard pages (cart, dashboards, checkout, login): Standard quick fade
-      return {
-        initial: { opacity: 0 },
-        animate: { opacity: 1 },
-        exit: { opacity: 0 },
-        transition: { duration: 0.2, ease: "easeInOut" }
-      } as const;
+    switch (pathname) {
+      case "/contact":
+        // Contact: Smooth slide-up fade
+        return {
+          initial: { opacity: 0, y: 20 },
+          animate: { opacity: 1, y: 0 },
+          exit: { opacity: 0, y: -20 },
+          transition: { duration: 0.28, ease: "easeOut" }
+        } as const;
+      case "/analyzer":
+        // Analyzer: Elegant blur & focus
+        return {
+          initial: { opacity: 0, filter: "blur(5px)" },
+          animate: { opacity: 1, filter: "blur(0px)" },
+          exit: { opacity: 0, filter: "blur(5px)" },
+          transition: { duration: 0.28, ease: "easeOut" }
+        } as const;
+      case "/items/add":
+        // Add Product: Scale-up zoom transition
+        return {
+          initial: { opacity: 0, scale: 0.985 },
+          animate: { opacity: 1, scale: 1 },
+          exit: { opacity: 0, scale: 0.985 },
+          transition: { duration: 0.26, ease: "easeOut" }
+        } as const;
+      case "/items/manage":
+        // Manage Listings: Slide in from the left
+        return {
+          initial: { opacity: 0, x: -20 },
+          animate: { opacity: 1, x: 0 },
+          exit: { opacity: 0, x: 20 },
+          transition: { duration: 0.28, ease: "easeInOut" }
+        } as const;
+      default:
+        return {
+          initial: { opacity: 1 },
+          animate: { opacity: 1 },
+          exit: { opacity: 1 },
+          transition: { duration: 0.1 }
+        } as const;
     }
   };
 
