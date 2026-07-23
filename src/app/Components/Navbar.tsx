@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { Leaf, Bell, ShoppingCart, User, Menu, X, Inbox, Mail, Sparkles, ChevronDown } from "lucide-react";
+import ThemeToggle from "@/app/Components/ThemeToggle";
 
 interface NavLink {
   name: string;
@@ -237,7 +238,8 @@ export default function Navbar() {
         </nav>
 
         {/* Actions */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
+          <ThemeToggle />
           {user ? (
             <div className="flex items-center gap-3">
               {/* Notifications Trigger */}
@@ -421,12 +423,15 @@ export default function Navbar() {
                     <Leaf className="w-5 h-5 text-primary" />
                     <span className="font-serif text-xl font-bold text-primary">PalliBazaar</span>
                   </Link>
-                  <button
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="p-1 text-text-muted hover:text-primary hover:bg-bg-sand rounded transition-colors cursor-pointer"
-                  >
-                    <X className="w-6 h-6" />
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <ThemeToggle />
+                    <button
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="p-1 text-text-muted hover:text-primary hover:bg-bg-sand rounded transition-colors cursor-pointer"
+                    >
+                      <X className="w-6 h-6" />
+                    </button>
+                  </div>
                 </div>
 
                 {/* Mobile Navigation Links */}
