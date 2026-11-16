@@ -36,3 +36,7 @@ Configure your .env.local file with MongoDB and authentication credentials.
 Start the development server with 
 pm run dev and open http://localhost:3000.
 
+Build for production using 
+pm run build and launch using 
+pm run start.
+
