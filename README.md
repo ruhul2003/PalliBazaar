@@ -31,3 +31,5 @@ Clone the repository using git clone https://github.com/ruhul2003/PalliBazaar.gi
 Install project dependencies by running 
 pm install.
 
+Configure your .env.local file with MongoDB and authentication credentials.
+
