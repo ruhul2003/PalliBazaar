@@ -1,0 +1,2 @@
+# PalliBazaar - Empowering Rural Commerce
+
