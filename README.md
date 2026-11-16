@@ -17,3 +17,5 @@ PalliBazaar is an online marketplace bridging rural artisans, farmers, and consu
 - **Authentication**: Secured with Better Auth for robust credential management.
 - **Payments**: Integrated with Stripe Checkout for seamless, secure transactions.
 
+## Core Features
+
