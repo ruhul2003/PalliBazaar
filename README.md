@@ -15,3 +15,5 @@ PalliBazaar is an online marketplace bridging rural artisans, farmers, and consu
 - **Styling**: Styled using Tailwind CSS 4 and smooth animations with Framer Motion.
 - **Database**: Powered by MongoDB with Mongoose object data modeling.
 - **Authentication**: Secured with Better Auth for robust credential management.
+- **Payments**: Integrated with Stripe Checkout for seamless, secure transactions.
+
