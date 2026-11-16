@@ -20,3 +20,4 @@ PalliBazaar is an online marketplace bridging rural artisans, farmers, and consu
 ## Core Features
 
 - Category-based product discovery and instant search filtering.
+- Intuitive shopping cart state management with real-time total calculations.
