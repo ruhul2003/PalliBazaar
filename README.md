@@ -40,3 +40,5 @@ Build for production using
 pm run build and launch using 
 pm run start.
 
+## Project Structure
+
