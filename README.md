@@ -42,3 +42,5 @@ pm run start.
 
 ## Project Structure
 
+The codebase is organized into src/app for routes, src/lib for utilities, and src/models for schemas.
+
