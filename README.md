@@ -28,3 +28,6 @@ PalliBazaar is an online marketplace bridging rural artisans, farmers, and consu
 
 Clone the repository using git clone https://github.com/ruhul2003/PalliBazaar.git.
 
+Install project dependencies by running 
+pm install.
+
