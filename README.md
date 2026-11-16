@@ -46,3 +46,5 @@ The codebase is organized into src/app for routes, src/lib for utilities, and sr
 
 ## Contributing
 
+Contributions, bug reports, and feature requests are welcome via issues and pull requests.
+
