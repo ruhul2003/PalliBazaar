@@ -9,3 +9,5 @@ PalliBazaar is an online marketplace bridging rural artisans, farmers, and consu
 - **Fair Pricing**: Guarantees transparent pricing structures for both buyers and sellers.
 - **Smart Analytics**: Leverages AI market insights to help rural sellers optimize pricing.
 
+## Technology Stack
+
