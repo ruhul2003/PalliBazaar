@@ -6,3 +6,4 @@ PalliBazaar is an online marketplace bridging rural artisans, farmers, and consu
 
 - **Direct Trade**: Enables rural producers to sell directly without middleman markups.
 - **Artisanal Goods**: Showcases traditional handcrafted products with verified heritage.
+- **Fair Pricing**: Guarantees transparent pricing structures for both buyers and sellers.
