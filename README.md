@@ -11,3 +11,4 @@ PalliBazaar is an online marketplace bridging rural artisans, farmers, and consu
 
 ## Technology Stack
 
+- **Frontend**: Built with Next.js 16 (App Router), React 19, and TypeScript.
