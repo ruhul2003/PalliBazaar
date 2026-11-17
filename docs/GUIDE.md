@@ -9,3 +9,5 @@ This guide covers local setup, architecture, API routes, and deployment workflow
 - Configure both publishable and secret Stripe keys for payment flows.
 - Set a strong Better Auth secret and base URL for session handling.
 
+## Database Seeding
+
