@@ -26,19 +26,15 @@ PalliBazaar is an online marketplace bridging rural artisans, farmers, and consu
 
 ## Getting Started
 
-Clone the repository using git clone https://github.com/ruhul2003/PalliBazaar.git.
+Clone the repository using `git clone https://github.com/ruhul2003/PalliBazaar.git`.
 
-Install project dependencies by running 
-pm install.
+Install project dependencies by running `npm install`.
 
-Configure your .env.local file with MongoDB and authentication credentials.
+Configure your `.env.local` file with MongoDB and authentication credentials.
 
-Start the development server with 
-pm run dev and open http://localhost:3000.
+Start the development server with `npm run dev` and open `http://localhost:3000`.
 
-Build for production using 
-pm run build and launch using 
-pm run start.
+Build for production using `npm run build` and launch using `npm run start`.
 
 ## Project Structure
 
