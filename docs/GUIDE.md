@@ -33,3 +33,4 @@ This guide covers local setup, architecture, API routes, and deployment workflow
 
 ## Testing and Verification
 
+- Use `src/lib/test-backend.ts` to verify database connectivity and helper functions.
