@@ -43,3 +43,4 @@ This guide covers local setup, architecture, API routes, and deployment workflow
 
 ## Troubleshooting
 
+- Delete the `.next` directory and restart the dev server if build cache errors occur.
