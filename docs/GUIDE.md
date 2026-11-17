@@ -36,3 +36,5 @@ This guide covers local setup, architecture, API routes, and deployment workflow
 - Use `src/lib/test-backend.ts` to verify database connectivity and helper functions.
 - Run `npm run lint` to catch TypeScript and ESLint issues early.
 
+## Deployment Checklist
+
