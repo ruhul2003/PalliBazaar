@@ -19,3 +19,5 @@ This guide covers local setup, architecture, API routes, and deployment workflow
 - Product routes handle fetching, filtering, and creating marketplace items.
 - Authentication routes manage user registration, login, and active sessions.
 - Payment routes create Stripe checkout sessions and validate transactions.
+- The `/api/ai/analyze-data` route generates marketplace insights for sellers.
+
