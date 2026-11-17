@@ -27,3 +27,4 @@ This guide covers local setup, architecture, API routes, and deployment workflow
 - Keep shared interface components organized inside `src/app/Components`.
 - Use `PageAnimatePresence` to maintain smooth transitions between routes.
 - Prefer Tailwind CSS utility classes for consistent spacing and responsive layouts.
+- Support both light and dark modes through `next-themes` provider hooks.
