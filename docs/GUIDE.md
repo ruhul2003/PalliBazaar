@@ -31,3 +31,5 @@ This guide covers local setup, architecture, API routes, and deployment workflow
 - Display non-blocking user feedback using `react-hot-toast`.
 - Render seller and market trend visualizations with Recharts components.
 
+## Testing and Verification
+
