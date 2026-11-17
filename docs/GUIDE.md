@@ -39,3 +39,5 @@ This guide covers local setup, architecture, API routes, and deployment workflow
 ## Deployment Checklist
 
 - Confirm all required production environment variables are configured on the host.
+- Verify that `npm run build` succeeds cleanly prior to releasing.
+
