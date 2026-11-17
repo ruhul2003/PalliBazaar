@@ -21,3 +21,5 @@ This guide covers local setup, architecture, API routes, and deployment workflow
 - Payment routes create Stripe checkout sessions and validate transactions.
 - The `/api/ai/analyze-data` route generates marketplace insights for sellers.
 
+## Frontend Guidelines
+
