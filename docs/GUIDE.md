@@ -23,3 +23,4 @@ This guide covers local setup, architecture, API routes, and deployment workflow
 
 ## Frontend Guidelines
 
+- Place route segments under `src/app` following Next.js App Router conventions.
