@@ -11,3 +11,4 @@ This guide covers local setup, architecture, API routes, and deployment workflow
 
 ## Database Seeding
 
+- Trigger `/api/seed` in local development to populate initial data.
