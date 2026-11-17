@@ -16,3 +16,4 @@ This guide covers local setup, architecture, API routes, and deployment workflow
 
 ## API Architecture
 
+- Product routes handle fetching, filtering, and creating marketplace items.
