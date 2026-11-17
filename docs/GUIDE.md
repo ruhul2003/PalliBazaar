@@ -28,3 +28,4 @@ This guide covers local setup, architecture, API routes, and deployment workflow
 - Use `PageAnimatePresence` to maintain smooth transitions between routes.
 - Prefer Tailwind CSS utility classes for consistent spacing and responsive layouts.
 - Support both light and dark modes through `next-themes` provider hooks.
+- Display non-blocking user feedback using `react-hot-toast`.
