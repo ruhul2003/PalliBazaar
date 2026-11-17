@@ -25,3 +25,4 @@ This guide covers local setup, architecture, API routes, and deployment workflow
 
 - Place route segments under `src/app` following Next.js App Router conventions.
 - Keep shared interface components organized inside `src/app/Components`.
+- Use `PageAnimatePresence` to maintain smooth transitions between routes.
