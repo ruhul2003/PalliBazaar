@@ -6,3 +6,4 @@ This guide covers local setup, architecture, API routes, and deployment workflow
 
 - Install Node.js 20 or newer along with npm.
 - Provide a valid MongoDB connection URI in `.env.local`.
+- Configure both publishable and secret Stripe keys for payment flows.
