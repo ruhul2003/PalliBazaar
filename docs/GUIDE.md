@@ -29,3 +29,5 @@ This guide covers local setup, architecture, API routes, and deployment workflow
 - Prefer Tailwind CSS utility classes for consistent spacing and responsive layouts.
 - Support both light and dark modes through `next-themes` provider hooks.
 - Display non-blocking user feedback using `react-hot-toast`.
+- Render seller and market trend visualizations with Recharts components.
+
