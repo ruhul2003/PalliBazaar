@@ -51,3 +51,4 @@ This project is licensed under the ISC License.
 Customers can filter items by 64 districts to discover authentic regional specialties.
 Traditional produce weights such as maund and ser are automatically converted to metric units.
 Orders are packaged using eco-friendly jute, recycled paper, and dried banana fiber wraps.
+Local payment options include bKash, Nagad, Rocket, card processing, and Cash on Delivery.
