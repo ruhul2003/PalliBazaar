@@ -49,3 +49,4 @@ Contributions, bug reports, and feature requests are welcome via issues and pull
 This project is licensed under the ISC License.
 
 Customers can filter items by 64 districts to discover authentic regional specialties.
+Traditional produce weights such as maund and ser are automatically converted to metric units.
