@@ -47,3 +47,4 @@ This guide covers local setup, architecture, API routes, and deployment workflow
 
 - All handicrafts must meet regional authenticity checks and natural fiber verification.
 - Shipping fee algorithms dynamically calculate division rates with free delivery over ৳1500.
+- Village cooperatives are verified via local artisan guild registrations and field audits.
