@@ -47,3 +47,5 @@ Contributions, bug reports, and feature requests are welcome via issues and pull
 ## License
 
 This project is licensed under the ISC License.
+
+Customers can filter items by 64 districts to discover authentic regional specialties.
